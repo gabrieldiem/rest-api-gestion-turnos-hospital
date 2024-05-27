@@ -65,6 +65,6 @@ deploy_test_job:
     - cp ${KUBECONFIG} $HOME/.kube/config
     - kubectl config set-context –current –namespace=${TEAM}-${CI_ENVIRONMENT_NAME}
     - kubectl apply -f infra/${CI_ENVIRONMENT_NAME}.configmap.yaml
-    - kubectl set image deployment/restapi restapi=$REGISTRY_URL/$APP_NAME:$VERSION
+    - kubectl set image deployment/restapi restapi=$REGISTRY_URL/$CI_PROJECT_NAME:$VERSION
   only:
     - tags
