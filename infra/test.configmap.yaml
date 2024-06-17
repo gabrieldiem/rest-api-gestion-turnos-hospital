@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: restapiconfig
+  name: apiconfig
 data:
   PORT: "3000"
   LOG_LEVEL: "debug"

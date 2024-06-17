@@ -19,6 +19,6 @@ spec:
         image: registry.gitlab.com/fiuba-memo2/ejemplos/restapi:0.0.2
         envFrom:
           - secretRef:
-              name: restapisecret
+              name: apisecret
           - configMapRef:
-              name: restapiconfig
+              name: apiconfig
