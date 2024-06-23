@@ -7,11 +7,11 @@ Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
 customer_logger = Configuration.logger
-set :logger, customer_logger
 DB = Configuration.db
 DB.loggers << customer_logger
-
+set :logger, customer_logger
 set :default_content_type, :json
+set :environment, ENV['APP_MODE'].to_sym
 
 get '/version' do
   { version: Version.current }.to_json
