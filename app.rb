@@ -11,6 +11,8 @@ set :logger, customer_logger
 DB = Configuration.db
 DB.loggers << customer_logger
 
+set :default_content_type, :json
+
 get '/version' do
   { version: Version.current }.to_json
 end
