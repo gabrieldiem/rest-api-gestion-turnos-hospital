@@ -22,3 +22,9 @@ spec:
               name: apisecret
           - configMapRef:
               name: apiconfig
+        livenessProbe:
+          httpGet:
+            path: /version
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
