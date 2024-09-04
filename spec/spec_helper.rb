@@ -16,8 +16,12 @@ unless ARGV.include?('--dry-run')
   require 'simplecov'
   SimpleCov.minimum_coverage 75
   SimpleCov.start do
+    root(File.join(File.dirname(__FILE__), '..'))
+    coverage_dir 'reports/coverage'
     add_filter '/spec/'
     add_filter '/features/'
+    add_group 'Dominio', '/dominio'
+    add_group 'Persistencia', '/persistencia'
   end
 end
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration

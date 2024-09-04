@@ -27,6 +27,14 @@ RuboCop::RakeTask.new(:rubocop) do |task|
   task.options = ['--display-cop-names']
 end
 
+desc 'Run RuboCop'
+RuboCop::RakeTask.new(:rubocop_report) do |task|
+  task.formatters = %w[simple html]
+  task.options = ['-o', 'reports/rubocop.html']
+  task.requires << 'rubocop-rspec'
+  task.fail_on_error = false
+end
+
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new(:cucumber) do |task|
   task.cucumber_opts = ['features', '--publish-quiet', '--tags \'not @wip\'']
@@ -50,6 +58,6 @@ Cucumber::Rake::Task.new(:feature_indev) do |task|
   task.cucumber_opts = ['features', '--tags \'@indev\'']
 end
 
-task ci: %i[acceptance_report spec_report rubocop]
+task ci: %i[acceptance_report spec_report rubocop_report]
 
 task default: %i[cucumber spec rubocop]
