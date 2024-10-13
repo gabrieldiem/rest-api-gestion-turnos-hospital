@@ -1,6 +1,8 @@
 REST API
 ========
 
+[![pipeline status](https://gitlab.com/%{project_path}/badges/main/pipeline.svg)](https://gitlab.com/%{project_path}/commits/main)
+
 Este proyecto está basado en:
 
 * Sinatra (micro framework web) y Sequel (componente de acceso datos)
