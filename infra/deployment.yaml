@@ -18,18 +18,15 @@ spec:
         - name: registrycredentials
       containers:
       - name: restapi
-        image: registry.gitlab.com/fiuba-memo2/ejemplos/restapi:0.0.2
+        image: registry.gitlab.com/fiuba-memo2/ejemplos/restapi:0.0.5
         envFrom:
-          - secretRef:
-              name: apisecret
           - configMapRef:
               name: apiconfig
-        requests:
-          memory: "64Mi"
-          cpu: "250m"
-        limits:
-          memory: "250Mi"
-          cpu: "500m"
+        resources:
+          requests:
+            memory: "64Mi"
+          limits:
+            memory: "250Mi"
         livenessProbe:
           httpGet:
             path: /version
