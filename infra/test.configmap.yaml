@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: apiconfig
 data:
-  PORT: "3000"
-  LOG_LEVEL: "debug"
-  APP_MODE: "production"
+  APP_MODE: production
+  DATABASE_URL: <TELEGRAM_TOKEN>
+  LOG_LEVEL: debug
+  LOG_URL: <URL_SUMOLOGIC_ENDPOINT>
+  PORT: 3000
