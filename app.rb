@@ -15,6 +15,7 @@ configure do
   set :default_content_type, :json
   set :environment, ENV['APP_MODE'].to_sym
   set :sistema, Sistema.new(RepositorioUsuarios.new)
+  customer_logger.info('Iniciando sistema...')
 end
 
 before do
@@ -45,6 +46,7 @@ get '/usuarios' do
 end
 
 post '/usuarios' do
+  logger.debug("POST /usuarios: #{@params}")
   usuario = sistema.crear_usuario(@params['email'])
   status 201
   { id: usuario.id, email: usuario.email }.to_json

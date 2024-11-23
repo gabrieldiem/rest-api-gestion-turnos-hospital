@@ -24,9 +24,9 @@ spec:
               name: apiconfig
         resources:
           requests:
-            memory: "64Mi"
+            memory: "32Mi"
           limits:
-            memory: "250Mi"
+            memory: "192Mi"
         livenessProbe:
           httpGet:
             path: /version
