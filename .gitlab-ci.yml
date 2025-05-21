@@ -40,6 +40,18 @@ build_job:
     reports:
       junit: reports/spec/rspec.xml
 
+security_scan_job:
+  stage: build
+  image:
+    name: "zricethezav/gitleaks"
+    entrypoint: [""]
+  script:
+    - gitleaks detect --source . --verbose --report-path=reports/gitleaks-report.json
+  artifacts:
+    when: always
+    paths:
+      - reports/
+
 package_job:
   stage: package
   image: docker:stable
