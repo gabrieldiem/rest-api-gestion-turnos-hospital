@@ -22,6 +22,8 @@ spec:
         envFrom:
           - configMapRef:
               name: apiconfig
+          - secretRef:
+              name: apisecret
         resources:
           requests:
             memory: "32Mi"

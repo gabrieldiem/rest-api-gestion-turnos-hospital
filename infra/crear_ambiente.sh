@@ -9,11 +9,15 @@ set -e
 EQUIPO=$1
 AMBIENTE=$2
 
-function crear_para_ambiente() {
+function crear_ambiente() {
   EQUIPO=$1
   AMBIENTE=$2
   NAMESPACE="$1-$2"
   echo "$NAMESPACE"
+  
+  kubectl create namespace $NAMESPACE
+
+  sleep 3
   
   kubectl apply -n $NAMESPACE -f $AMBIENTE.configmap.yaml
 
@@ -33,4 +37,4 @@ function crear_para_ambiente() {
 
 # TODO: validar parametros
 
-crear_para_ambiente $EQUIPO $AMBIENTE
+crear_ambiente $EQUIPO $AMBIENTE
