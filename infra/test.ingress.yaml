@@ -13,7 +13,7 @@ spec:
     http:
       paths:
       - pathType: ImplementationSpecific
-        path: "/equipo-test(/|$)(.*)"
+        path: "/verde-test(/|$)(.*)"
         backend:
           service:
             name: restapi
