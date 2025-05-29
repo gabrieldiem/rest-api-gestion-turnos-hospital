@@ -98,4 +98,6 @@ deploy_prod_job:
     - kubectl -n ${TEAM}-${CI_ENVIRONMENT_NAME} apply -f infra/${CI_ENVIRONMENT_NAME}.secrets.yaml
     - kubectl -n ${TEAM}-${CI_ENVIRONMENT_NAME} apply -f infra/${CI_ENVIRONMENT_NAME}.configmap.yaml
     - kubectl -n ${TEAM}-${CI_ENVIRONMENT_NAME} set image deployment/restapi restapi=$CI_REGISTRY_IMAGE:$VERSION
+  only:
+    - tags
   when: manual
