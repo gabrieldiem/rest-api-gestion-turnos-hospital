@@ -16,9 +16,10 @@ stages:
   - build
   - package
   - deploy_test
-  - smoke_test
+  - smoke_test_on_test
   - acceptance_test
   - deploy_prod
+  - smoke_test_on_prod
 
 build_job:
   stage: build
@@ -76,8 +77,8 @@ deploy_test_job:
   only:
     - tags
 
-smoke_test_job:
-  stage: smoke_test
+smoke_test_on_test_job:
+  stage: smoke_test_on_test
   image: nicopaez/kubectl:1.32.5
   environment: test
   script:
@@ -101,3 +102,14 @@ deploy_prod_job:
   only:
     - tags
   when: manual
+
+smoke_test_on_prod_job:
+  stage: smoke_test_on_prod
+  image: nicopaez/kubectl:1.32.5
+  environment: prod
+  script:
+    - VERSION=$(cat VERSION.txt)
+    - chmod +x ./scripts/smoke_test.sh
+    - ./scripts/smoke_test.sh $VERSION $API_TURNERO_URL
+  only:
+    - tags
