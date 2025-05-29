@@ -115,3 +115,4 @@ smoke_test_on_prod_job:
     - tags
   needs:
     - job: deploy_prod_job
+    - job: build_job
