@@ -113,3 +113,5 @@ smoke_test_on_prod_job:
     - ./scripts/smoke_test.sh $VERSION $API_TURNERO_URL
   only:
     - tags
+  needs:
+    - job: deploy_prod_job
