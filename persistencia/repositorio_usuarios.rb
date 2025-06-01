@@ -12,7 +12,9 @@ class RepositorioUsuarios < AbstractRepository
 
   def changeset(usuario)
     {
-      email: usuario.email
+      email: usuario.email,
+      dni: usuario.dni,
+      username: usuario.username
     }
   end
 end
