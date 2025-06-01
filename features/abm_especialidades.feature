@@ -3,7 +3,7 @@ Característica: Alta de especialidades en HMS
   Como administrador de HMS
   Quiero dar de alta especialidades
 
-  @wip
+  @wip @indev
   Escenario: 1.0.1 - Se puede dar de alta una especialidad correctamente
     Dado que completo el nombre con "Cardiología"
     Y que completo la duración de turnos con "30" minutos

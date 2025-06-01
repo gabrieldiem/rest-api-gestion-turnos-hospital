@@ -1,23 +1,30 @@
-Dado('que completo el nombre con {string}') do |_nombre_especialidad|
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('que completo el nombre con {string}') do |nombre_especialidad|
+  @request_body = {
+    nombre: nombre_especialidad
+  }
 end
 
-Dado('que completo la duración de turnos con {string} minutos') do |_duracion_de_turno|
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('que completo la duración de turnos con {string} minutos') do |duracion_de_turno|
+  @request_body['duracion'] = duracion_de_turno
 end
 
-Dado('que completo la recurrencia máxima con {string}') do |_recurrencia_maxima|
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('que completo la recurrencia máxima con {string}') do |recurrencia_maxima|
+  @request_body['recurrencia_maxima'] = recurrencia_maxima
 end
 
-Dado('que completo el código con {string}') do |_codigo|
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('que completo el código con {string}') do |codigo|
+  @request_body['codigo'] = codigo
 end
 
 Cuando('doy de alta la especialidad') do
-  pending # Write code here that turns the phrase above into concrete actions
+  request_body_json = @request_body.to_json
+  @response = Faraday.post('/especialidades', request_body_json, { 'Content-Type' => 'application/json' })
 end
 
 Entonces('la especialidad se crea exitosamente') do
-  pending # Write code here that turns the phrase above into concrete actions
+  parsed_response = JSON.parse(@response.body)
+
+  expect(@response.status).to eq 201
+  expect(@response.success?).to be true
+  expect(parsed_response['codigo']).to be @request_body['codigo']
 end
