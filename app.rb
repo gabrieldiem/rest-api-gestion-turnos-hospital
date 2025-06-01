@@ -14,8 +14,8 @@ configure do
   set :logger, customer_logger
   set :default_content_type, :json
   set :environment, ENV['APP_MODE'].to_sym
-  set :sistema, Sistema.new(RepositorioUsuarios.new)
-  customer_logger.info('Iniciando sistema...')
+  set :turnero, Turnero.new(RepositorioUsuarios.new)
+  customer_logger.info('Iniciando turnero...')
 end
 
 before do
@@ -25,8 +25,8 @@ before do
   end
 end
 
-def sistema
-  settings.sistema
+def turnero
+  settings.turnero
 end
 
 get '/version' do
@@ -39,7 +39,7 @@ post '/reset' do
 end
 
 get '/usuarios' do
-  usuarios = sistema.usuarios
+  usuarios = turnero.usuarios
   respuesta = []
   usuarios.map { |u| respuesta << { email: u.email, id: u.id } }
   status 200
@@ -48,7 +48,7 @@ end
 
 post '/usuarios' do
   logger.debug("POST /usuarios: #{@params}")
-  usuario = sistema.crear_usuario(@params['email'])
+  usuario = turnero.crear_usuario(@params['email'])
   status 201
   { id: usuario.id, email: usuario.email }.to_json
 end
@@ -58,5 +58,5 @@ post '/especialidades' do
   # Crear una especialidad
   status 201
   ## especialidad nos da el response para printear
-  { nombre: "Cardiología", duracion: 30, recurrencia_maxima: 5, codigo: "card"}.to_json
+  { nombre: 'Cardiología', duracion: 30, recurrencia_maxima: 5, codigo: 'card' }.to_json
 end
