@@ -15,4 +15,8 @@ describe Usuario do
     expect { described_class.new('juan@perez', '12345678', '@juanperez') }.to raise_error(ActiveModel::ValidationError)
   end
 
+  it 'no se crea si el email no tiene ni dominio ni' do
+    expect { described_class.new('juanPerez', '12345678', '@juanperez') }.to raise_error(ActiveModel::ValidationError)
+  end
+
 end
