@@ -7,7 +7,7 @@ class RepositorioMedicos < AbstractRepository
   protected
 
   def load_object(a_hash)
-    especialidad = RepositorioEspecialidades.new.find(a_hash[:especialidad_id]) if a_hash[:especialidad_id]
+    especialidad = RepositorioEspecialidades.new.find(a_hash[:especialidad]) if a_hash[:especialidad]
     Medico.new(a_hash[:nombre], a_hash[:apellido], a_hash[:matricula], especialidad, a_hash[:id])
   end
 

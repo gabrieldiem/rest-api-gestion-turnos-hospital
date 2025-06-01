@@ -14,7 +14,6 @@ class Turnero
   def crear_especialidad(nombre, duracion, recurrencia_maxima, codigo)
     especialidad = Especialidad.new(nombre, duracion, recurrencia_maxima, codigo)
     @repositorio_especialidades.save(especialidad)
-    especialidad
   end
 
   def crear_medico(nombre, apellido, matricula, especialidad)

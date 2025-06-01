@@ -34,5 +34,13 @@ describe Turnero do
       medico_nuevo = turnero.crear_medico('Juan', 'Pérez', 'NAC123', especialidad)
       expect(medico_nuevo).to have_attributes(nombre: 'Juan', apellido: 'Pérez', matricula: 'NAC123', especialidad:)
     end
+
+    it 'crea un médico nuevo y lo guarda en el repositorio' do
+      especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+      medico_nuevo = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad)
+      medico_guardado = repositorio_medicos.all.first
+      expect(repositorio_medicos.all.size).to eq(1)
+      expect(medico_guardado.matricula).to eq(medico_nuevo.matricula)
+    end
   end
 end
