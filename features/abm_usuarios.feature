@@ -12,10 +12,9 @@ Escenario: 3.0.1 - Registro exitoso de un paciente
 Cuando me registro con DNI "12345678" y email "juan.perez@example.com"
 Entonces recibo un mensaje de éxito
 
-@wip @indev
 Escenario: 3.0.2 - No puede registrarse con DNI ya registrado
 Dado que existe un paciente registrado con DNI "12345678"
-Cuando me registro con DNI "12345678" y email "juan.perez@example.com"
+Cuando me registro nuevamente con DNI "12345678" y email "juan.perez@example.com"
 Entonces recibo un mensaje de error "El DNI ya está registrado"
 
 

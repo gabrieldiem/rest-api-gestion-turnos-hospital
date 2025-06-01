@@ -7,8 +7,13 @@ class Turnero
 
   def crear_usuario(email, dni, username)
     usuario = Usuario.new(email, dni, username)
-    @repositorio_usuarios.save(usuario)
-    usuario
+    if paciente_ya_existente?(dni)
+      @repositorio_usuarios.save(usuario)
+      usuario
+    else
+      usuario.errors.add(:dni, 'El DNI ya está registrado')
+      raise ActiveModel::ValidationError, usuario
+    end
   end
 
   def crear_especialidad(nombre, duracion, recurrencia_maxima, codigo)
@@ -25,5 +30,15 @@ class Turnero
 
   def usuarios
     @repositorio_usuarios.all
+  end
+
+  private
+
+  def paciente_ya_existente?(dni)
+    if @repositorio_usuarios.find_by_dni(dni)
+      false
+    else
+      true
+    end
   end
 end
