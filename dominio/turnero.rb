@@ -17,6 +17,7 @@ class Turnero
   end
 
   def crear_medico(nombre, apellido, matricula, especialidad)
+    especialidad = @repositorio_especialidades.find_by_codigo(especialidad)
     medico = Medico.new(nombre, apellido, matricula, especialidad)
     @repositorio_medicos.save(medico)
     medico

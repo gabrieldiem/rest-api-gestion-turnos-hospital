@@ -1,3 +1,4 @@
+require 'date'
 require_relative './abstract_repository'
 
 class RepositorioEspecialidades < AbstractRepository
