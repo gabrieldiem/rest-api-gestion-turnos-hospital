@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'activemodel', require: 'active_model'
 gem 'pg'
 gem 'rake'
 gem 'semantic_logger'
@@ -7,7 +8,6 @@ gem 'sequel'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'thin'
-gem 'activemodel', require: 'active_model'
 
 group :development, :test do
   gem 'cucumber'

@@ -23,7 +23,7 @@ Escenario: 3.0.3 - No puede registrarse con DNI vacío
 Cuando me registro con DNI "" y email "juan.perez@example.com"
 Entonces recibo un mensaje de error "El DNI es requerido"
 
-@wip @indev
+
 Escenario: 3.0.4 - No puede registrarse con email inválido
 Cuando me registro con DNI "12345678" y email "juan.perez"
 Entonces recibo un mensaje de error "El formato del email es inválido"

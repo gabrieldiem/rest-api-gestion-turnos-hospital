@@ -8,7 +8,7 @@ class Usuario
   attr_reader :email, :dni, :username
   attr_accessor :id, :updated_on, :created_on
 
-  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX, message: "El formato del email es inválido" }
+  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX, message: 'El formato del email es inválido' }
 
   def initialize(email, dni, username, id = nil)
     @email = email

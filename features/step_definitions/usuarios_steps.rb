@@ -24,7 +24,6 @@ Dado('que existe un paciente registrado con DNI {string}') do |_string|
 end
 
 Entonces('recibo un mensaje de error {string}') do |error_msg|
-  @response = Faraday.post('/pacientes', registered_body, { 'Content-Type' => 'application/json' })
   parsed_response = JSON.parse(@response.body)
   expect(parsed_response['error']).to eq(error_msg)
 end
