@@ -55,8 +55,8 @@ end
 
 post '/especialidades' do
   logger.debug("POST /especialidades: #{@params}")
-  # Crear una especialidad
+  especialidad = turnero.crear_especialidad(@params[:nombre].to_s, @params[:duracion].to_i, @params[:recurrencia_maxima].to_i, @params[:codigo].to_s)
+  puts "Especialidad creada: #{especialidad.inspect}"
   status 201
-  ## especialidad nos da el response para printear
-  { nombre: 'Cardiología', duracion: 30, recurrencia_maxima: 5, codigo: 'card' }.to_json
+  { id: especialidad.id, nombre: especialidad.nombre, duracion: especialidad.duracion, recurrencia_maxima: especialidad.recurrencia_maxima, codigo: especialidad.codigo }.to_json
 end
