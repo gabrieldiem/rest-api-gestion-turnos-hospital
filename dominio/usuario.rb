@@ -9,6 +9,7 @@ class Usuario
   attr_accessor :id, :updated_on, :created_on
 
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX, message: 'El formato del email es inválido' }
+  validates :dni, presence: { message: 'El DNI es requerido' }
 
   def initialize(email, dni, username, id = nil)
     @email = email
