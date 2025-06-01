@@ -25,6 +25,5 @@ Entonces('la especialidad se crea exitosamente') do
   parsed_response = JSON.parse(@response.body)
 
   expect(@response.status).to eq 201
-  expect(@response.success?).to be true
-  expect(parsed_response['codigo']).to be @request_body['codigo']
+  expect(parsed_response['codigo']).to eq @request_body['codigo']
 end

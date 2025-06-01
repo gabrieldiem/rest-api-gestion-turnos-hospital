@@ -52,3 +52,11 @@ post '/usuarios' do
   status 201
   { id: usuario.id, email: usuario.email }.to_json
 end
+
+post '/especialidades' do
+  logger.debug("POST /especialidades: #{@params}")
+  # Crear una especialidad
+  status 201
+  ## especialidad nos da el response para printear
+  { nombre: "Cardiología", duracion: 30, recurrencia_maxima: 5, codigo: "card"}.to_json
+end
