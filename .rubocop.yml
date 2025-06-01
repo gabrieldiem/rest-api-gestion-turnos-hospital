@@ -21,6 +21,8 @@ Style/Documentation:
   Exclude: ['**/*']
 RSpec/AnyInstance:
   Enabled: false
+RSpec/ExampleLength:
+  Max: 10
 RSpec/ExampleWording:
   Enabled: false
 RSpec/DescribeClass:
@@ -35,5 +37,3 @@ Style/NumericPredicate:
   Enabled: false  
 Style/GuardClause:
   Enabled: false
-
-   

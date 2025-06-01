@@ -54,7 +54,7 @@ class AbstractRepository
   end
 
   def insert(a_record)
-    date = Time.now
+    date = DateTime.parse(Time.now.to_s)
     changeset_to_insert = insert_changeset(a_record, date)
     id = dataset.insert(changeset_to_insert)
 

@@ -13,7 +13,7 @@ describe Turnero do
   let(:repositorio_medicos) { RepositorioMedicos.new }
   let(:turnero) { described_class.new(RepositorioUsuarios.new, repositorio_especialidades, repositorio_medicos) }
 
-  describe 'Especialidades' do
+  describe '- Capacidades de Especialidades - ' do
     it 'crea una especialidad nuevo' do
       especialidad_nuevo = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
       expect(especialidad_nuevo).to have_attributes(nombre: 'Cardiología', duracion: 30, recurrencia_maxima: 5, codigo: 'card')
@@ -28,11 +28,16 @@ describe Turnero do
     end
   end
 
-  describe 'Médicos' do
-    xit 'crea un médico nuevo' do
+  describe '- Capacidades de Medicos - ' do
+    it 'crea un médico nuevo' do
       especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
       medico_nuevo = turnero.crear_medico('Juan', 'Pérez', 'NAC123', 'card')
-      expect(medico_nuevo).to have_attributes(nombre: 'Juan', apellido: 'Pérez', matricula: 'NAC123', especialidad:)
+
+      expect(medico_nuevo).to have_attributes(nombre: 'Juan', apellido: 'Pérez', matricula: 'NAC123')
+      expect(medico_nuevo.especialidad).to have_attributes(nombre: especialidad.nombre,
+                                                           duracion: especialidad.duracion,
+                                                           recurrencia_maxima: especialidad.recurrencia_maxima,
+                                                           codigo: especialidad.codigo)
     end
 
     it 'crea un médico nuevo y lo guarda en el repositorio' do
