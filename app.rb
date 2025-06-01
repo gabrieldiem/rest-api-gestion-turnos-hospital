@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/json'
 require 'sequel'
 require 'sinatra/custom_logger'
+require 'active_model'
 require_relative './config/configuration'
 require_relative './lib/version'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
@@ -57,6 +58,10 @@ post '/pacientes' do
     email: usuario.email,
     created_on: usuario.created_on
   }.to_json
+rescue ActiveModel::ValidationError => e
+  logger.error("Error creating usuario: #{e.message}")
+  status 400
+  { error: e.model.errors.first.message }.to_json
 end
 
 post '/especialidades' do
