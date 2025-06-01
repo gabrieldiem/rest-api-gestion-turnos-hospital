@@ -1,10 +1,10 @@
 require 'integration_helper'
-require_relative '../../dominio/usuario'
-require_relative '../../persistencia/repositorio_usuarios'
+require_relative '../../dominio/paciente'
+require_relative '../../persistencia/repositorio_pacientes'
 
-describe RepositorioUsuarios do
+describe RepositorioPacientes do
   it 'deberia guardar y asignar id si el usuario es nuevo' do
-    juan = Usuario.new('juan@test.com', '12345678', '@juanperez')
+    juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
     described_class.new.save(juan)
     expect(juan.id).not_to be_nil
   end
@@ -12,14 +12,14 @@ describe RepositorioUsuarios do
   it 'deberia recuperar todos' do
     repositorio = described_class.new
     cantidad_de_usuarios_iniciales = repositorio.all.size
-    juan = Usuario.new('juan@test.com', '12345678', '@juanperez')
+    juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
     repositorio.save(juan)
     expect(repositorio.all.size).to be(cantidad_de_usuarios_iniciales + 1)
   end
 
   it 'deberia encontrar un usuario por dni' do
     repositorio = described_class.new
-    juan = Usuario.new('juan@test.com', '12345678', '@juanperez')
+    juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
     repositorio.save(juan)
     juan_encontrado = repositorio.find_by_dni('12345678')
     expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)

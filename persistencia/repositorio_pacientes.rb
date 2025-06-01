@@ -1,8 +1,8 @@
 require_relative './abstract_repository'
 
-class RepositorioUsuarios < AbstractRepository
-  self.table_name = :usuarios
-  self.model_class = 'Usuario'
+class RepositorioPacientes < AbstractRepository
+  self.table_name = :pacientes
+  self.model_class = 'Paciente'
 
   def find_by_dni(dni)
     found_record = dataset.first(dni:)
@@ -14,7 +14,7 @@ class RepositorioUsuarios < AbstractRepository
   protected
 
   def load_object(a_hash)
-    Usuario.new(a_hash[:email], a_hash[:dni], a_hash[:username], a_hash[:id])
+    Paciente.new(a_hash[:email], a_hash[:dni], a_hash[:username], a_hash[:id])
   end
 
   def changeset(usuario)

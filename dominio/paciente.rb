@@ -1,6 +1,6 @@
 require 'active_model'
 
-class Usuario
+class Paciente
   include ActiveModel::Validations
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d-]+(\.[a-z]+)*\.[a-z]+\z/i
