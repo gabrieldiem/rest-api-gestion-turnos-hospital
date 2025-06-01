@@ -70,3 +70,8 @@ post '/especialidades' do
     created_on: especialidad.created_on
   }.to_json
 end
+
+post '/medicos' do
+  logger.debug("POST /medicos: #{@params}")
+  status 201
+end

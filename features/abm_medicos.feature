@@ -8,7 +8,7 @@ Característica: Alta de un médico en el sistema HMS
     Y que existe la especialidad "Pediatría" con código "pedi" 
     Y que existe la especialidad "Neurología" con código "neur"
 
-  @wip
+  @wip @indev
   Escenario: 2.0.1 - Se puede dar de alta un médico correctamente
     Dado que ingreso el nombre "Juan", apellido "Pérez", matrícula "NAC123" y especialidad "card" para el médico
     Cuando doy de alta al medico
