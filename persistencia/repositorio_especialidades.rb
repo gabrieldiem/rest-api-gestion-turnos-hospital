@@ -7,7 +7,7 @@ class RepositorioEspecialidades < AbstractRepository
   protected
 
   def load_object(a_hash)
-    Especialidad.new(a_hash[:nombre], a_hash[:duracion], a_hash[:recurrencia_maxima], a_hash[:codigo])
+    Especialidad.new(a_hash[:nombre], a_hash[:duracion], a_hash[:recurrencia_maxima], a_hash[:codigo], a_hash[:id])
   end
 
   def changeset(especialidad)
