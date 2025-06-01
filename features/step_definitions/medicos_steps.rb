@@ -1,15 +1,32 @@
-Dado('que existen las especialidades {string} con código {string}') do |_especialidad, _codigo|
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('que existe la especialidad {string} con código {string}') do |especialidad, codigo|
+  repo_especialidades = RepositorioEspecialidades.new
+  especialidad = Especialidad.new(especialidad, 30, 3, codigo)
+  repo_especialidades.save(especialidad)
+  expect(repo_especialidades.find(especialidad.id)).not_to be_nil
 end
 
-Dado('que ingreso el nombre {string}, apellido {string}, matrícula {string} y especialidad {string} para el médico') do |_string, _string2, _string3, _string4|
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('que ingreso el nombre {string}, apellido {string}, matrícula {string} y especialidad {string} para el médico') do |nombre, apellido, matricula, codigo_especialidad|
+  @request_body = {
+    nombre:,
+    apellido:,
+    matricula:,
+    especialidad: codigo_especialidad
+  }
 end
 
 Cuando('doy de alta al medico') do
-  pending # Write code here that turns the phrase above into concrete actions
+  request_body_json = @request_body.to_json
+  @response = Faraday.post('/medicos', request_body_json, { 'Content-Type' => 'application/json' })
 end
 
 Entonces('el médico se registra exitosamente') do
-  pending # Write code here that turns the phrase above into concrete actions
+  parsed_response = JSON.parse(@response.body)
+
+  expect(@response.status).to eq 201
+  expect(parsed_response['nombre']).to eq @request_body['nombre']
+  expect(parsed_response['apellido']).to eq @request_body['apellido']
+  expect(parsed_response['matricula']).to eq @request_body['matricula']
+  expect(parsed_response['especialidad']).to eq @request_body['especialidad']
+  expect(parsed_response['id']).not_to be_nil
+  expect(parsed_response['created_on']).not_to be_nil
 end
