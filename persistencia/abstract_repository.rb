@@ -54,8 +54,12 @@ class AbstractRepository
   end
 
   def insert(a_record)
-    id = dataset.insert(insert_changeset(a_record))
+    date = Time.now
+    changeset_to_insert = insert_changeset(a_record, date)
+    id = dataset.insert(changeset_to_insert)
+
     a_record.id = id
+    a_record.created_on = date
     a_record
   end
 
@@ -71,12 +75,12 @@ class AbstractRepository
     raise 'Subclass must implement'
   end
 
-  def insert_changeset(a_record)
-    changeset_with_timestamps(a_record).merge(created_on: Date.today)
+  def insert_changeset(a_record, date)
+    changeset_with_timestamps(a_record).merge(created_on: date)
   end
 
   def update_changeset(a_record)
-    changeset_with_timestamps(a_record).merge(updated_on: Date.today)
+    changeset_with_timestamps(a_record).merge(updated_on: Time.now)
   end
 
   def changeset_with_timestamps(a_record)

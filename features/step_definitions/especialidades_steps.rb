@@ -26,4 +26,6 @@ Entonces('la especialidad se crea exitosamente') do
 
   expect(@response.status).to eq 201
   expect(parsed_response['codigo']).to eq @request_body['codigo']
+  expect(parsed_response['id']).not_to be_nil
+  expect(parsed_response['created_on']).not_to be_nil
 end
