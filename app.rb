@@ -14,7 +14,7 @@ configure do
   set :logger, customer_logger
   set :default_content_type, :json
   set :environment, ENV['APP_MODE'].to_sym
-  set :turnero, Turnero.new(RepositorioUsuarios.new, RepositorioEspecialidades.new)
+  set :turnero, Turnero.new(RepositorioUsuarios.new, RepositorioEspecialidades.new, RepositorioMedicos.new)
   customer_logger.info('Iniciando turnero...')
 end
 

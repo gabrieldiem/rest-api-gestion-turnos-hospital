@@ -1,7 +1,8 @@
 class Turnero
-  def initialize(repositorio_usuarios, repositorio_especialidades)
+  def initialize(repositorio_usuarios, repositorio_especialidades, repositorio_medicos)
     @repositorio_usuarios = repositorio_usuarios
     @repositorio_especialidades = repositorio_especialidades
+    @repositorio_medicos = repositorio_medicos
   end
 
   def crear_usuario(email)
@@ -14,6 +15,12 @@ class Turnero
     especialidad = Especialidad.new(nombre, duracion, recurrencia_maxima, codigo)
     @repositorio_especialidades.save(especialidad)
     especialidad
+  end
+
+  def crear_medico(nombre, apellido, matricula, especialidad)
+    medico = Medico.new(nombre, apellido, matricula, especialidad)
+    @repositorio_medicos.save(medico)
+    medico
   end
 
   def usuarios

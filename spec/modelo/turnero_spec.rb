@@ -1,12 +1,17 @@
 require 'spec_helper'
+
 require_relative '../../dominio/turnero'
 require_relative '../../dominio/especialidad'
+require_relative '../../dominio/medico'
+
 require_relative '../../persistencia/repositorio_usuarios'
 require_relative '../../persistencia/repositorio_especialidades'
+require_relative '../../persistencia/repositorio_medicos'
 
 describe Turnero do
   let(:repositorio_especialidades) { RepositorioEspecialidades.new }
-  let(:turnero) { described_class.new(RepositorioUsuarios.new, repositorio_especialidades) }
+  let(:repositorio_medicos) { RepositorioMedicos.new }
+  let(:turnero) { described_class.new(RepositorioUsuarios.new, repositorio_especialidades, repositorio_medicos) }
 
   describe 'Especialidades' do
     it 'crea una especialidad nuevo' do
@@ -24,7 +29,7 @@ describe Turnero do
   end
 
   describe 'Médicos' do
-    xit 'crea un médico nuevo' do
+    it 'crea un médico nuevo' do
       especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
       medico_nuevo = turnero.crear_medico('Juan', 'Pérez', 'NAC123', especialidad)
       expect(medico_nuevo).to have_attributes(nombre: 'Juan', apellido: 'Pérez', matricula: 'NAC123', especialidad:)
