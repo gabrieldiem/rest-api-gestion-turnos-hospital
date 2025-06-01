@@ -1,11 +1,29 @@
 # language: es
-Característica: ABM de usuarios
+Característica: Registro de un paciente en el turnero
+Como paciente
+Quiero registrarme en el turnero usando mi username
+Para gestionar mis turnos
 
-  Escenario: user-1: Alta de usuario
-    Cuando creo un usuario
-    Entonces se le asigna un id
-    
-  Escenario: user-2: Consulta de usuarios
-    Dado que no existen usuario
-    Cuando consulto los usuarios
-    Entonces tengo un listado vacio
+Antecedentes:
+Dado que mi username es "@juanperez"
+
+@wip @indev
+Escenario: 3.0.1 - Registro exitoso de un paciente
+Cuando me registro con DNI "12345678" y email "juan.perez@example.com"
+Entonces recibo un mensaje de éxito
+
+@wip @indev
+Escenario: 3.0.2 - No puede registrarse con DNI ya registrado
+Dado que existe un paciente registrado con DNI "12345678"
+Cuando me registro con DNI "12345678" y email "juan.perez@example.com"
+Entonces recibo un mensaje de error "El DNI ya está registrado"
+
+@wip @indev
+Escenario: 3.0.3 - No puede registrarse con DNI vacío
+Cuando me registro con DNI "" y email "juan.perez@example.com"
+Entonces recibo un mensaje de error "El DNI es requerido"
+
+@wip @indev
+Escenario: 3.0.4 - No puede registrarse con email inválido
+Cuando me registro con DNI "12345678" y email "juan.perez"
+Entonces recibo un mensaje de error "El formato del email es inválido"
