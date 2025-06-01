@@ -46,11 +46,17 @@ get '/usuarios' do
   json(respuesta)
 end
 
-post '/usuarios' do
-  logger.debug("POST /usuarios: #{@params}")
-  usuario = turnero.crear_usuario(@params['email'])
+post '/pacientes' do
+  logger.debug("POST /pacientes: #{@params}")
+  usuario = turnero.crear_usuario(@params[:email].to_s, @params[:dni].to_s, @params[:username].to_s)
   status 201
-  { id: usuario.id, email: usuario.email }.to_json
+  {
+    id: usuario.id,
+    username: usuario.username,
+    dni: usuario.dni,
+    email: usuario.email,
+    created_on: usuario.created_on
+  }.to_json
 end
 
 post '/especialidades' do

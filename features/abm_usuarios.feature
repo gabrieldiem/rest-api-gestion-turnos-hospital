@@ -7,7 +7,7 @@ Para gestionar mis turnos
 Antecedentes:
 Dado que mi username es "@juanperez"
 
-@wip @indev
+
 Escenario: 3.0.1 - Registro exitoso de un paciente
 Cuando me registro con DNI "12345678" y email "juan.perez@example.com"
 Entonces recibo un mensaje de éxito

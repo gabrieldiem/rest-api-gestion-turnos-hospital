@@ -3,11 +3,11 @@ Dado('que mi username es {string}') do |username|
 end
 
 Cuando('me registro con DNI {string} y email {string}') do |dni, email|
-  @request_body = { email:, dni:, username: @username }.to_json
+  @request_body = { email:, dni:, username: @username }
+  @response = Faraday.post('/pacientes', @request_body.to_json, {})
 end
 
 Entonces('recibo un mensaje de éxito') do
-  @response = Faraday.post('/pacientes', @request_body, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
   parsed_response = JSON.parse(@response.body)
   expect(parsed_response['dni']).to eq(@request_body[:dni])
