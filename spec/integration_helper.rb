@@ -14,7 +14,7 @@ RSpec.configure do |config|
 
   config.after :each do
     RepositorioMedicos.new.delete_all
-    RepositorioUsuarios.new.delete_all
+    RepositorioPacientes.new.delete_all
     RepositorioEspecialidades.new.delete_all
   end
 end

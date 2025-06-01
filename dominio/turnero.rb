@@ -1,14 +1,19 @@
 class Turnero
-  def initialize(repositorio_usuarios, repositorio_especialidades, repositorio_medicos)
-    @repositorio_usuarios = repositorio_usuarios
+  def initialize(repositorio_pacientes, repositorio_especialidades, repositorio_medicos)
+    @repositorio_pacientes = repositorio_pacientes
     @repositorio_especialidades = repositorio_especialidades
     @repositorio_medicos = repositorio_medicos
   end
 
   def crear_usuario(email, dni, username)
-    usuario = Usuario.new(email, dni, username)
-    @repositorio_usuarios.save(usuario)
-    usuario
+    usuario = Paciente.new(email, dni, username)
+    if paciente_ya_existente?(dni)
+      @repositorio_pacientes.save(usuario)
+      usuario
+    else
+      usuario.errors.add(:dni, 'El DNI ya está registrado')
+      raise ActiveModel::ValidationError, usuario
+    end
   end
 
   def crear_especialidad(nombre, duracion, recurrencia_maxima, codigo)
@@ -24,6 +29,16 @@ class Turnero
   end
 
   def usuarios
-    @repositorio_usuarios.all
+    @repositorio_pacientes.all
+  end
+
+  private
+
+  def paciente_ya_existente?(dni)
+    if @repositorio_pacientes.find_by_dni(dni)
+      false
+    else
+      true
+    end
   end
 end

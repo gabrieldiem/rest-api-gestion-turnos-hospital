@@ -4,14 +4,14 @@ require_relative '../../dominio/turnero'
 require_relative '../../dominio/especialidad'
 require_relative '../../dominio/medico'
 
-require_relative '../../persistencia/repositorio_usuarios'
+require_relative '../../persistencia/repositorio_pacientes'
 require_relative '../../persistencia/repositorio_especialidades'
 require_relative '../../persistencia/repositorio_medicos'
 
 describe Turnero do
   let(:repositorio_especialidades) { RepositorioEspecialidades.new }
   let(:repositorio_medicos) { RepositorioMedicos.new }
-  let(:turnero) { described_class.new(RepositorioUsuarios.new, repositorio_especialidades, repositorio_medicos) }
+  let(:turnero) { described_class.new(RepositorioPacientes.new, repositorio_especialidades, repositorio_medicos) }
 
   describe '- Capacidades de Especialidades - ' do
     it 'crea una especialidad nuevo' do
