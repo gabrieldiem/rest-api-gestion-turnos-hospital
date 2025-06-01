@@ -24,4 +24,12 @@ describe RepositorioEspecialidades do
     especialidad_recuperada = repositorio.find(especialidad.id)
     expect(especialidad_recuperada.created_on).not_to be_nil
   end
+
+  it 'puedo obtener una especialidad por su codigo' do
+    repositorio = described_class.new
+    especialidad = Especialidad.new('Cardiología', 30, 5, 'card')
+    repositorio.save(especialidad)
+    especialidad_recuperada = repositorio.find_by_codigo('card')
+    expect(especialidad_recuperada).not_to be_nil
+  end
 end

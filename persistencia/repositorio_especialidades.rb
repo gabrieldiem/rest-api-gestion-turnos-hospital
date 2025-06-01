@@ -4,6 +4,13 @@ class RepositorioEspecialidades < AbstractRepository
   self.table_name = :especialidades
   self.model_class = 'Especialidad'
 
+  def find_by_codigo(codigo)
+    result = DB[self.class.table_name].where(codigo:).first
+    return nil if result.nil?
+
+    load_object(result)
+  end
+
   protected
 
   def load_object(a_hash)

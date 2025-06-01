@@ -79,5 +79,14 @@ end
 
 post '/medicos' do
   logger.debug("POST /medicos: #{@params}")
+  medico = turnero.crear_medico(@params[:nombre].to_s, @params[:apellido].to_s, @params[:especialidad_id].to_i)
   status 201
+  {
+    id: medico.id,
+    nombre: medico.nombre,
+    apellido: medico.apellido,
+    matricula: medico.matricula,
+    especialidad: medico.especialidad,
+    created_on: medico.created_on
+  }.to_json
 end
