@@ -5,12 +5,12 @@ Dado('que existe la especialidad {string} con código {string}') do |especialida
   expect(repo_especialidades.find(especialidad.id)).not_to be_nil
 end
 
-Dado('que ingreso el nombre {string}, apellido {string}, matrícula {string} y especialidad {string} para el médico') do |nombre, apellido, matricula, codigo_especialidad|
+Dado('que ingreso el nombre {string}, apellido {string}, matrícula {string} y especialidad {string} para el médico') do |nombre, apellido, matricula, especialidad|
   @request_body = {
     nombre:,
     apellido:,
     matricula:,
-    especialidad: codigo_especialidad
+    especialidad:
   }
 end
 
