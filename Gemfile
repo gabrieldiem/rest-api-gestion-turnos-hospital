@@ -7,6 +7,7 @@ gem 'sequel'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'thin'
+gem 'activemodel', require: 'active_model'
 
 group :development, :test do
   gem 'cucumber'
