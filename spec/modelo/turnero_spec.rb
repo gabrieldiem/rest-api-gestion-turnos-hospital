@@ -50,7 +50,7 @@ describe Turnero do
 
     xit 'busca un médico por matrícula' do
       turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      medico_nuevo =turnero.crear_medico('Pablo', 'Pérez', 'NAC456', 'card')
+      medico_nuevo = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', 'card')
       medico_encontrado = turnero.buscar_medico('NAC456')
       expect(medico_encontrado).to have_attributes(nombre: medico_nuevo.nombre, apellido: medico_nuevo.apellido, matricula: medico_nuevo.matricula)
     end

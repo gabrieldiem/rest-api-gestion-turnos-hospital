@@ -28,6 +28,10 @@ class Turnero
     medico
   end
 
+  def buscar_medico(matricula)
+    @repositorio_medicos.find_by_matricula(matricula)
+  end
+
   def usuarios
     @repositorio_pacientes.all
   end
