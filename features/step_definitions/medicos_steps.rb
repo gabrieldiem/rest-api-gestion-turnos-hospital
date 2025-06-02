@@ -23,10 +23,10 @@ Entonces('el médico se registra exitosamente') do
   parsed_response = JSON.parse(@response.body)
 
   expect(@response.status).to eq 201
-  expect(parsed_response['nombre']).to eq @request_body['nombre']
-  expect(parsed_response['apellido']).to eq @request_body['apellido']
-  expect(parsed_response['matricula']).to eq @request_body['matricula']
-  expect(parsed_response['especialidad']).to eq @request_body['especialidad']
+  expect(parsed_response['nombre']).to eq @request_body[:nombre]
+  expect(parsed_response['apellido']).to eq @request_body[:apellido]
+  expect(parsed_response['matricula']).to eq @request_body[:matricula]
+  expect(parsed_response['especialidad']).to eq @request_body[:especialidad]
   expect(parsed_response['id']).not_to be_nil
   expect(parsed_response['created_on']).not_to be_nil
 end
