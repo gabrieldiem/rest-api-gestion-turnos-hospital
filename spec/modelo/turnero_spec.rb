@@ -55,4 +55,12 @@ describe Turnero do
       expect(medico_encontrado).to have_attributes(nombre: medico_nuevo.nombre, apellido: medico_nuevo.apellido, matricula: medico_nuevo.matricula)
     end
   end
+
+  describe '- Capacidades de Pacientes - ' do
+    it 'crea un paciente nuevo valido' do
+      paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
+
+      expect(paciente).to have_attributes(email: 'juan.perez@example.com', dni: '12345678', username: 'juanperez')
+    end
+  end
 end

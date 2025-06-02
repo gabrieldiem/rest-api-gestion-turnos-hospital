@@ -7,7 +7,7 @@ describe Paciente do
     expect(paciente).to have_attributes(email: 'juan.perez@example.com', dni: '12345678', username: '@juanperez')
   end
 
-  describe 'validaciones' do
+  describe '- validaciones -' do
     it 'no se crea si el dni es vacío' do
       expect { described_class.new('juan.perez@example.com', '', '@juanperez') }.to raise_error(ActiveModel::ValidationError)
     end
