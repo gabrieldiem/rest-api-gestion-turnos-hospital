@@ -3,6 +3,7 @@ require 'spec_helper'
 require_relative '../../dominio/turnero'
 require_relative '../../dominio/especialidad'
 require_relative '../../dominio/medico'
+require_relative '../../dominio/calculador_de_turnos_libres'
 
 require_relative '../../persistencia/repositorio_pacientes'
 require_relative '../../persistencia/repositorio_especialidades'
@@ -16,7 +17,8 @@ describe Turnero do
   let(:repositorio_especialidades) { RepositorioEspecialidades.new(logger) }
   let(:repositorio_medicos) { RepositorioMedicos.new(logger) }
   let(:repositorio_pacientes) { RepositorioPacientes.new(logger) }
-  let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos) }
+  let(:proveedor_de_fecha) { nil }
+  let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, proveedor_de_fecha) }
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
 
   describe '- Capacidades de Especialidades - ' do
@@ -66,14 +68,13 @@ describe Turnero do
     it 'obtener turnos disponibles de un médico' do
       allow(Date).to receive(:today).and_return(Date.new(2025, 6, 10))
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
-      medico_encontrado = turnero.buscar_medico('NAC456')
-      expect(turnero.obtener_turnos_disponibles(medico_encontrado)).to eq([
-                                                                            { 'fecha' => '11/06/2025', 'hora' => '8:00' },
-                                                                            { 'fecha' => '11/06/2025', 'hora' => '8:30' },
-                                                                            { 'fecha' => '11/06/2025', 'hora' => '9:00' },
-                                                                            { 'fecha' => '11/06/2025', 'hora' => '9:30' },
-                                                                            { 'fecha' => '11/06/2025', 'hora' => '10:00' }
-                                                                          ])
+      expect(turnero.obtener_turnos_disponibles('NAC456')).to eq([
+                                                                   { 'fecha' => '11/06/2025', 'hora' => '8:00' },
+                                                                   { 'fecha' => '11/06/2025', 'hora' => '8:30' },
+                                                                   { 'fecha' => '11/06/2025', 'hora' => '9:00' },
+                                                                   { 'fecha' => '11/06/2025', 'hora' => '9:30' },
+                                                                   { 'fecha' => '11/06/2025', 'hora' => '10:00' }
+                                                                 ])
     end
   end
 

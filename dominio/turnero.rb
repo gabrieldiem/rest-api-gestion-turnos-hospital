@@ -1,8 +1,10 @@
 class Turnero
-  def initialize(repositorio_pacientes, repositorio_especialidades, repositorio_medicos)
+  def initialize(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, proveedor_de_fecha)
     @repositorio_pacientes = repositorio_pacientes
     @repositorio_especialidades = repositorio_especialidades
     @repositorio_medicos = repositorio_medicos
+    @proveedor_de_fecha = proveedor_de_fecha
+    @calculador_de_turnos_libres = CalculadorDeTurnosLibres.new(@repositorio_medicos, @proveedor_de_fecha)
   end
 
   def crear_paciente(email, dni, username)
@@ -32,8 +34,9 @@ class Turnero
     @repositorio_medicos.find_by_matricula(matricula)
   end
 
-  def obtener_turnos_disponibles(medico)
-    medico.obtener_turnos_disponibles(Date.today)
+  def obtener_turnos_disponibles(matricula)
+    medico = buscar_medico(matricula)
+    @calculador_de_turnos_libres.calcular_turnos_disponibles_por_medico(medico)
   end
 
   private

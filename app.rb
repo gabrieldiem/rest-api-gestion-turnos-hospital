@@ -17,7 +17,8 @@ configure do
   set :environment, ENV['APP_MODE'].to_sym
   set :turnero, Turnero.new(RepositorioPacientes.new(api_logger),
                             RepositorioEspecialidades.new(api_logger),
-                            RepositorioMedicos.new(api_logger))
+                            RepositorioMedicos.new(api_logger),
+                            Date)
   api_logger.info('Iniciando turnero...')
 end
 
@@ -78,8 +79,10 @@ end
 
 get '/medicos/:matricula/turnos-disponibles' do
   logger.debug("POST /medicos/#{params[:matricula]}/turnos-disponibles: #{@params}")
+
   medico = turnero.buscar_medico(params[:matricula])
-  turnos_disponibles = turnero.obtener_turnos_disponibles(medico)
+  turnos_disponibles = turnero.obtener_turnos_disponibles(params[:matricula])
+
   status 200
   {
     medico: {
