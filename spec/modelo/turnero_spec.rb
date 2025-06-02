@@ -13,6 +13,7 @@ describe Turnero do
   let(:repositorio_medicos) { RepositorioMedicos.new }
   let(:repositorio_pacientes) { RepositorioPacientes.new }
   let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos) }
+  let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
 
   describe '- Capacidades de Especialidades - ' do
     it 'crea una especialidad nuevo' do
@@ -58,16 +59,16 @@ describe Turnero do
   end
 
   describe '- Capacidades de Turnos - ' do
-    xit 'obtener turnos disponibles de un médico' do
-      turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', 'card')
+    it 'obtener turnos disponibles de un médico' do
+      allow(Date).to receive(:today).and_return(Date.new(2025, 6, 10))
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
       medico_encontrado = turnero.buscar_medico('NAC456')
       expect(turnero.obtener_turnos_disponibles(medico_encontrado)).to eq([
+                                                                            { 'fecha' => '11/06/2025', 'hora' => '8:00' },
                                                                             { 'fecha' => '11/06/2025', 'hora' => '8:30' },
                                                                             { 'fecha' => '11/06/2025', 'hora' => '9:00' },
                                                                             { 'fecha' => '11/06/2025', 'hora' => '9:30' },
-                                                                            { 'fecha' => '11/06/2025', 'hora' => '10:00' },
-                                                                            { 'fecha' => '11/06/2025', 'hora' => '10:30' }
+                                                                            { 'fecha' => '11/06/2025', 'hora' => '10:00' }
                                                                           ])
     end
   end

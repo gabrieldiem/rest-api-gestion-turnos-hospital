@@ -32,6 +32,10 @@ class Turnero
     @repositorio_medicos.find_by_matricula(matricula)
   end
 
+  def obtener_turnos_disponibles(medico)
+    medico.obtener_turnos_disponibles(Date.today)
+  end
+
   private
 
   def paciente_ya_existente?(dni)
