@@ -8,6 +8,7 @@ require_relative '../../dominio/calculador_de_turnos_libres'
 require_relative '../../persistencia/repositorio_pacientes'
 require_relative '../../persistencia/repositorio_especialidades'
 require_relative '../../persistencia/repositorio_medicos'
+require_relative '../../lib/proveedor_de_fecha'
 
 describe Turnero do
   let(:logger) do
@@ -17,7 +18,11 @@ describe Turnero do
   let(:repositorio_especialidades) { RepositorioEspecialidades.new(logger) }
   let(:repositorio_medicos) { RepositorioMedicos.new(logger) }
   let(:repositorio_pacientes) { RepositorioPacientes.new(logger) }
-  let(:proveedor_de_fecha) { nil }
+  let(:fecha_de_hoy) { Date.new(2025, 6, 10) }
+  let(:proveedor_de_fecha) do
+    proveedor_double = class_double(Date, today: fecha_de_hoy)
+    ProveedorDeFecha.new(proveedor_double)
+  end
   let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, proveedor_de_fecha) }
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
 
@@ -66,14 +71,14 @@ describe Turnero do
 
   describe '- Capacidades de Turnos - ' do
     it 'obtener turnos disponibles de un médico' do
-      allow(Date).to receive(:today).and_return(Date.new(2025, 6, 10))
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      fecha_de_maniana = fecha_de_hoy + 1
       expect(turnero.obtener_turnos_disponibles('NAC456')).to eq([
-                                                                   { 'fecha' => '11/06/2025', 'hora' => '8:00' },
-                                                                   { 'fecha' => '11/06/2025', 'hora' => '8:30' },
-                                                                   { 'fecha' => '11/06/2025', 'hora' => '9:00' },
-                                                                   { 'fecha' => '11/06/2025', 'hora' => '9:30' },
-                                                                   { 'fecha' => '11/06/2025', 'hora' => '10:00' }
+                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '8:00' },
+                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '8:30' },
+                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '9:00' },
+                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '9:30' },
+                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '10:00' }
                                                                  ])
     end
   end

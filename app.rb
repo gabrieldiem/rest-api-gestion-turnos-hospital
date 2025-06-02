@@ -5,6 +5,7 @@ require 'sinatra/custom_logger'
 require 'active_model'
 require_relative './config/configuration'
 require_relative './lib/version'
+require_relative './lib/proveedor_de_fecha'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -18,7 +19,7 @@ configure do
   set :turnero, Turnero.new(RepositorioPacientes.new(api_logger),
                             RepositorioEspecialidades.new(api_logger),
                             RepositorioMedicos.new(api_logger),
-                            Date)
+                            ProveedorDeFecha.new)
   api_logger.info('Iniciando turnero...')
 end
 

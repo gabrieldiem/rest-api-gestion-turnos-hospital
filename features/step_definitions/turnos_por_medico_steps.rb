@@ -45,6 +45,8 @@ Entonces('recibo los próximos {string} turnos disponibles') do |string|
 end
 
 Entonces('son del {string} a las {string} en adelante') do |fecha, hora|
+  fecha = Date.parse(fecha).to_s
+
   proximo_turno = @turnos_disponibles.first
   expect(proximo_turno['fecha']).to eq(fecha)
   expect(proximo_turno['hora']).to eq(hora)

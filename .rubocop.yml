@@ -24,7 +24,7 @@ RSpec/AnyInstance:
 RSpec/ExampleLength:
   Max: 10
 RSpec/MultipleMemoizedHelpers:
-  Max: 7
+  Max: 10
 RSpec/ExampleWording:
   Enabled: false
 RSpec/DescribeClass:
