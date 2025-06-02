@@ -5,6 +5,11 @@ class RepositorioEspecialidades < AbstractRepository
   self.table_name = :especialidades
   self.model_class = 'Especialidad'
 
+  def initialize(logger)
+    super()
+    @logger = logger
+  end
+
   def find_by_codigo(codigo)
     rows = dataset.where(codigo:)
     return nil if rows.nil?

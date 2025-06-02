@@ -1,5 +1,10 @@
+Before do
+  SemanticLogger.default_level = :fatal
+  @logger = Configuration.logger
+end
+
 Dado('que esta registrado el username {string}') do |username|
-  RepositorioPacientes.new.delete_all
+  RepositorioPacientes.new(@logger).delete_all
   @username_registrado = username
   registered_body = { email: 'juan.perez@example.com', dni: '42951753', username: }.to_json
   @response = Faraday.post('/pacientes', registered_body, { 'Content-Type' => 'application/json' })
@@ -7,8 +12,8 @@ Dado('que esta registrado el username {string}') do |username|
 end
 
 Dado('que existe un médico con nombre {string}, apellido {string}, matrícula {string} y especialidad {string} con duración de {string} minutos') do |nombre, apellido, matricula, especial, duracion|
-  RepositorioMedicos.new.delete_all
-  RepositorioEspecialidades.new.delete_all
+  RepositorioMedicos.new(@logger).delete_all
+  RepositorioEspecialidades.new(@logger).delete_all
 
   especialidad_body = { nombre: especial, duracion:, recurrencia_maxima: 5, codigo: especial.downcase[0..3] }.to_json
   @response = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
@@ -46,7 +51,7 @@ Entonces('son del {string} a las {string} en adelante') do |fecha, hora|
 end
 
 Dado('el médico con matrícula {string} tiene un turno asignado el {string} {string}') do |matricula, _fecha, _hora|
-  @repo_medicos = RepositorioMedicos.new
+  @repo_medicos = RepositorioMedicos.new(@logger)
   medico = @repo_medicos.find_by_matricula(matricula)
   expect(medico['matricula']).to eq(matricula)
   medico.asignar_turno(fecha, hora, @username_registrado)

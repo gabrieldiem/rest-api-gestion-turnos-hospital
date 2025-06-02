@@ -4,6 +4,11 @@ class RepositorioPacientes < AbstractRepository
   self.table_name = :pacientes
   self.model_class = 'Paciente'
 
+  def initialize(logger)
+    super()
+    @logger = logger
+  end
+
   def find_by_dni(dni)
     found_record = dataset.first(dni:)
     return nil if found_record.nil?

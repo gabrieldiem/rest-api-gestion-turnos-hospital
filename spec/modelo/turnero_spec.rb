@@ -9,9 +9,13 @@ require_relative '../../persistencia/repositorio_especialidades'
 require_relative '../../persistencia/repositorio_medicos'
 
 describe Turnero do
-  let(:repositorio_especialidades) { RepositorioEspecialidades.new }
-  let(:repositorio_medicos) { RepositorioMedicos.new }
-  let(:repositorio_pacientes) { RepositorioPacientes.new }
+  let(:logger) do
+    SemanticLogger.default_level = :fatal
+    Configuration.logger
+  end
+  let(:repositorio_especialidades) { RepositorioEspecialidades.new(logger) }
+  let(:repositorio_medicos) { RepositorioMedicos.new(logger) }
+  let(:repositorio_pacientes) { RepositorioPacientes.new(logger) }
   let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos) }
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
 

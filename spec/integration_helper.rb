@@ -13,8 +13,11 @@ RSpec.configure do |config|
   end
 
   config.after :each do
-    RepositorioMedicos.new.delete_all
-    RepositorioPacientes.new.delete_all
-    RepositorioEspecialidades.new.delete_all
+    ENV['LOG_LEVEL'] = 'fatal'
+    logger = Configuration.logger
+
+    RepositorioMedicos.new(logger).delete_all
+    RepositorioPacientes.new(logger).delete_all
+    RepositorioEspecialidades.new(logger).delete_all
   end
 end

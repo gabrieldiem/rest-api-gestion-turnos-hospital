@@ -3,13 +3,13 @@ require_relative '../config/configuration'
 
 class AbstractRepository
   def save(a_record)
-    Configuration.logger.debug "Actualizando tabla de #{a_record.class}: #{a_record.inspect}"
+    @logger.debug "Actualizando tabla de #{a_record.class}: #{a_record.inspect}"
     if find_dataset_by_id(a_record.id).first
       update(a_record)
     else
       insert(a_record)
     end
-    Configuration.logger.debug "Guardado exitosamente #{a_record.class} con ID: #{a_record.id}"
+    @logger.debug "Guardado exitosamente #{a_record.class} con ID: #{a_record.id}"
     a_record
   end
 
@@ -34,7 +34,7 @@ class AbstractRepository
   end
 
   def first
-    Configuration.logger.debug "Obteniendo el primer registro de #{class_name}"
+    @logger.debug "Obteniendo el primer registro de #{class_name}"
 
     load_collection dataset.where(is_active: true)
     load_object dataset.first
@@ -69,7 +69,7 @@ class AbstractRepository
   end
 
   def find_dataset_by_id(id)
-    Configuration.logger.debug "Buscando #{class_name} con ID: #{id}"
+    @logger.debug "Buscando #{class_name} con ID: #{id}"
 
     dataset.where(pk_column => id)
   end

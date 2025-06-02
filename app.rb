@@ -9,14 +9,16 @@ Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
 configure do
-  customer_logger = Configuration.logger
+  api_logger = Configuration.logger
   DB = Configuration.db # rubocop:disable  Lint/ConstantDefinitionInBlock
-  DB.loggers << customer_logger
-  set :logger, customer_logger
+  DB.loggers << api_logger
+  set :logger, api_logger
   set :default_content_type, :json
   set :environment, ENV['APP_MODE'].to_sym
-  set :turnero, Turnero.new(RepositorioPacientes.new, RepositorioEspecialidades.new, RepositorioMedicos.new)
-  customer_logger.info('Iniciando turnero...')
+  set :turnero, Turnero.new(RepositorioPacientes.new(api_logger),
+                            RepositorioEspecialidades.new(api_logger),
+                            RepositorioMedicos.new(api_logger))
+  api_logger.info('Iniciando turnero...')
 end
 
 before do
