@@ -5,6 +5,13 @@ class RepositorioMedicos < AbstractRepository
   self.table_name = :medicos
   self.model_class = 'Medico'
 
+  def find_by_matricula(matricula)
+    found_record = dataset.first(matricula:)
+    return nil if found_record.nil?
+
+    load_object(found_record)
+  end
+
   protected
 
   def load_object(a_hash)

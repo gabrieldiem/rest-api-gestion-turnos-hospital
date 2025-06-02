@@ -13,7 +13,7 @@ describe RepositorioMedicos do
     expect(medico.id).not_to be_nil
   end
 
-  xit 'obtener un médico por matrícula' do
+  it 'obtener un médico por matrícula' do
     especialidad = Especialidad.new('Cardiología', 30, 5, 'card')
     RepositorioEspecialidades.new.save(especialidad)
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
