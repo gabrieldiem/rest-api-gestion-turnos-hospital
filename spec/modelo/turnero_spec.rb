@@ -11,7 +11,8 @@ require_relative '../../persistencia/repositorio_medicos'
 describe Turnero do
   let(:repositorio_especialidades) { RepositorioEspecialidades.new }
   let(:repositorio_medicos) { RepositorioMedicos.new }
-  let(:turnero) { described_class.new(RepositorioPacientes.new, repositorio_especialidades, repositorio_medicos) }
+  let(:repositorio_pacientes) { RepositorioPacientes.new }
+  let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos) }
 
   describe '- Capacidades de Especialidades - ' do
     it 'crea una especialidad nuevo' do
@@ -61,6 +62,14 @@ describe Turnero do
       paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
 
       expect(paciente).to have_attributes(email: 'juan.perez@example.com', dni: '12345678', username: 'juanperez')
+    end
+
+    it 'crea un paciente nuevo y lo guarda en el repositorio' do
+      paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
+
+      paciente_guardado = repositorio_pacientes.all.first
+      expect(repositorio_pacientes.all.size).to eq(1)
+      expect(paciente_guardado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
     end
   end
 end
