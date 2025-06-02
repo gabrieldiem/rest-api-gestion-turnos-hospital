@@ -24,11 +24,11 @@ describe Medico do
                                      ])
   end
 
-  xit 'obtenemos los turnos, pero a partir de las 8:15 porque tiene un turno asignado' do
+  it 'obtenemos los turnos, pero a partir de las 8:15 porque tiene un turno asignado' do
     medico = described_class.new('Juan', 'Pérez', 'NAC123', especialidad)
 
     medico.asignar_turno(Date.new(2025, 6, 11), '08:00', 'Paciente A')
-    turnos_disponibles = medico.obtener_turnos_disponibles(Date.new(2025, 6, 10), hora_inicio: '08:15')
+    turnos_disponibles = medico.obtener_turnos_disponibles(Date.new(2025, 6, 10))
 
     expect(turnos_disponibles).to eq([
                                        { 'fecha' => '11/06/2025', 'hora' => '8:30' },
