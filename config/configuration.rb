@@ -8,7 +8,10 @@ class Configuration
     SemanticLogger.default_level = (ENV['LOG_LEVEL'] || 'info').to_sym
 
     if SemanticLogger.appenders.empty?
-      SemanticLogger.add_appender(io: $stdout)
+      SemanticLogger.add_appender(
+        io: $stdout,
+        formatter: :color
+      )
 
       log_url = ENV['LOG_URL']
       unless log_url.nil? || log_url.empty?
