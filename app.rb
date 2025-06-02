@@ -61,7 +61,7 @@ post '/pacientes' do
 rescue ActiveModel::ValidationError => e
   logger.error("Error creating usuario: #{e.message}")
   status 400
-  { error: e.model.errors.first.message }.to_json
+  { mensaje_error: e.model.errors.first.message }.to_json
 end
 
 post '/especialidades' do
