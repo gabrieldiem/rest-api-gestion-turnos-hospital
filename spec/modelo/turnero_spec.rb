@@ -96,5 +96,11 @@ describe Turnero do
         turnero.crear_paciente('juan.perez@example.com', dni, 'juanperez')
       end.to raise_error(ActiveModel::ValidationError)
     end
+
+    it 'no se puede crear un paciente con email sin arroba (@)' do
+      expect do
+        turnero.crear_paciente('juan.perezexample.com', '12345678', 'juanperez')
+      end.to raise_error(ActiveModel::ValidationError)
+    end
   end
 end
