@@ -114,5 +114,11 @@ describe Turnero do
         turnero.crear_paciente('', '12345678', 'juanperez')
       end.to raise_error(ActiveModel::ValidationError)
     end
+
+    it 'no se puede crear un paciente con DNI vacio' do
+      expect do
+        turnero.crear_paciente('juan.perez@example.com', '', 'juanperez')
+      end.to raise_error(ActiveModel::ValidationError)
+    end
   end
 end
