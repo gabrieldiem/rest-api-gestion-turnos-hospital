@@ -9,27 +9,39 @@ describe Paciente do
 
   describe '- validaciones -' do
     it 'no se crea si el dni es vacío' do
-      expect { described_class.new('juan.perez@example.com', '', '@juanperez') }.to raise_error(ActiveModel::ValidationError)
+      expect do
+        described_class.new('juan.perez@example.com', '', '@juanperez')
+      end.to raise_error(ActiveModel::ValidationError)
     end
 
     it 'no se crea si el email no tiene @' do
-      expect { described_class.new('juan.perez.com', '12345678', '@juanperez') }.to raise_error(ActiveModel::ValidationError)
+      expect do
+        described_class.new('juan.perez.com', '12345678', '@juanperez')
+      end.to raise_error(ActiveModel::ValidationError)
     end
 
     it 'no se crea si el email no tiene un dominio' do
-      expect { described_class.new('juan@perez', '12345678', '@juanperez') }.to raise_error(ActiveModel::ValidationError)
+      expect do
+        described_class.new('juan@perez', '12345678', '@juanperez')
+      end.to raise_error(ActiveModel::ValidationError)
     end
 
     it 'no se crea si el email no tiene ni dominio ni @' do
-      expect { described_class.new('juanPerez', '12345678', '@juanperez') }.to raise_error(ActiveModel::ValidationError)
+      expect do
+        described_class.new('juanPerez', '12345678', '@juanperez')
+      end.to raise_error(ActiveModel::ValidationError)
     end
 
     it 'no se crea si el email está vacío' do
-      expect { described_class.new('', '12345678', '@juanperez') }.to raise_error(ActiveModel::ValidationError)
+      expect do
+        described_class.new('', '12345678', '@juanperez')
+      end.to raise_error(ActiveModel::ValidationError)
     end
 
     it 'no se crea si el username está vacío' do
-      expect { described_class.new('juan.perez@example.com', '12345678', '') }.to raise_error(ActiveModel::ValidationError)
+      expect do
+        described_class.new('juan.perez@example.com', '12345678', '')
+      end.to raise_error(ActiveModel::ValidationError)
     end
   end
 end
