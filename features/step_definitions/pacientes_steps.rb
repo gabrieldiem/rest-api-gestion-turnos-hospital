@@ -32,5 +32,5 @@ end
 
 Entonces('recibo un mensaje de error {string}') do |error_msg|
   parsed_response = JSON.parse(@response.body)
-  expect(parsed_response['error']).to eq(error_msg)
+  expect(parsed_response['mensaje_error']).to eq(error_msg)
 end
