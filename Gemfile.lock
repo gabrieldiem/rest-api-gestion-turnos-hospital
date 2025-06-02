@@ -53,6 +53,7 @@ GEM
       reline (>= 0.3.1)
     diff-lcs (1.5.0)
     docile (1.4.0)
+    dotenv (3.1.8)
     drb (2.2.3)
     eventmachine (1.2.7)
     faraday (2.7.5)
@@ -170,6 +171,7 @@ DEPENDENCIES
   activemodel
   cucumber
   debug (>= 1.0.0)
+  dotenv
   faraday
   pg
   racc

@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'activemodel', require: 'active_model'
+gem 'dotenv'
 gem 'pg'
 gem 'rake'
 gem 'semantic_logger'
