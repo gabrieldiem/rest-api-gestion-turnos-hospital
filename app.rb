@@ -88,8 +88,8 @@ get '/medicos/:matricula/turnos-disponibles' do
 
   turnos_parseados = turnos_disponibles.map do |turno|
     {
-      fecha: turno[:fecha].to_s,
-      hora: "#{turno[:hora].hora}:#{turno[:hora].minutos.to_s.rjust(2, '0')}"
+      fecha: turno.fecha.to_s,
+      hora: "#{turno.hora.hora}:#{turno.hora.minutos.to_s.rjust(2, '0')}"
     }
   end
 

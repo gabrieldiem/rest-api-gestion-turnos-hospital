@@ -82,11 +82,11 @@ describe Turnero do
       turnos = turnero.obtener_turnos_disponibles('NAC456')
 
       expect(turnos).to eq([
-                             { fecha: fecha_de_maniana, hora: Hora.new(8, 0) },
-                             { fecha: fecha_de_maniana, hora: Hora.new(8, 30) },
-                             { fecha: fecha_de_maniana, hora: Hora.new(9, 0) },
-                             { fecha: fecha_de_maniana, hora: Hora.new(9, 30) },
-                             { fecha: fecha_de_maniana, hora: Hora.new(10, 0) }
+                             Horario.new(fecha_de_maniana, Hora.new(8, 0)),
+                             Horario.new(fecha_de_maniana, Hora.new(8, 30)),
+                             Horario.new(fecha_de_maniana, Hora.new(9, 0)),
+                             Horario.new(fecha_de_maniana, Hora.new(9, 30)),
+                             Horario.new(fecha_de_maniana, Hora.new(10, 0))
                            ])
     end
   end

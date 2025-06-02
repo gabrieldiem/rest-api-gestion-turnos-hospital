@@ -1,3 +1,5 @@
+require_relative '../lib/horario'
+
 class CalculadorDeTurnosLibres
   def initialize(repositorio_de_medicos, proveedor_de_fecha, proveedor_de_hora)
     @repositorio_de_medicos = repositorio_de_medicos
@@ -19,7 +21,7 @@ class CalculadorDeTurnosLibres
 
     while horarios_disponibles.size < max_cantidad_de_turnos
       hora_turno = calcular_fecha_disponible(fecha_turno, duracion_turno)
-      horarios_disponibles << { fecha: fecha_turno, hora: hora_turno }
+      horarios_disponibles.push Horario.new(fecha_turno, hora_turno)
       @turnos_actual_disponible += 1
     end
 
