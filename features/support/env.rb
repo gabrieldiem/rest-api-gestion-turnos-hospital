@@ -12,6 +12,17 @@ db = Configuration.db
 db.loggers << logger
 Sequel::Migrator.run(db, 'db/migrations')
 
+require 'rspec/mocks'
+World(RSpec::Mocks::ExampleMethods)
+
+Before do
+  RSpec::Mocks.setup
+end
+
+After do
+  RSpec::Mocks.teardown
+end
+
 
 include Rack::Test::Methods
 def app

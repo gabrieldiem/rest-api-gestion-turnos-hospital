@@ -7,7 +7,7 @@ Característica: Consultar turnos disponibles por médico
     Dado que esta registrado el username "juanperez"
     Y que existe un médico con nombre "Juan", apellido "Perez", matrícula "NAC123" y especialidad "Traumatología" con duración de "15" minutos
 
-  @wip
+  @wip @indev
   Escenario: 4.0.1 - Se puede consultar turnos disponibles de un médico sin turnos asignados
     Dado que hago una consulta con el username "juanperez"
     Y que hoy es "20/05/2025"

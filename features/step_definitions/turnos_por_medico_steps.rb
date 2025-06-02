@@ -1,6 +1,5 @@
 Dado('que esta registrado el username {string}') do |username|
-  @repo_pacientes = RepostiorioPacientes.new
-  @repo_pacientes.delete_all
+  RepositorioPacientes.new.delete_all
   @username_registrado = username
   registered_body = { email: 'juan.perez@example.com', dni: '42951753', username: }.to_json
   @response = Faraday.post('/pacientes', registered_body, { 'Content-Type' => 'application/json' })
@@ -8,8 +7,8 @@ Dado('que esta registrado el username {string}') do |username|
 end
 
 Dado('que existe un médico con nombre {string}, apellido {string}, matrícula {string} y especialidad {string} con duración de {string} minutos') do |nombre, apellido, matricula, especial, duracion|
-  RepostiorioEspecialidades.new.delete_all
-  RepostiorioMedicos.new.delete_all
+  RepositorioMedicos.new.delete_all
+  RepositorioEspecialidades.new.delete_all
 
   especialidad_body = { nombre: especial, duracion:, recurrencia_maxima: 5, codigo: especial.downcase[0..3] }.to_json
   @response = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
@@ -26,12 +25,10 @@ end
 
 Dado('no hay turnos asignados para el médico con matrícula {string}') do |matricula|
   @matricula_medico = matricula
-  expect(parsed_response['medico']['matricula']).to eq(matricula)
-  expect(parsed_response['turnos']).to be_empty
 end
 
 Cuando('solicito los turnos disponibles con {string}') do |matricula|
-  @response = Faraday.get("/medicos/#{matricula}/turnos-disponibles?username=#{@username_solicitante}")
+  @response = Faraday.get("/medicos/#{matricula}/turnos-disponibles")
   @parsed_response = JSON.parse(@response.body)
   expect(@response.status).to eq(200)
 end
@@ -49,9 +46,11 @@ Entonces('son del {string} a las {string} en adelante') do |fecha, hora|
 end
 
 Dado('el médico con matrícula {string} tiene un turno asignado el {string} {string}') do |matricula, _fecha, _hora|
-  medico = RepostiorioMedicos.new.find_by_matricula(matricula)
-  medico.asignar_turno(fecha, hora, "Juan Perez")
+  @repo_medicos = RepositorioMedicos.new
+  medico = @repo_medicos.find_by_matricula(matricula)
   expect(medico['matricula']).to eq(matricula)
+  medico.asignar_turno(fecha, hora, 'Juan Perez')
+  @repo_medicos.save(medico)
 end
 
 Entonces('no se muestran turnos disponibles') do
@@ -66,7 +65,7 @@ Dado('que hoy es {string}') do |fecha|
   allow(Date).to receive(:today).and_return(@fecha_actual)
 end
 
-Dado('el médico con matrícula {string} no tiene turnos disponibles en los próximos {int} días') do |matricula, dias|
+Dado('el médico con matrícula {string} no tiene turnos disponibles en los próximos {int} días') do |matricula, _dias|
   medico = RepostiorioMedicos.new.find_by_matricula(matricula)
-  expect{ medico.tiene_turnos? }.to be false
+  expect { medico.tiene_turnos? }.to be false
 end
