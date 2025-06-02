@@ -22,7 +22,7 @@ Style/Documentation:
 RSpec/AnyInstance:
   Enabled: false
 RSpec/ExampleLength:
-  Max: 10
+  Max: 15
 RSpec/MultipleMemoizedHelpers:
   Max: 10
 RSpec/ExampleWording:

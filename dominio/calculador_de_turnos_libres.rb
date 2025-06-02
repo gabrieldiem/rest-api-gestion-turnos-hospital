@@ -1,8 +1,15 @@
 require_relative '../lib/horario'
 
 class CalculadorDeTurnosLibres
-  def initialize(repositorio_de_medicos, proveedor_de_fecha, proveedor_de_hora)
-    @repositorio_de_medicos = repositorio_de_medicos
+  CANTIDAD_DE_TURNOS_A_CALCULAR_MAXIMA = 5
+
+  def initialize(hora_de_comienzo_de_jornada,
+                 hora_de_fin_de_jornada,
+                 proveedor_de_fecha,
+                 proveedor_de_hora)
+    @cantidad_maxima_de_turnos = CANTIDAD_DE_TURNOS_A_CALCULAR_MAXIMA
+    @hora_de_comienzo_de_jornada = hora_de_comienzo_de_jornada
+    @hora_de_fin_de_jornada = hora_de_fin_de_jornada
     @proveedor_de_fecha = proveedor_de_fecha
     @proveedor_de_hora = proveedor_de_hora
   end
@@ -14,44 +21,52 @@ class CalculadorDeTurnosLibres
 
   private
 
+  # Funciona solo para turnos dentro del mismo dia por el momento, es decir fecha_turno es mañana
   def calcular_horarios_disponibles(fecha_turno, duracion_turno)
-    horarios_disponibles = []
-    max_cantidad_de_turnos = 5
-    @turnos_actual_disponible = 0
+    horarios_disponibles_elegidos = []
+    @indice_horario_candidato = 0
 
-    while horarios_disponibles.size < max_cantidad_de_turnos
-      hora_turno = calcular_fecha_disponible(fecha_turno, duracion_turno)
-      horarios_disponibles.push Horario.new(fecha_turno, hora_turno)
-      @turnos_actual_disponible += 1
+    while horarios_disponibles_elegidos.size < @cantidad_maxima_de_turnos
+      horario = calcular_siguiente_horario_disponible(fecha_turno, duracion_turno, horarios_disponibles_elegidos)
+      horarios_disponibles_elegidos.push horario
+      @indice_horario_candidato += 1
     end
 
-    horarios_disponibles
+    horarios_disponibles_elegidos
   end
 
-  def calcular_fecha_disponible(fecha_actual, duracion)
-    while @turnos_actual_disponible < 40
-      horario = calcular_fecha_siguiente(fecha_actual, @turnos_actual_disponible, duracion)
-      if existe_turno_asignado?(horario)
-        @turnos_actual_disponible += 1
+  def calcular_siguiente_horario_disponible(fecha_actual, duracion, horarios_disponibles_elegidos)
+    horario = calcular_siguiente_horario(fecha_actual, @indice_horario_candidato, duracion)
+
+    while horario.hora.hora <= @hora_de_fin_de_jornada.hora
+      if existe_turno_asignado?(horario, horarios_disponibles_elegidos)
+        @indice_horario_candidato += 1 # Saltear indice evaluar el siguiente
       else
-        return Hora.new(horario.hour, horario.min)
+        break
       end
+
+      horario = calcular_siguiente_horario(fecha_actual, @indice_horario_candidato, duracion)
     end
+
+    horario
   end
 
-  def calcular_fecha_siguiente(fecha_actual, turno_siguiente, duracion)
-    hora_inicio = 8
-    hora_siguiente = hora_inicio + (turno_siguiente * duracion / 60)
-    minutos_siguiente = (turno_siguiente * duracion) % 60
-    DateTime.new(fecha_actual.year, fecha_actual.month, fecha_actual.day, hora_siguiente, minutos_siguiente)
+  def calcular_siguiente_horario(fecha, cantidad_turnos_explorados, duracion_de_turno)
+    minutos_explorados = cantidad_turnos_explorados * duracion_de_turno
+
+    hora_de_siguiente_horario = @hora_de_comienzo_de_jornada.hora + (minutos_explorados / 60)
+    minutos_de_siguiente_horario = minutos_explorados % 60
+
+    Horario.new(fecha, Hora.new(hora_de_siguiente_horario, minutos_de_siguiente_horario))
   end
 
-  def existe_turno_asignado?(horario)
-    return false if @turnos.nil? || @turnos.empty?
+  def existe_turno_asignado?(horario_a_verificar, horarios_disponibles_elegidos)
+    return false if horarios_disponibles_elegidos.nil? || horarios_disponibles_elegidos.empty?
 
-    @turnos.each do |turno|
-      return true if turno[:fecha] == horario.to_date && turno[:hora] == horario.hour && turno[:minuto] == horario.min
+    horarios_disponibles_elegidos.each do |horario|
+      return true if horario == horario_a_verificar
     end
+
     false
   end
 end
