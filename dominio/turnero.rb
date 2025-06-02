@@ -5,14 +5,14 @@ class Turnero
     @repositorio_medicos = repositorio_medicos
   end
 
-  def crear_usuario(email, dni, username)
-    usuario = Paciente.new(email, dni, username)
+  def crear_paciente(email, dni, username)
+    paciente = Paciente.new(email, dni, username)
     if paciente_ya_existente?(dni)
-      @repositorio_pacientes.save(usuario)
-      usuario
+      @repositorio_pacientes.save(paciente)
+      paciente
     else
-      usuario.errors.add(:dni, 'El DNI ya está registrado')
-      raise ActiveModel::ValidationError, usuario
+      paciente.errors.add(:dni, 'El DNI ya está registrado')
+      raise ActiveModel::ValidationError, paciente
     end
   end
 
@@ -30,10 +30,6 @@ class Turnero
 
   def buscar_medico(matricula)
     @repositorio_medicos.find_by_matricula(matricula)
-  end
-
-  def usuarios
-    @repositorio_pacientes.all
   end
 
   private

@@ -3,7 +3,7 @@ require_relative '../../dominio/paciente'
 require_relative '../../persistencia/repositorio_pacientes'
 
 describe RepositorioPacientes do
-  it 'deberia guardar y asignar id si el usuario es nuevo' do
+  it 'deberia guardar y asignar id si el paciente es nuevo' do
     juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
     described_class.new.save(juan)
     expect(juan.id).not_to be_nil
@@ -11,13 +11,13 @@ describe RepositorioPacientes do
 
   it 'deberia recuperar todos' do
     repositorio = described_class.new
-    cantidad_de_usuarios_iniciales = repositorio.all.size
+    cantidad_de_pacientes_iniciales = repositorio.all.size
     juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
     repositorio.save(juan)
-    expect(repositorio.all.size).to be(cantidad_de_usuarios_iniciales + 1)
+    expect(repositorio.all.size).to be(cantidad_de_pacientes_iniciales + 1)
   end
 
-  it 'deberia encontrar un usuario por dni' do
+  it 'deberia encontrar un paciente por dni' do
     repositorio = described_class.new
     juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
     repositorio.save(juan)

@@ -27,11 +27,11 @@ before do
 end
 
 def turnero
-  settings.turnero
+  settings.send(:turnero)
 end
 
 get '/version' do
-  logger.debug('Handling /version')
+  logger.debug('GET /version')
   json({ version: Version.current })
 end
 
@@ -39,33 +39,25 @@ post '/reset' do
   status 200
 end
 
-get '/usuarios' do
-  usuarios = turnero.usuarios
-  respuesta = []
-  usuarios.map { |u| respuesta << { email: u.email, id: u.id } }
-  status 200
-  json(respuesta)
-end
-
 post '/pacientes' do
-  logger.debug("POST /pacientes: #{@params}")
-  usuario = turnero.crear_usuario(@params[:email].to_s, @params[:dni].to_s, @params[:username].to_s)
+  logger.debug("POST /pacientes con params: #{@params}")
+  paciente = turnero.crear_paciente(@params[:email].to_s, @params[:dni].to_s, @params[:username].to_s)
   status 201
   {
-    id: usuario.id,
-    username: usuario.username,
-    dni: usuario.dni,
-    email: usuario.email,
-    created_on: usuario.created_on
+    id: paciente.id,
+    username: paciente.username,
+    dni: paciente.dni,
+    email: paciente.email,
+    created_on: paciente.created_on
   }.to_json
 rescue ActiveModel::ValidationError => e
-  logger.error("Error creating usuario: #{e.message}")
+  logger.error("Error al crear paciente: #{e.message}")
   status 400
   { mensaje_error: e.model.errors.first.message }.to_json
 end
 
 post '/especialidades' do
-  logger.debug("POST /especialidades: #{@params}")
+  logger.debug("POST /especialidades con params: #{@params}")
   especialidad = turnero.crear_especialidad(@params[:nombre].to_s,
                                             @params[:duracion].to_i,
                                             @params[:recurrencia_maxima].to_i,
@@ -89,8 +81,11 @@ get '/medicos/:matricula/turnos-disponibles' do
 end
 
 post '/medicos' do
-  logger.debug("POST /medicos: #{@params}")
-  medico = turnero.crear_medico(@params[:nombre].to_s, @params[:apellido].to_s, @params[:matricula].to_s, @params[:especialidad].to_s)
+  logger.debug("POST /medicos con params: #{@params}")
+  medico = turnero.crear_medico(@params[:nombre].to_s,
+                                @params[:apellido].to_s,
+                                @params[:matricula].to_s,
+                                @params[:especialidad].to_s)
   status 201
   {
     id: medico.id,

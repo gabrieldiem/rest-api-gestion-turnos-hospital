@@ -17,11 +17,11 @@ class RepositorioPacientes < AbstractRepository
     Paciente.new(a_hash[:email], a_hash[:dni], a_hash[:username], a_hash[:id])
   end
 
-  def changeset(usuario)
+  def changeset(paciente)
     {
-      email: usuario.email,
-      dni: usuario.dni,
-      username: usuario.username
+      email: paciente.email,
+      dni: paciente.dni,
+      username: paciente.username
     }
   end
 end
