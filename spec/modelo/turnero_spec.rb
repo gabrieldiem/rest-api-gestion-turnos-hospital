@@ -48,7 +48,7 @@ describe Turnero do
       expect(medico_guardado.matricula).to eq(medico_nuevo.matricula)
     end
 
-    xit 'busca un médico por matrícula' do
+    it 'busca un médico por matrícula' do
       turnero.crear_especialidad('Cardiología', 30, 5, 'card')
       medico_nuevo = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', 'card')
       medico_encontrado = turnero.buscar_medico('NAC456')
