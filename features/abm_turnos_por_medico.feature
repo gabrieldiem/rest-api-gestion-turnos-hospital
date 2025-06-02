@@ -15,7 +15,7 @@ Característica: Consultar turnos disponibles por médico
     Entonces recibo los próximos "5" turnos disponibles
     Y son del "21/05/2025" a las "8:00" en adelante
 
-  @wip
+  @wip @indev
   Escenario: 4.0.2 - Se puede consultar turnos disponibles de un médico con un turno asignado
     Dado que hago una consulta con el username "juanperez"
     Y que hoy es "20/05/2025"
