@@ -40,6 +40,7 @@ end
 
 Entonces('recibo los próximos {string} turnos disponibles') do |string|
   @turnos_disponibles = @parsed_response['turnos']
+
   expect(@turnos_disponibles).not_to be_empty
   expect(@turnos_disponibles.size).to eq(string.to_i)
 end

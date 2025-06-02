@@ -1,10 +1,11 @@
 class Turnero
-  def initialize(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, proveedor_de_fecha)
+  def initialize(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, proveedor_de_fecha, proveedor_de_hora)
     @repositorio_pacientes = repositorio_pacientes
     @repositorio_especialidades = repositorio_especialidades
     @repositorio_medicos = repositorio_medicos
     @proveedor_de_fecha = proveedor_de_fecha
-    @calculador_de_turnos_libres = CalculadorDeTurnosLibres.new(@repositorio_medicos, @proveedor_de_fecha)
+    @proveedor_de_hora = proveedor_de_hora
+    @calculador_de_turnos_libres = CalculadorDeTurnosLibres.new(@repositorio_medicos, @proveedor_de_fecha, @proveedor_de_hora)
   end
 
   def crear_paciente(email, dni, username)

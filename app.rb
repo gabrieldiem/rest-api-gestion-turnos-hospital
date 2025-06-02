@@ -6,6 +6,7 @@ require 'active_model'
 require_relative './config/configuration'
 require_relative './lib/version'
 require_relative './lib/proveedor_de_fecha'
+require_relative './lib/proveedor_de_hora'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -19,7 +20,8 @@ configure do
   set :turnero, Turnero.new(RepositorioPacientes.new(api_logger),
                             RepositorioEspecialidades.new(api_logger),
                             RepositorioMedicos.new(api_logger),
-                            ProveedorDeFecha.new)
+                            ProveedorDeFecha.new,
+                            ProveedorDeHora.new)
   api_logger.info('Iniciando turnero...')
 end
 
@@ -84,6 +86,13 @@ get '/medicos/:matricula/turnos-disponibles' do
   medico = turnero.buscar_medico(params[:matricula])
   turnos_disponibles = turnero.obtener_turnos_disponibles(params[:matricula])
 
+  turnos_parseados = turnos_disponibles.map do |turno|
+    {
+      fecha: turno['fecha'].to_s,
+      hora: "#{turno['hora'].hora}:#{turno['hora'].minutos.to_s.rjust(2, '0')}"
+    }
+  end
+
   status 200
   {
     medico: {
@@ -92,7 +101,7 @@ get '/medicos/:matricula/turnos-disponibles' do
       matricula: medico.matricula,
       especialidad: medico.especialidad.codigo
     },
-    turnos: turnos_disponibles
+    turnos: turnos_parseados
   }.to_json
 end
 

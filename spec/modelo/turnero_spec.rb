@@ -23,7 +23,12 @@ describe Turnero do
     proveedor_double = class_double(Date, today: fecha_de_hoy)
     ProveedorDeFecha.new(proveedor_double)
   end
-  let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, proveedor_de_fecha) }
+  let(:proveedor_de_hora) do
+    hora_actual = DateTime.new(2025, 1, 1, 8, 0)
+    proveedor_double = class_double(Time, now: hora_actual)
+    ProveedorDeHora.new(proveedor_double)
+  end
+  let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, proveedor_de_fecha, proveedor_de_hora) }
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
 
   describe '- Capacidades de Especialidades - ' do
@@ -73,13 +78,16 @@ describe Turnero do
     it 'obtener turnos disponibles de un médico' do
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
       fecha_de_maniana = fecha_de_hoy + 1
-      expect(turnero.obtener_turnos_disponibles('NAC456')).to eq([
-                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '8:00' },
-                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '8:30' },
-                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '9:00' },
-                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '9:30' },
-                                                                   { 'fecha' => fecha_de_maniana, 'hora' => '10:00' }
-                                                                 ])
+
+      turnos = turnero.obtener_turnos_disponibles('NAC456')
+
+      expect(turnos).to eq([
+                             { 'fecha' => fecha_de_maniana, 'hora' => Hora.new(8, 0) },
+                             { 'fecha' => fecha_de_maniana, 'hora' => Hora.new(8, 30) },
+                             { 'fecha' => fecha_de_maniana, 'hora' => Hora.new(9, 0) },
+                             { 'fecha' => fecha_de_maniana, 'hora' => Hora.new(9, 30) },
+                             { 'fecha' => fecha_de_maniana, 'hora' => Hora.new(10, 0) }
+                           ])
     end
   end
 
