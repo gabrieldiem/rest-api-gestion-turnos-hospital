@@ -11,10 +11,9 @@ describe Medico do
   end
 
   it 'obtenemos los turnos disponibles del médico' do
-    allow(Date).to receive(:today).and_return(Date.new(2025, 6, 10))
     medico = described_class.new('Juan', 'Pérez', 'NAC123', especialidad)
 
-    turnos_disponibles = medico.obtener_turnos_disponibles
+    turnos_disponibles = medico.obtener_turnos_disponibles(Date.new(2025, 6, 10))
 
     expect(turnos_disponibles).to eq([
                                        { 'fecha' => '11-06-2025', 'hora' => '08:00' },

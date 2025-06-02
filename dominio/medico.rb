@@ -10,12 +10,9 @@ class Medico
     @id = id
   end
 
-  def obtener_turnos_disponibles
-    fecha_actual = Date.today
-    fecha_turno = fecha_actual + 1
-    duracion_turno = @especialidad.duracion
-
-    calcular_turnos_disponibles(fecha_turno, duracion_turno)
+  def obtener_turnos_disponibles(fecha_actual)
+    fecha_posterior = fecha_actual + 1
+    calcular_turnos_disponibles(fecha_posterior, @especialidad.duracion)
   end
 
   private
