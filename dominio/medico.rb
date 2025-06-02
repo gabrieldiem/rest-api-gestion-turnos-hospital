@@ -9,4 +9,29 @@ class Medico
     @especialidad = especialidad
     @id = id
   end
+
+  def obtener_turnos_disponibles
+    fecha_actual = Date.today
+    fecha_turno = fecha_actual + 1
+    duracion_turno = @especialidad.duracion
+
+    calcular_turnos_disponibles(fecha_turno, duracion_turno)
+  end
+
+  private
+
+  def calcular_turnos_disponibles(fecha_turno, duracion_turno)
+    hora_inicio = 8
+    cantidad_de_turnos = 0
+    max_cantidad_de_turnos = 5
+    turnos_disponibles = []
+
+    while cantidad_de_turnos < max_cantidad_de_turnos
+      hora_turno = DateTime.new(fecha_turno.year, fecha_turno.month, fecha_turno.day, hora_inicio + (cantidad_de_turnos * duracion_turno / 60), (cantidad_de_turnos * duracion_turno) % 60)
+      turnos_disponibles << { 'fecha' => fecha_turno.strftime('%d-%m-%Y'), 'hora' => hora_turno.strftime('%H:%M') }
+      cantidad_de_turnos += 1
+    end
+
+    turnos_disponibles
+  end
 end
