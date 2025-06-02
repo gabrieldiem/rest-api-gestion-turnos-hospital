@@ -120,5 +120,11 @@ describe Turnero do
         turnero.crear_paciente('juan.perez@example.com', '', 'juanperez')
       end.to raise_error(ActiveModel::ValidationError)
     end
+
+    it 'no se puede crear un paciente con username vacio' do
+      expect do
+        turnero.crear_paciente('juan.perez@example.com', '12345678', '')
+      end.to raise_error(ActiveModel::ValidationError)
+    end
   end
 end
