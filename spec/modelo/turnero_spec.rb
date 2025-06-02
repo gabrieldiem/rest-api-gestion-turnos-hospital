@@ -57,6 +57,21 @@ describe Turnero do
     end
   end
 
+  describe '- Capacidades de Turnos - ' do
+    xit 'obtener turnos disponibles de un médico' do
+      turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', 'card')
+      medico_encontrado = turnero.buscar_medico('NAC456')
+      expect(turnero.obtener_turnos_disponibles(medico_encontrado)).to eq([
+                                                                            { 'fecha' => '11/06/2025', 'hora' => '8:30' },
+                                                                            { 'fecha' => '11/06/2025', 'hora' => '9:00' },
+                                                                            { 'fecha' => '11/06/2025', 'hora' => '9:30' },
+                                                                            { 'fecha' => '11/06/2025', 'hora' => '10:00' },
+                                                                            { 'fecha' => '11/06/2025', 'hora' => '10:30' }
+                                                                          ])
+    end
+  end
+
   describe '- Capacidades de Pacientes - ' do
     it 'crea un paciente nuevo valido' do
       paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
