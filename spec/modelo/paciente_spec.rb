@@ -27,5 +27,9 @@ describe Paciente do
     it 'no se crea si el email está vacío' do
       expect { described_class.new('', '12345678', '@juanperez') }.to raise_error(ActiveModel::ValidationError)
     end
+
+    it 'no se crea si el username está vacío' do
+      expect { described_class.new('juan.perez@example.com', '12345678', '') }.to raise_error(ActiveModel::ValidationError)
+    end
   end
 end
