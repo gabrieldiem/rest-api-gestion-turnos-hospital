@@ -49,7 +49,7 @@ Dado('el médico con matrícula {string} tiene un turno asignado el {string} {st
   @repo_medicos = RepositorioMedicos.new
   medico = @repo_medicos.find_by_matricula(matricula)
   expect(medico['matricula']).to eq(matricula)
-  medico.asignar_turno(fecha, hora, 'Juan Perez')
+  medico.asignar_turno(fecha, hora, @username_registrado)
   @repo_medicos.save(medico)
 end
 
