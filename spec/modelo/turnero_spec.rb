@@ -86,5 +86,14 @@ describe Turnero do
       expect(repositorio_pacientes.all.size).to eq(1)
       expect(paciente_guardado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
     end
+
+    it 'no se puede crear un paciente con DNI repetido' do
+      dni = '12345678'
+      _paciente_valido = turnero.crear_paciente('gabriel.dominguez@example.com', dni, 'gabrieldominguez')
+
+      expect do
+        turnero.crear_paciente('juan.perez@example.com', dni, 'juanperez')
+      end.to raise_error(ActiveModel::ValidationError)
+    end
   end
 end
