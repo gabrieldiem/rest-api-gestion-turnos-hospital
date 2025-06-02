@@ -16,11 +16,11 @@ describe Medico do
     turnos_disponibles = medico.obtener_turnos_disponibles(Date.new(2025, 6, 10))
 
     expect(turnos_disponibles).to eq([
-                                       { 'fecha' => '11-06-2025', 'hora' => '08:00' },
-                                       { 'fecha' => '11-06-2025', 'hora' => '08:30' },
-                                       { 'fecha' => '11-06-2025', 'hora' => '09:00' },
-                                       { 'fecha' => '11-06-2025', 'hora' => '09:30' },
-                                       { 'fecha' => '11-06-2025', 'hora' => '10:00' }
+                                       { 'fecha' => '11/06/2025', 'hora' => '8:00' },
+                                       { 'fecha' => '11/06/2025', 'hora' => '8:30' },
+                                       { 'fecha' => '11/06/2025', 'hora' => '9:00' },
+                                       { 'fecha' => '11/06/2025', 'hora' => '9:30' },
+                                       { 'fecha' => '11/06/2025', 'hora' => '10:00' }
                                      ])
   end
 end

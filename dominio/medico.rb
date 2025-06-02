@@ -24,7 +24,7 @@ class Medico
 
     while cantidad_de_turnos < max_cantidad_de_turnos
       hora_turno = calcular_fecha_siguiente(fecha_turno, cantidad_de_turnos, duracion_turno)
-      turnos_disponibles << { 'fecha' => fecha_turno.strftime('%d-%m-%Y'), 'hora' => hora_turno.strftime('%H:%M') }
+      turnos_disponibles << { 'fecha' => fecha_turno.strftime('%d/%m/%Y'), 'hora' => hora_turno.strftime('%-H:%M') }
       cantidad_de_turnos += 1
     end
 
