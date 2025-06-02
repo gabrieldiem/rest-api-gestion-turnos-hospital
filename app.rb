@@ -85,7 +85,17 @@ end
 get '/medicos/:matricula/turnos-disponibles' do
   logger.debug("POST /medicos/#{params[:matricula]}/turnos-disponibles: #{@params}")
   medico = turnero.buscar_medico(params[:matricula])
-  _turnos_disponibles = medico.obtener_turnos_disponibles
+  turnos_disponibles = medico.obtener_turnos_disponibles(Date.today)
+  status 200
+  {
+    medico: {
+      nombre: medico.nombre,
+      apellido: medico.apellido,
+      matricula: medico.matricula,
+      especialidad: medico.especialidad.codigo
+    },
+    turnos: turnos_disponibles
+  }.to_json
 end
 
 post '/medicos' do
