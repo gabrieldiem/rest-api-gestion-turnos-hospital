@@ -7,23 +7,23 @@ class CalculadorDeTurnosLibres
 
   def calcular_turnos_disponibles_por_medico(medico)
     fecha_posterior = @proveedor_de_fecha.hoy + 1
-    calcular_turnos_disponibles(fecha_posterior, medico.especialidad.duracion)
+    calcular_horarios_disponibles(fecha_posterior, medico.especialidad.duracion)
   end
 
   private
 
-  def calcular_turnos_disponibles(fecha_turno, duracion_turno)
-    turnos_disponibles = []
+  def calcular_horarios_disponibles(fecha_turno, duracion_turno)
+    horarios_disponibles = []
     max_cantidad_de_turnos = 5
     @turnos_actual_disponible = 0
 
-    while turnos_disponibles.size < max_cantidad_de_turnos
+    while horarios_disponibles.size < max_cantidad_de_turnos
       hora_turno = calcular_fecha_disponible(fecha_turno, duracion_turno)
-      turnos_disponibles << { 'fecha' => fecha_turno, 'hora' => hora_turno }
+      horarios_disponibles << { fecha: fecha_turno, hora: hora_turno }
       @turnos_actual_disponible += 1
     end
 
-    turnos_disponibles
+    horarios_disponibles
   end
 
   def calcular_fecha_disponible(fecha_actual, duracion)
