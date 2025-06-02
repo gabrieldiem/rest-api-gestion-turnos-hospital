@@ -8,4 +8,11 @@ describe ProveedorDeFecha do
 
     expect(described_class.new(double_proveedor).hoy).to eq(nuevo_hoy)
   end
+
+  it 'Hoy es hoy (Groundhog Day)' do
+    hoy = Date.today
+    double_proveedor = class_double(Date, today: hoy)
+
+    expect(described_class.new(double_proveedor).hoy).to eq(hoy)
+  end
 end
