@@ -5,4 +5,8 @@ class Hora
     @hora = hora
     @minutos = minutos
   end
+
+  def ==(other)
+    other.is_a?(Hora) && hora == other.hora && minutos == other.minutos
+  end
 end
