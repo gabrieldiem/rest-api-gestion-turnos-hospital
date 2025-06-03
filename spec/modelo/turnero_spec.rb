@@ -232,5 +232,11 @@ describe Turnero do
         turnero.crear_paciente('juan.perez@example.com', '12345678', '')
       end.to raise_error(ActiveModel::ValidationError)
     end
+
+    xit 'se obtiene un paciente por username' do
+      paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
+      paciente_encontrado = turnero.buscar_paciente_por_username('juanperez')
+      expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
+    end
   end
 end
