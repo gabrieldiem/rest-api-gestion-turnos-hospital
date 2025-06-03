@@ -92,18 +92,18 @@ describe Turnero do
     it 'obtener turnos disponibles dado que ya se asigno un turno' do
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
 
-      dni = '12345678'
+      dni = '999999999'
       turnero.crear_paciente('j@perez.com', dni, 'juanperez')
 
-      turnos = turnero.obtener_turnos_disponibles('NAC456')
-      turnero.asignar_turno('NAC456', fecha_de_hoy.to_s, '8:00', dni)
-
       fecha_de_maniana = fecha_de_hoy + 1
-      expect(turnos).to eq([Horario.new(fecha_de_maniana, Hora.new(8, 0)),
-                            Horario.new(fecha_de_maniana, Hora.new(8, 30)),
+      turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '8:00', dni)
+
+      turnos = turnero.obtener_turnos_disponibles('NAC456')
+      expect(turnos).to eq([Horario.new(fecha_de_maniana, Hora.new(8, 30)),
                             Horario.new(fecha_de_maniana, Hora.new(9, 0)),
                             Horario.new(fecha_de_maniana, Hora.new(9, 30)),
-                            Horario.new(fecha_de_maniana, Hora.new(10, 0))])
+                            Horario.new(fecha_de_maniana, Hora.new(10, 0)),
+                            Horario.new(fecha_de_maniana, Hora.new(10, 30))])
     end
   end
 
