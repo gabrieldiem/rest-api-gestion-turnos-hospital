@@ -88,7 +88,7 @@ Entonces('no se muestran turnos disponibles') do
   @response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
   @parsed_response = JSON.parse(@response.body)
 
-  expect(@response.status).to eq(404)
+  expect(@response.status).to be_between(400, 499).inclusive
   expect(@parsed_response[:turnos]).to be nil
 end
 

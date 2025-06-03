@@ -111,6 +111,41 @@ describe Turnero do
                             Horario.new(fecha_de_maniana, Hora.new(10, 30))])
     end
 
+    def cantidad_turnos_en_un_dia(hora_inicio_jornada, hora_fin_jornada, duracion_turno)
+      minutos_totales_de_jornada = (hora_fin_jornada.hora - hora_inicio_jornada.hora) * 60
+      minutos_totales_de_jornada += hora_fin_jornada.minutos - hora_inicio_jornada.minutos
+      minutos_totales_de_jornada / duracion_turno
+    end
+
+    def llenar_turnos_de_un_dia(matricula_medico, fecha_a_llenar, duracion_turno)
+      dni = '100_'
+      hora_inicio_jornada = Hora.new(8, 0)
+      hora_fin_jornada = Hora.new(18, 0)
+      cantidad_turnos = cantidad_turnos_en_un_dia(hora_inicio_jornada, hora_fin_jornada, duracion_turno)
+
+      cantidad_turnos.times do |i|
+        nuevo_dni = "#{dni}+#{i}"
+        turnero.crear_paciente("j+#{i}@perez.com", nuevo_dni, "juanperez+#{i}")
+        turnero.asignar_turno(matricula_medico, fecha_a_llenar.to_s, '8:00', nuevo_dni)
+      end
+    end
+
+    xit 'obtener turnos disponibles del 12/06 dado que hoy es 10/06 y no hay turnos disponibles el 11/06' do
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+
+      fecha_de_maniana = fecha_de_hoy + 1
+      fecha_de_pasado_maniana = fecha_de_hoy + 2
+
+      llenar_turnos_de_un_dia('NAC456', fecha_de_maniana, especialidad.duracion)
+
+      turnos = turnero.obtener_turnos_disponibles('NAC456')
+      expect(turnos).to eq([Horario.new(fecha_de_pasado_maniana, Hora.new(8, 30)),
+                            Horario.new(fecha_de_pasado_maniana, Hora.new(9, 0)),
+                            Horario.new(fecha_de_pasado_maniana, Hora.new(9, 30)),
+                            Horario.new(fecha_de_pasado_maniana, Hora.new(10, 0)),
+                            Horario.new(fecha_de_pasado_maniana, Hora.new(10, 30))])
+    end
+
     it 'obtener turnos disponibles de un medico que no existe produce error MedicoInexistenteException' do
       expect do
         turnero.obtener_turnos_disponibles('NAC999')
