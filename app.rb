@@ -48,6 +48,20 @@ post '/reset' do
   status 200
 end
 
+get '/health-check' do
+  logger.debug('GET health-check')
+  repo_especialidades = RepositorioEspecialidades.new(logger)
+  repo_especialidades.find_by_codigo('card')
+
+  status 200
+  return
+rescue Sequel::DatabaseConnectionError
+  status 503
+  {
+    "mensaje_error": 'Servicio no disponible'
+  }.to_json
+end
+
 post '/pacientes' do
   logger.debug("POST /pacientes con params: #{@params}")
   paciente = turnero.crear_paciente(@params[:email].to_s, @params[:dni].to_s, @params[:username].to_s)
