@@ -42,7 +42,7 @@ class Turnero
 
   def buscar_medico(matricula)
     medico = @repositorio_medicos.find_by_matricula(matricula)
-    raise MedicoInexistente, "Médico con matrícula #{matricula} no encontrado" if medico.nil?
+    raise MedicoInexistente, "No existe un médico con la matrícula #{matricula}" if medico.nil?
 
     medico
   end

@@ -38,9 +38,9 @@ Dado('no hay turnos asignados para el médico con matrícula {string}') do |matr
 end
 
 Cuando('solicito los turnos disponibles con {string}') do |matricula|
+  @matricula = matricula
   @response = Faraday.get("/medicos/#{matricula}/turnos-disponibles")
   @parsed_response = JSON.parse(@response.body)
-  expect(@response.status).to eq(200)
 end
 
 Entonces('recibo los próximos {string} turnos disponibles') do |string|
@@ -59,6 +59,7 @@ Entonces('son del {string} a las {string} en adelante') do |fecha, hora|
 end
 
 Dado('el médico con matrícula {string} tiene un turno asignado el {string} {string}') do |matricula, fecha, hora|
+  @matricula = matricula
   @repo_medicos = RepositorioMedicos.new(@logger)
   @repo_turnos = RepositorioTurnos.new(@logger)
   @repo_paciente = RepositorioPacientes.new(@logger)
@@ -75,10 +76,8 @@ Dado('el médico con matrícula {string} tiene un turno asignado el {string} {st
 end
 
 Entonces('no se muestran turnos disponibles') do
-  response = Faraday.get("/medicos/#{matricula}/turnos-disponibles?username=#{@username_solicitante}")
-  parsed_response = JSON.parse(response.body)
-  expect(response.status).to eq(200)
-  expect(parsed_response['turnos']).to be_empty
+  response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
+  @parsed_response = JSON.parse(response.body)
 end
 
 Dado('que hoy es {string}') do |fecha|

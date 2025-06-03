@@ -105,6 +105,10 @@ get '/medicos/:matricula/turnos-disponibles' do
     },
     turnos: turnos_parseados
   }.to_json
+rescue MedicoInexistente => e
+  logger.error("Error al buscar médico: #{e.message}")
+  status 404
+  { mensaje_error: e.message }.to_json
 end
 
 post '/medicos' do
