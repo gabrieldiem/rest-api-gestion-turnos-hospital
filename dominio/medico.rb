@@ -14,7 +14,9 @@ class Medico
   end
 
   def asignar_turno(horario, paciente)
-    @turnos_asignados.push(Turno.new(paciente, self, horario))
+    turno = Turno.new(paciente, self, horario)
+    @turnos_asignados.push(turno)
+    turno
   end
 
   def ==(other)

@@ -2,10 +2,11 @@ class Turnero
   HORA_DE_COMIENZO_DE_JORNADA = Hora.new(8, 0)
   HORA_DE_FIN_DE_JORNADA = Hora.new(18, 0)
 
-  def initialize(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, proveedor_de_fecha, proveedor_de_hora)
+  def initialize(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, repositorio_turnos, proveedor_de_fecha, proveedor_de_hora)
     @repositorio_pacientes = repositorio_pacientes
     @repositorio_especialidades = repositorio_especialidades
     @repositorio_medicos = repositorio_medicos
+    @repositorio_turnos = repositorio_turnos
     @proveedor_de_fecha = proveedor_de_fecha
     @proveedor_de_hora = proveedor_de_hora
     @calculador_de_turnos_libres = CalculadorDeTurnosLibres.new(HORA_DE_COMIENZO_DE_JORNADA,
@@ -39,6 +40,18 @@ class Turnero
 
   def buscar_medico(matricula)
     @repositorio_medicos.find_by_matricula(matricula)
+  end
+
+  def asignar_turno(matricula, fecha, hora, dni)
+    medico = buscar_medico(matricula)
+    paciente = @repositorio_pacientes.find_by_dni(dni)
+
+    fecha = Date.parse(fecha)
+    hora = Hora.new(*hora.split(':').map(&:to_i))
+    horario = Horario.new(fecha, hora)
+
+    turno = medico.asignar_turno(horario, paciente)
+    @repositorio_turnos.save(turno)
   end
 
   def obtener_turnos_disponibles(matricula)

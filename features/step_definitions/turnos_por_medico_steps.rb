@@ -53,11 +53,15 @@ Entonces('son del {string} a las {string} en adelante') do |fecha, hora|
   expect(proximo_turno['hora']).to eq(hora)
 end
 
-Dado('el médico con matrícula {string} tiene un turno asignado el {string} {string}') do |matricula, _fecha, _hora|
+Dado('el médico con matrícula {string} tiene un turno asignado el {string} {string}') do |matricula, fecha, hora|
   @repo_medicos = RepositorioMedicos.new(@logger)
   medico = @repo_medicos.find_by_matricula(matricula)
-  expect(medico['matricula']).to eq(matricula)
-  medico.asignar_turno(fecha, hora, @username_registrado)
+
+  fecha = Date.strptime(fecha, '%d/%m/%Y')
+  hora = Hora.new(*hora.split(':').map(&:to_i))
+  horario = Horario.new(fecha, hora)
+
+  medico.asignar_turno(horario, @username_registrado)
   @repo_medicos.save(medico)
 end
 

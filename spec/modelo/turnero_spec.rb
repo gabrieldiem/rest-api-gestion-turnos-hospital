@@ -15,6 +15,7 @@ describe Turnero do
     SemanticLogger.default_level = :fatal
     Configuration.logger
   end
+  let(:repositorio_turnos) { RepositorioTurnos.new(logger) }
   let(:repositorio_especialidades) { RepositorioEspecialidades.new(logger) }
   let(:repositorio_medicos) { RepositorioMedicos.new(logger) }
   let(:repositorio_pacientes) { RepositorioPacientes.new(logger) }
@@ -28,7 +29,7 @@ describe Turnero do
     proveedor_double = class_double(Time, now: hora_actual)
     ProveedorDeHora.new(proveedor_double)
   end
-  let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, proveedor_de_fecha, proveedor_de_hora) }
+  let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, repositorio_turnos, proveedor_de_fecha, proveedor_de_hora) }
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
 
   describe '- Capacidades de Especialidades - ' do
@@ -81,6 +82,23 @@ describe Turnero do
 
       turnos = turnero.obtener_turnos_disponibles('NAC456')
 
+      expect(turnos).to eq([Horario.new(fecha_de_maniana, Hora.new(8, 0)),
+                            Horario.new(fecha_de_maniana, Hora.new(8, 30)),
+                            Horario.new(fecha_de_maniana, Hora.new(9, 0)),
+                            Horario.new(fecha_de_maniana, Hora.new(9, 30)),
+                            Horario.new(fecha_de_maniana, Hora.new(10, 0))])
+    end
+
+    it 'obtener turnos disponibles dado que ya se asigno un turno' do
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+
+      dni = '12345678'
+      turnero.crear_paciente('j@perez.com', dni, 'juanperez')
+
+      turnos = turnero.obtener_turnos_disponibles('NAC456')
+      turnero.asignar_turno('NAC456', fecha_de_hoy.to_s, '8:00', dni)
+
+      fecha_de_maniana = fecha_de_hoy + 1
       expect(turnos).to eq([Horario.new(fecha_de_maniana, Hora.new(8, 0)),
                             Horario.new(fecha_de_maniana, Hora.new(8, 30)),
                             Horario.new(fecha_de_maniana, Hora.new(9, 0)),

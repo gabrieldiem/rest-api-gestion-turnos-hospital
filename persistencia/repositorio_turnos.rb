@@ -46,9 +46,7 @@ class RepositorioTurnos < AbstractRepository
     {
       paciente: turno.paciente.id,
       medico: turno.medico.id,
-      horario: turno.horario.to_datetime,
-      created_on: turno.created_on,
-      updated_on: turno.updated_on
+      horario: turno.horario.to_datetime
     }
   end
 end

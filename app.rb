@@ -21,6 +21,7 @@ configure do
   set :turnero, Turnero.new(RepositorioPacientes.new(api_logger),
                             RepositorioEspecialidades.new(api_logger),
                             RepositorioMedicos.new(api_logger),
+                            RepositorioTurnos.new(api_logger),
                             ProveedorDeFecha.new,
                             ProveedorDeHora.new)
   api_logger.info('Iniciando turnero...')
