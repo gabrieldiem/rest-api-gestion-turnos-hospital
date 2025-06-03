@@ -1,5 +1,6 @@
 class Turno
-  attr_reader :paciente, :medico, :horario, :id
+  attr_reader :paciente, :medico, :horario
+  attr_accessor :created_on, :updated_on, :id
 
   def initialize(paciente, medico, horario, id = nil)
     @paciente = paciente

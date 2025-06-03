@@ -16,6 +16,7 @@ RSpec.configure do |config|
     ENV['LOG_LEVEL'] = 'fatal'
     logger = Configuration.logger
 
+    RepositorioTurnos.new(logger).delete_all
     RepositorioMedicos.new(logger).delete_all
     RepositorioPacientes.new(logger).delete_all
     RepositorioEspecialidades.new(logger).delete_all
