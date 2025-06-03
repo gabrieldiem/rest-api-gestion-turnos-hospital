@@ -5,7 +5,6 @@ Característica: Health check de la base de datos para tener alta disponibilidad
   Quiero que la base de datos esté disponible y no se caiga
   Para evitar errores inesperados
   
-  @wip
   Escenario: 16.0.1 - Se hace un health check exitoso
     Dado que hay disponibilidad de la base de datos
     Cuando hago un health check del turnero

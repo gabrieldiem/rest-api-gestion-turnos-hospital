@@ -12,7 +12,7 @@ class RepositorioEspecialidades < AbstractRepository
 
   def find_by_codigo(codigo)
     rows = dataset.where(codigo:)
-    return nil if rows.nil?
+    return nil if rows.nil? || rows.empty?
 
     load_object(rows.first)
   end
