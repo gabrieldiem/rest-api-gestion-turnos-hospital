@@ -8,33 +8,42 @@ Before do
   RepositorioEspecialidades.new(@logger).delete_all
 end
 
-Dado('que esta registrado el username {string}') do |username|
+Dado('que esta registrado el username {string} y DNI {string}') do |username, dni|
   @username_registrado = username
-  @dni_registrado = '42951753'
-  registered_body = { email: 'juan.perez@example.com', dni: @dni_registrado, username: }.to_json
-  @response = Faraday.post('/pacientes', registered_body, { 'Content-Type' => 'application/json' })
+  @dni_registrado = dni
+  body = { email: 'juan.perez@example.com', dni: @dni_registrado, username: }
+  @response = Faraday.post('/pacientes', body.to_json, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
 end
 
-Dado('que existe un médico con nombre {string}, apellido {string}, matrícula {string} y especialidad {string} con duración de {string} minutos') do |nombre, apellido, matricula, especial, duracion|
-  RepositorioMedicos.new(@logger).delete_all
-  RepositorioEspecialidades.new(@logger).delete_all
-
-  especialidad_body = { nombre: especial, duracion:, recurrencia_maxima: 5, codigo: especial.downcase[0..3] }.to_json
-  @response = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
+Dado('que existe un médico con nombre {string}, apellido {string}, matrícula {string} y especialidad {string} con duración de {string} minutos') do
+|nombre_medico, apellido_medico, matricula_medico, nombre_especialidad, duracion_turno|
+  codigo_especialidad = nombre_especialidad.downcase[0..3]
+  body = {
+    nombre: nombre_especialidad,
+    duracion: duracion_turno,
+    recurrencia_maxima: 5,
+    codigo: codigo_especialidad
+  }
+  @response = Faraday.post('/especialidades', body.to_json, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
 
-  medicos_body = { nombre:, apellido:, matricula:, especialidad: especial.downcase[0..3] }.to_json
-  @response = Faraday.post('/medicos', medicos_body, { 'Content-Type' => 'application/json' })
+  body = {
+    nombre: nombre_medico,
+    apellido: apellido_medico,
+    matricula: matricula_medico,
+    especialidad: codigo_especialidad
+  }
+  @response = Faraday.post('/medicos', body.to_json, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
 end
 
-Dado('que hago una consulta con el username {string}') do |username|
-  @username_solicitante = username
-end
+# Dado('que hago una consulta con el username {string}') do |username|
+#   @username_solicitante = username
+# end
 
 Dado('no hay turnos asignados para el médico con matrícula {string}') do |matricula|
-  @matricula_medico = matricula
+  # Nada que hacer
 end
 
 Cuando('solicito los turnos disponibles con {string}') do |matricula|
@@ -43,19 +52,19 @@ Cuando('solicito los turnos disponibles con {string}') do |matricula|
   @parsed_response = JSON.parse(@response.body)
 end
 
-Entonces('recibo los próximos {string} turnos disponibles') do |string|
+Entonces('recibo los próximos {int} turnos disponibles') do |cantidad_de_turnos_esperada|
   @turnos_disponibles = @parsed_response['turnos']
 
-  expect(@turnos_disponibles).not_to be_empty
-  expect(@turnos_disponibles.size).to eq(string.to_i)
+  expect(@turnos_disponibles).not_to be nil
+  expect(@turnos_disponibles.size).to eq(cantidad_de_turnos_esperada)
 end
 
 Entonces('son del {string} a las {string} en adelante') do |fecha, hora|
   fecha = Date.parse(fecha).to_s
 
-  proximo_turno = @turnos_disponibles.first
-  expect(proximo_turno['fecha']).to eq(fecha)
-  expect(proximo_turno['hora']).to eq(hora)
+  primer_turno = @turnos_disponibles.first
+  expect(primer_turno['fecha']).to eq(fecha)
+  expect(primer_turno['hora']).to eq(hora)
 end
 
 Dado('el médico con matrícula {string} tiene un turno asignado el {string} {string}') do |matricula, fecha, hora|
@@ -84,8 +93,8 @@ Entonces('no se muestran turnos disponibles') do
 end
 
 Dado('que hoy es {string}') do |fecha|
-  @fecha_actual = Date.strptime(fecha, '%d/%m/%Y')
-  allow(Date).to receive(:today).and_return(@fecha_actual)
+  @fecha_de_hoy = Date.parse(fecha)
+  allow(Date).to receive(:today).and_return(@fecha_de_hoy)
 end
 
 Dado('el médico con matrícula {string} no tiene turnos disponibles en los próximos {int} días') do |matricula, _dias|
