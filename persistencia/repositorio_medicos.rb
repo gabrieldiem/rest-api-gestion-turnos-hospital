@@ -13,10 +13,20 @@ class RepositorioMedicos < AbstractRepository
     found_record = dataset.first(matricula:)
     return nil if found_record.nil?
 
-    load_object(found_record)
+    medico = load_object(found_record)
+    medico.turnos_asignados = load_turnos(medico.id)
+    medico
+  end
+
+  def find_without_loading_turnos(id)
+    AbstractRepository.instance_method(:find).bind(self).call(id)
   end
 
   protected
+
+  def load_turnos(id)
+    RepositorioTurnos.new(@logger).find_by_medico_id(id)
+  end
 
   def load_object(a_hash)
     @logger.debug "Buscando medico desde la DB: #{a_hash.inspect}"

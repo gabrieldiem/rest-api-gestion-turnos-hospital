@@ -37,7 +37,7 @@ class RepositorioTurnos < AbstractRepository
 
   def load_object(a_hash)
     paciente = RepositorioPacientes.new(@logger).find(a_hash[:paciente])
-    medico = RepositorioMedicos.new(@logger).find(a_hash[:medico])
+    medico = RepositorioMedicos.new(@logger).find_without_loading_turnos(a_hash[:medico])
     horario = crear_objeto_horario(a_hash)
     cargar_fechas_de_creacion_y_actualizacion(paciente, medico, horario, a_hash)
   end

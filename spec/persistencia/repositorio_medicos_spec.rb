@@ -16,6 +16,8 @@ describe RepositorioMedicos do
   end
   let(:especialidad) { Especialidad.new('Cardiología', 30, 5, 'card') }
   let(:repositorio_especialidades) { RepositorioEspecialidades.new(logger) }
+  let(:repositorio_pacientes) { RepositorioPacientes.new(logger) }
+  let(:repositorio_turnos) { RepositorioTurnos.new(logger) }
 
   before :each do
     repositorio_especialidades.save(especialidad)
@@ -37,18 +39,19 @@ describe RepositorioMedicos do
     expect(medico_encontrado.matricula).to eq('NAC123')
   end
 
-  xit 'cuando se asigna un turno a un médico se guarda correctamente' do
+  it 'cuando se asigna un turno a un médico se guarda correctamente' do
+    horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
     paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez')
-    horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
+    repositorio_pacientes.save(paciente)
 
-    repositorio = described_class.new(logger)
-    repositorio.save(medico)
+    repositorio_medico = described_class.new(logger)
+    repositorio_medico.save(medico)
 
-    medico.asignar_turno(horario, paciente)
-    repositorio.save(medico)
+    turno = medico.asignar_turno(horario, paciente)
+    repositorio_turnos.save turno
 
-    medico = repositorio.find_by_matricula('NAC123')
+    medico = repositorio_medico.find_by_matricula('NAC123')
     expect(medico.turnos_asignados).to include(Turno.new(paciente, medico, horario))
   end
 end

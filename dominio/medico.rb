@@ -1,8 +1,8 @@
 require_relative '../dominio/turno'
 
 class Medico
-  attr_reader :nombre, :apellido, :matricula, :especialidad, :turnos_asignados
-  attr_accessor :id, :created_on, :updated_on
+  attr_reader :nombre, :apellido, :matricula, :especialidad
+  attr_accessor :id, :created_on, :updated_on, :turnos_asignados
 
   def initialize(nombre, apellido, matricula, especialidad, id = nil)
     @nombre = nombre
