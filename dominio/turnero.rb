@@ -1,3 +1,6 @@
+require 'date'
+require_relative '../lib/hora'
+
 class Turnero
   HORA_DE_COMIENZO_DE_JORNADA = Hora.new(8, 0)
   HORA_DE_FIN_DE_JORNADA = Hora.new(18, 0)

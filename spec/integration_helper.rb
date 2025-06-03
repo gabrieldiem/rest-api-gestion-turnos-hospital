@@ -1,6 +1,10 @@
 # rubocop:disable all
 require 'spec_helper'
 require_relative '../config/configuration'
+require_relative '../persistencia/repositorio_turnos'
+require_relative '../persistencia/repositorio_medicos'
+require_relative '../persistencia/repositorio_pacientes'
+require_relative '../persistencia/repositorio_especialidades'
 
 RSpec.configure do |config|
   config.before :suite do

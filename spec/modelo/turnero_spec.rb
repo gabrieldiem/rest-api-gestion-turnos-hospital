@@ -3,6 +3,7 @@ require 'integration_helper'
 require_relative '../../dominio/turnero'
 require_relative '../../dominio/especialidad'
 require_relative '../../dominio/medico'
+require_relative '../../dominio/paciente'
 require_relative '../../dominio/calculador_de_turnos_libres'
 require_relative '../../dominio/exceptions/medico_inexistente_exception'
 
@@ -10,6 +11,8 @@ require_relative '../../persistencia/repositorio_pacientes'
 require_relative '../../persistencia/repositorio_especialidades'
 require_relative '../../persistencia/repositorio_medicos'
 require_relative '../../lib/proveedor_de_fecha'
+require_relative '../../lib/proveedor_de_hora'
+require_relative '../../lib/hora'
 
 describe Turnero do
   let(:logger) do
@@ -123,15 +126,21 @@ describe Turnero do
       hora_fin_jornada = Hora.new(18, 0)
       cantidad_turnos = cantidad_turnos_en_un_dia(hora_inicio_jornada, hora_fin_jornada, duracion_turno)
 
+      hora_a_asignar = hora_inicio_jornada
+
       cantidad_turnos.times do |i|
         nuevo_dni = "#{dni}+#{i}"
-        # hora_a_asignar = hora_inicio_jornada + Hora.new
+        hora_a_asignar += Hora.new(0, duracion_turno) if i != 0
+
         turnero.crear_paciente("j+#{i}@perez.com", nuevo_dni, "juanperez+#{i}")
-        turnero.asignar_turno(matricula_medico, fecha_a_llenar.to_s, ':', nuevo_dni)
+        turnero.asignar_turno(matricula_medico,
+                              fecha_a_llenar.to_s,
+                              "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}",
+                              nuevo_dni)
       end
     end
 
-    xit 'obtener turnos disponibles del 12/06 dado que hoy es 10/06 y no hay turnos disponibles el 11/06' do
+    it 'obtener turnos disponibles del 12/06 dado que hoy es 10/06 y no hay turnos disponibles el 11/06' do
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
 
       fecha_de_maniana = fecha_de_hoy + 1
@@ -140,11 +149,14 @@ describe Turnero do
       llenar_turnos_de_un_dia('NAC456', fecha_de_maniana, especialidad.duracion)
 
       turnos = turnero.obtener_turnos_disponibles('NAC456')
-      expect(turnos).to eq([Horario.new(fecha_de_pasado_maniana, Hora.new(8, 30)),
-                            Horario.new(fecha_de_pasado_maniana, Hora.new(9, 0)),
-                            Horario.new(fecha_de_pasado_maniana, Hora.new(9, 30)),
-                            Horario.new(fecha_de_pasado_maniana, Hora.new(10, 0)),
-                            Horario.new(fecha_de_pasado_maniana, Hora.new(10, 30))])
+
+      expected = [Horario.new(fecha_de_pasado_maniana, Hora.new(8, 0)),
+                  Horario.new(fecha_de_pasado_maniana, Hora.new(8, 30)),
+                  Horario.new(fecha_de_pasado_maniana, Hora.new(9, 0)),
+                  Horario.new(fecha_de_pasado_maniana, Hora.new(9, 30)),
+                  Horario.new(fecha_de_pasado_maniana, Hora.new(10, 0))]
+
+      expect(turnos).to eq(expected)
     end
 
     it 'obtener turnos disponibles de un medico que no existe produce error MedicoInexistenteException' do
