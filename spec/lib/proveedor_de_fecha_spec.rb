@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'integration_helper'
 require_relative '../../lib/proveedor_de_fecha'
 
 describe ProveedorDeFecha do

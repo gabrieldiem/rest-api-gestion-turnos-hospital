@@ -1,4 +1,5 @@
-require 'spec_helper'
+require 'integration_helper'
+
 require_relative '../../lib/hora'
 
 describe Hora do

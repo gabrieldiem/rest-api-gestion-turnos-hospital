@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'integration_helper'
 require_relative '../../dominio/paciente'
 
 describe Paciente do
