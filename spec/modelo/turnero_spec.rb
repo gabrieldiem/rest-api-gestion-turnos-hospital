@@ -6,7 +6,7 @@ require_relative '../../dominio/medico'
 require_relative '../../dominio/paciente'
 require_relative '../../dominio/calculador_de_turnos_libres'
 require_relative '../../dominio/exceptions/medico_inexistente_exception'
-
+require_relative '../../dominio/exceptions/paciente_inexistente_exception'
 require_relative '../../persistencia/repositorio_pacientes'
 require_relative '../../persistencia/repositorio_especialidades'
 require_relative '../../persistencia/repositorio_medicos'
@@ -237,6 +237,12 @@ describe Turnero do
       paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
       paciente_encontrado = turnero.buscar_paciente_por_username('juanperez')
       expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
+    end
+
+    it 'no se encuentra un paciente por username inexistente' do
+      expect do
+        turnero.buscar_paciente_por_username('noexiste')
+      end.to raise_error(PacienteInexistenteException)
     end
   end
 end
