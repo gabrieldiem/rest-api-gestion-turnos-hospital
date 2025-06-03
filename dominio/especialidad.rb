@@ -9,4 +9,12 @@ class Especialidad
     @codigo = codigo
     @id = id
   end
+
+  def ==(other)
+    other.is_a?(Especialidad) &&
+      @nombre == other.nombre &&
+      @duracion == other.duracion &&
+      @recurrencia_maxima == other.recurrencia_maxima &&
+      @codigo == other.codigo
+  end
 end
