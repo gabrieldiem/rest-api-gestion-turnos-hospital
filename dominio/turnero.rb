@@ -1,5 +1,3 @@
-class MedicoInexistente < StandardError; end
-
 class Turnero
   HORA_DE_COMIENZO_DE_JORNADA = Hora.new(8, 0)
   HORA_DE_FIN_DE_JORNADA = Hora.new(18, 0)
@@ -42,7 +40,7 @@ class Turnero
 
   def buscar_medico(matricula)
     medico = @repositorio_medicos.find_by_matricula(matricula)
-    raise MedicoInexistente, "No existe un médico con la matrícula #{matricula}" if medico.nil?
+    raise MedicoInexistenteException, "No existe un médico con la matrícula #{matricula}" if medico.nil?
 
     medico
   end

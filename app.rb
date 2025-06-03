@@ -8,6 +8,7 @@ require_relative './config/configuration'
 require_relative './lib/version'
 require_relative './lib/proveedor_de_fecha'
 require_relative './lib/proveedor_de_hora'
+require_relative './dominio/exceptions/medico_inexistente_exception'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -105,7 +106,7 @@ get '/medicos/:matricula/turnos-disponibles' do
     },
     turnos: turnos_parseados
   }.to_json
-rescue MedicoInexistente => e
+rescue MedicoInexistenteException => e
   logger.error("Error al buscar médico: #{e.message}")
   status 404
   { mensaje_error: e.message }.to_json

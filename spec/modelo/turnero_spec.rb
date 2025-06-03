@@ -4,6 +4,7 @@ require_relative '../../dominio/turnero'
 require_relative '../../dominio/especialidad'
 require_relative '../../dominio/medico'
 require_relative '../../dominio/calculador_de_turnos_libres'
+require_relative '../../dominio/exceptions/medico_inexistente_exception'
 
 require_relative '../../persistencia/repositorio_pacientes'
 require_relative '../../persistencia/repositorio_especialidades'
@@ -75,7 +76,7 @@ describe Turnero do
     end
 
     it 'no encuentra un médico por matrícula inexistente' do
-      expect { turnero.buscar_medico('NAC999') }.to raise_error(MedicoInexistente)
+      expect { turnero.buscar_medico('NAC999') }.to raise_error(MedicoInexistenteException)
     end
   end
 
@@ -108,6 +109,12 @@ describe Turnero do
                             Horario.new(fecha_de_maniana, Hora.new(9, 30)),
                             Horario.new(fecha_de_maniana, Hora.new(10, 0)),
                             Horario.new(fecha_de_maniana, Hora.new(10, 30))])
+    end
+
+    it 'obtener turnos disponibles de un medico que no existe produce error MedicoInexistenteException' do
+      expect do
+        turnero.obtener_turnos_disponibles('NAC999')
+      end.to raise_error(MedicoInexistenteException)
     end
   end
 

@@ -76,8 +76,11 @@ Dado('el médico con matrícula {string} tiene un turno asignado el {string} {st
 end
 
 Entonces('no se muestran turnos disponibles') do
-  response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
-  @parsed_response = JSON.parse(response.body)
+  @response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
+  @parsed_response = JSON.parse(@response.body)
+
+  expect(@response.status).to eq(404)
+  expect(@parsed_response[:turnos]).to be nil
 end
 
 Dado('que hoy es {string}') do |fecha|
