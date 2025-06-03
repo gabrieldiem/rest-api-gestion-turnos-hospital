@@ -2,8 +2,9 @@ class Hora
   attr_reader :hora, :minutos
 
   def initialize(hora, minutos)
-    @hora = hora
-    @minutos = minutos
+    extra_horas, normalizados_minutos = minutos.divmod(60)
+    @hora = (hora + extra_horas) % 24
+    @minutos = normalizados_minutos
   end
 
   def ==(other)

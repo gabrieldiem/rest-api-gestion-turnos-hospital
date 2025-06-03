@@ -125,8 +125,9 @@ describe Turnero do
 
       cantidad_turnos.times do |i|
         nuevo_dni = "#{dni}+#{i}"
+        # hora_a_asignar = hora_inicio_jornada + Hora.new
         turnero.crear_paciente("j+#{i}@perez.com", nuevo_dni, "juanperez+#{i}")
-        turnero.asignar_turno(matricula_medico, fecha_a_llenar.to_s, '8:00', nuevo_dni)
+        turnero.asignar_turno(matricula_medico, fecha_a_llenar.to_s, ':', nuevo_dni)
       end
     end
 

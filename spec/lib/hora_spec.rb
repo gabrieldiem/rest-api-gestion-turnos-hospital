@@ -51,4 +51,10 @@ describe Hora do
 
     expect(hora_resultado).to eq described_class.new(0, 0)
   end
+
+  it 'Se normaliza correctamente una hora creada como 0h 120min a 2h 0min' do
+    hora = described_class.new(0, 120)
+
+    expect(hora).to eq described_class.new(2, 0)
+  end
 end
