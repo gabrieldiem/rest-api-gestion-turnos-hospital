@@ -29,4 +29,12 @@ describe RepositorioPacientes do
     juan_encontrado = repositorio.find_by_dni('12345678')
     expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)
   end
+
+  it 'deberia encontrar un paciente por username' do
+    repositorio = described_class.new(logger)
+    juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
+    repositorio.save(juan)
+    juan_encontrado = repositorio.find_by_username('@juanperez')
+    expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)
+  end
 end

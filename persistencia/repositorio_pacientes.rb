@@ -16,6 +16,13 @@ class RepositorioPacientes < AbstractRepository
     load_object(records)
   end
 
+  def find_by_username(username)
+    records = dataset.where(username:).first
+    return nil if records.nil?
+
+    load_object(records)
+  end
+
   protected
 
   def load_object(a_hash)
