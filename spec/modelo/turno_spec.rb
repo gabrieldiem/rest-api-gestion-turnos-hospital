@@ -17,4 +17,10 @@ describe Turno do
     turno = described_class.new(paciente, medico, horario)
     expect(turno).to have_attributes(paciente:, medico:, horario:)
   end
+
+  it 'puedo comparar dos turnos con el mismo paciente, medico y horario' do
+    turno1 = described_class.new(paciente, medico, horario)
+    turno2 = described_class.new(paciente, medico, horario)
+    expect(turno1).to eq(turno2)
+  end
 end

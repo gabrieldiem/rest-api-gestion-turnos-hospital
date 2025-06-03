@@ -7,4 +7,11 @@ class Turno
     @horario = horario
     @id = id
   end
+
+  def ==(other)
+    other.is_a?(Turno) &&
+      @paciente == other.paciente &&
+      @medico == other.medico &&
+      @horario == other.horario
+  end
 end
