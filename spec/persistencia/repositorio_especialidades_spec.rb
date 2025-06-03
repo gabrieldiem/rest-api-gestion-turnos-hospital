@@ -1,4 +1,5 @@
 require 'integration_helper'
+
 require_relative '../../dominio/especialidad'
 require_relative '../../persistencia/repositorio_especialidades'
 

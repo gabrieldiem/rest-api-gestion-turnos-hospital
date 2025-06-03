@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'integration_helper'
 
 require_relative '../../dominio/turno'
 require_relative '../../dominio/medico'

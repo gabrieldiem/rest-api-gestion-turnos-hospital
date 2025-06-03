@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'integration_helper'
 
 require_relative '../../dominio/turnero'
 require_relative '../../dominio/especialidad'
