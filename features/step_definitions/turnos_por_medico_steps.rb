@@ -6,7 +6,8 @@ end
 Dado('que esta registrado el username {string}') do |username|
   RepositorioPacientes.new(@logger).delete_all
   @username_registrado = username
-  registered_body = { email: 'juan.perez@example.com', dni: '42951753', username: }.to_json
+  @dni_registrado = '42951753'
+  registered_body = { email: 'juan.perez@example.com', dni: @dni_registrado, username: }.to_json
   @response = Faraday.post('/pacientes', registered_body, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
 end
@@ -55,14 +56,18 @@ end
 
 Dado('el médico con matrícula {string} tiene un turno asignado el {string} {string}') do |matricula, fecha, hora|
   @repo_medicos = RepositorioMedicos.new(@logger)
-  medico = @repo_medicos.find_by_matricula(matricula)
+  @repo_turnos = RepositorioTurnos.new(@logger)
+  @repo_paciente = RepositorioPacientes.new(@logger)
 
-  fecha = Date.strptime(fecha, '%d/%m/%Y')
+  medico = @repo_medicos.find_by_matricula(matricula)
+  paciente = @repo_paciente.find_by_dni(@dni_registrado)
+
+  fecha = Date.parse(fecha)
   hora = Hora.new(*hora.split(':').map(&:to_i))
   horario = Horario.new(fecha, hora)
 
-  medico.asignar_turno(horario, @username_registrado)
-  @repo_medicos.save(medico)
+  turno = medico.asignar_turno(horario, paciente)
+  @repo_turnos.save(turno)
 end
 
 Entonces('no se muestran turnos disponibles') do
