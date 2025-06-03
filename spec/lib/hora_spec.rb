@@ -42,4 +42,13 @@ describe Hora do
 
     expect(hora_resultado).to eq described_class.new(0, 0)
   end
+
+  it 'Suma de 24h00 + 24h00 da 00h00' do
+    h1 = described_class.new(24, 0)
+    h2 = described_class.new(24, 0)
+
+    hora_resultado = h1 + h2
+
+    expect(hora_resultado).to eq described_class.new(0, 0)
+  end
 end
