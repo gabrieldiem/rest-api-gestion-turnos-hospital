@@ -76,4 +76,51 @@ describe CalculadorDeTurnosLibres do
                           Horario.new(fecha_de_maniana, Hora.new(10, 0)),
                           Horario.new(fecha_de_maniana, Hora.new(10, 30))])
   end
+
+  def cantidad_turnos_en_un_dia(hora_inicio_jornada, hora_fin_jornada, duracion_turno)
+    minutos_totales_de_jornada = (hora_fin_jornada.hora - hora_inicio_jornada.hora) * 60
+    minutos_totales_de_jornada += hora_fin_jornada.minutos - hora_inicio_jornada.minutos
+    minutos_totales_de_jornada / duracion_turno
+  end
+
+  def asignar_un_turno(hora_a_asignar, fecha_a_llenar, paciente)
+    repositorio_pacientes.save paciente
+    turno = medico.asignar_turno(Horario.new(fecha_a_llenar, hora_a_asignar), paciente)
+    repositorio_turnos.save turno
+  end
+
+  def llenar_turnos_de_un_dia(fecha_a_llenar, duracion_turno)
+    dni = '100_'
+    hora_inicio_jornada = Hora.new(8, 0)
+    hora_fin_jornada = Hora.new(18, 0)
+    cantidad_turnos = cantidad_turnos_en_un_dia(hora_inicio_jornada, hora_fin_jornada, duracion_turno)
+
+    hora_a_asignar = hora_inicio_jornada
+
+    cantidad_turnos.times do |i|
+      hora_a_asignar += Hora.new(0, duracion_turno) if i != 0
+      nuevo_dni = "#{dni}+#{i}"
+      paciente = Paciente.new("j+#{i}@perez.com", nuevo_dni, "juanperez+#{i}")
+      asignar_un_turno(hora_a_asignar, fecha_a_llenar, paciente)
+    end
+  end
+
+  it 'obtener turnos disponibles del 12/06 dado que hoy es 10/06 y no hay turnos disponibles el 11/06' do
+    fecha_de_maniana = fecha_de_hoy + 1
+    fecha_de_pasado_maniana = fecha_de_hoy + 2
+
+    llenar_turnos_de_un_dia(fecha_de_maniana, especialidad.duracion)
+
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
+                                                      Hora.new(18, 0),
+                                                      proveedor_de_fecha,
+                                                      proveedor_de_hora)
+
+    turnos = calculador_de_turnos_libres.calcular_turnos_disponibles_por_medico medico
+    expect(turnos).to eq([Horario.new(fecha_de_pasado_maniana, Hora.new(8, 0)),
+                          Horario.new(fecha_de_pasado_maniana, Hora.new(8, 30)),
+                          Horario.new(fecha_de_pasado_maniana, Hora.new(9, 0)),
+                          Horario.new(fecha_de_pasado_maniana, Hora.new(9, 30)),
+                          Horario.new(fecha_de_pasado_maniana, Hora.new(10, 0))])
+  end
 end
