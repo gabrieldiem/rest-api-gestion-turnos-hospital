@@ -65,6 +65,13 @@ class Turnero
     @calculador_de_turnos_libres.calcular_turnos_disponibles_por_medico(medico)
   end
 
+  def buscar_paciente_por_username(username)
+    paciente = @repositorio_pacientes.find_by_username(username)
+    raise PacienteInexistenteException, "No existe un paciente con el username #{username}" if paciente.nil?
+
+    paciente
+  end
+
   private
 
   def paciente_ya_existente?(dni)
