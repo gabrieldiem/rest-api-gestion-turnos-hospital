@@ -40,9 +40,6 @@ describe CalculadorDeTurnosLibres do
     medico
   end
 
-  let(:paciente) do
-  end
-
   it 'obtener turnos disponibles de un médico' do
     fecha_de_maniana = fecha_de_hoy + 1
     calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
