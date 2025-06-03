@@ -27,7 +27,7 @@ describe RepositorioTurnos do
     expect(turno.id).not_to be_nil
   end
 
-  xit 'obtener turnos por id de un medico' do
+  it 'obtener turnos por id de un medico' do
     especialidad = RepositorioEspecialidades.new(logger).save(Especialidad.new('Cardiología', 30, 5, 'card'))
     medico = RepositorioMedicos.new(logger).save(Medico.new('Juan', 'Pérez', 'NAC123', especialidad))
     paciente = RepositorioPacientes.new(logger).save(Paciente.new('anagomez@example.com', '12345678', 'anagomez'))
