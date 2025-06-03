@@ -37,4 +37,9 @@ describe RepositorioPacientes do
     juan_encontrado = repositorio.find_by_username('@juanperez')
     expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)
   end
+
+  it 'deberia retornar nil si no encuentra un paciente por username' do
+    repositorio = described_class.new(logger)
+    expect(repositorio.find_by_username('@noexiste')).to be_nil
+  end
 end
