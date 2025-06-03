@@ -1,7 +1,12 @@
 require 'integration_helper'
+
 require_relative '../../dominio/medico'
-require_relative '../../persistencia/repositorio_medicos'
 require_relative '../../dominio/especialidad'
+require_relative '../../dominio/paciente'
+require_relative '../../lib/hora'
+require_relative '../../lib/horario'
+
+require_relative '../../persistencia/repositorio_medicos'
 require_relative '../../persistencia/repositorio_especialidades'
 
 describe RepositorioMedicos do
@@ -34,13 +39,16 @@ describe RepositorioMedicos do
 
   xit 'cuando se asigna un turno a un médico se guarda correctamente' do
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez')
+    horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
+
     repositorio = described_class.new(logger)
     repositorio.save(medico)
 
-    medico.asignar_turno(Date.new(2025, 6, 11), '8:00', 'Paciente A')
+    medico.asignar_turno(horario, paciente)
     repositorio.save(medico)
 
     medico = repositorio.find_by_matricula('NAC123')
-    expect(medico.turnos).to include({ fecha: Date.new(2025, 6, 11), hora: '8:00', paciente: 'Paciente A' })
+    expect(medico.turnos_asignados).to include(Turno.new(paciente, medico, horario))
   end
 end
