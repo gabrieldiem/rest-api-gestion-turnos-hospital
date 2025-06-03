@@ -23,7 +23,7 @@ Característica: Consultar turnos disponibles por médico
     Entonces recibo los próximos "5" turnos disponibles
     Y son del "21/05/2025" a las "8:15" en adelante
 
-  @wip
+  @wip @indev
   Escenario: 4.0.3 - Consultar turnos de un médico que no existe no muestra turnos
     Dado que hago una consulta con el username "juanperez"
     Cuando solicito los turnos disponibles con "ABC000"

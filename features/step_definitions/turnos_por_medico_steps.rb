@@ -1,10 +1,11 @@
 Before do
   SemanticLogger.default_level = :fatal
   @logger = Configuration.logger
+  RepositorioTurnos.new(@logger).delete_all
+  RepositorioPacientes.new(@logger).delete_all
 end
 
 Dado('que esta registrado el username {string}') do |username|
-  RepositorioPacientes.new(@logger).delete_all
   @username_registrado = username
   @dni_registrado = '42951753'
   registered_body = { email: 'juan.perez@example.com', dni: @dni_registrado, username: }.to_json

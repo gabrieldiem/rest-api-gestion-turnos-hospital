@@ -73,6 +73,10 @@ describe Turnero do
       medico_encontrado = turnero.buscar_medico('NAC456')
       expect(medico_encontrado).to have_attributes(nombre: medico_nuevo.nombre, apellido: medico_nuevo.apellido, matricula: medico_nuevo.matricula)
     end
+
+    it 'no encuentra un médico por matrícula inexistente' do
+      expect { turnero.buscar_medico('NAC999') }.to raise_error(MedicoInexistente)
+    end
   end
 
   describe '- Capacidades de Turnos - ' do
