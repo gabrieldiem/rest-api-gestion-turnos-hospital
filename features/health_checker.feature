@@ -10,7 +10,6 @@ Característica: Health check de la base de datos para tener alta disponibilidad
     Cuando hago un health check del turnero
     Entonces recibo una respuesta exitosa
 
-  @wip
   Escenario: 16.0.2 - El health check falla cuando la base no está disponible
     Dado que no hay disponibilidad de la base de datos
     Cuando hago un health check del turnero

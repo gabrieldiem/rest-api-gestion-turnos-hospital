@@ -54,6 +54,12 @@ get '/health-check' do
   repo_especialidades.find_by_codigo('card')
 
   status 200
+  return
+rescue Sequel::DatabaseConnectionError
+  status 503
+  {
+    "mensaje_error": 'Servicio no disponible'
+  }.to_json
 end
 
 post '/pacientes' do
