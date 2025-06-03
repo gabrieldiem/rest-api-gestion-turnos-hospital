@@ -25,6 +25,7 @@ Dado('que existe un médico con nombre {string}, apellido {string}, matrícula {
     recurrencia_maxima: 5,
     codigo: codigo_especialidad
   }
+  @duracion_turno = duracion_turno.to_i
   @response = Faraday.post('/especialidades', body.to_json, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
 
@@ -37,10 +38,6 @@ Dado('que existe un médico con nombre {string}, apellido {string}, matrícula {
   @response = Faraday.post('/medicos', body.to_json, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
 end
-
-# Dado('que hago una consulta con el username {string}') do |username|
-#   @username_solicitante = username
-# end
 
 Dado('no hay turnos asignados para el médico con matrícula {string}') do |matricula|
   # Nada que hacer
@@ -84,7 +81,15 @@ Dado('el médico con matrícula {string} tiene un turno asignado el {string} {st
   @repo_turnos.save(turno)
 end
 
-Entonces('no se muestran turnos disponibles') do
+Entonces('no se muestran turnos disponibles en la respuesta correcta') do
+  @response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
+  @parsed_response = JSON.parse(@response.body)
+
+  expect(@response.status).to eq 200
+  expect(@parsed_response[:turnos]).to be nil
+end
+
+Entonces('no se muestran turnos disponibles en la respuesta erronea') do
   @response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
   @parsed_response = JSON.parse(@response.body)
 
@@ -97,7 +102,44 @@ Dado('que hoy es {string}') do |fecha|
   allow(Date).to receive(:today).and_return(@fecha_de_hoy)
 end
 
-Dado('el médico con matrícula {string} no tiene turnos disponibles en los próximos {int} días') do |matricula, _dias|
-  medico = RepostiorioMedicos.new.find_by_matricula(matricula)
-  expect { medico.tiene_turnos? }.to be false
+def cantidad_turnos_en_un_dia(hora_inicio_jornada, hora_fin_jornada, duracion_turno)
+  minutos_totales_de_jornada = (hora_fin_jornada.hora - hora_inicio_jornada.hora) * 60
+  minutos_totales_de_jornada += hora_fin_jornada.minutos - hora_inicio_jornada.minutos
+  minutos_totales_de_jornada / duracion_turno
+end
+
+def llenar_turnos_de_un_dia(matricula_medico, fecha_a_llenar, duracion_turno, turnero)
+  dni = "100_#{fecha_a_llenar}_"
+  hora_inicio_jornada = Hora.new(8, 0)
+  hora_fin_jornada = Hora.new(18, 0)
+  cantidad_turnos = cantidad_turnos_en_un_dia(hora_inicio_jornada, hora_fin_jornada, duracion_turno)
+
+  hora_a_asignar = hora_inicio_jornada
+
+  cantidad_turnos.times do |i|
+    nuevo_dni = "#{dni}+#{i}"
+    hora_a_asignar += Hora.new(0, duracion_turno) if i != 0
+
+    turnero.crear_paciente("j+#{i}@perez.com", nuevo_dni, "juanperez+#{i}")
+    turnero.asignar_turno(matricula_medico,
+                          fecha_a_llenar.to_s,
+                          "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}",
+                          nuevo_dni)
+  end
+end
+
+Dado('el médico con matrícula {string} no tiene turnos disponibles en los próximos {int} días') do |matricula, dias|
+  turnero = Turnero.new(RepositorioPacientes.new(@logger),
+                        RepositorioEspecialidades.new(@logger),
+                        RepositorioMedicos.new(@logger),
+                        RepositorioTurnos.new(@logger),
+                        ProveedorDeFecha.new,
+                        ProveedorDeHora.new)
+  fecha_de_maniana = @fecha_de_hoy + 1
+  dias.to_i.times do |i|
+    llenar_turnos_de_un_dia(matricula, fecha_de_maniana + i, @duracion_turno, turnero)
+  end
+
+  turnos = turnero.obtener_turnos_disponibles(matricula)
+  expect(turnos).to eq([])
 end

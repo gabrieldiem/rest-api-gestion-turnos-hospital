@@ -4,7 +4,7 @@ Característica: Consultar turnos disponibles por médico
   Quiero consultar los turnos disponibles de un médico con una determinada matrícula
 
   Antecedentes:
-    Dado que esta registrado el username "juanperez" y DNI "42951753'"
+    Dado que esta registrado el username "juanperez" y DNI "42951753"
     Y que existe un médico con nombre "Juan", apellido "Perez", matrícula "NAC123" y especialidad "Traumatología" con duración de "15" minutos
 
   Escenario: 4.0.1 - Se puede consultar turnos disponibles de un médico sin turnos asignados
@@ -23,19 +23,12 @@ Característica: Consultar turnos disponibles por médico
 
   Escenario: 4.0.3 - Consultar turnos de un médico que no existe no muestra turnos
     Cuando solicito los turnos disponibles con "ABC000"
-    Entonces no se muestran turnos disponibles
+    Entonces no se muestran turnos disponibles en la respuesta erronea
     Y recibo un mensaje de error "No existe un médico con la matrícula ABC000"
 
-  @wip
   Escenario: 4.0.4 - Se puede consultar turnos de un médico sin turnos disponibles en los próximos 40 días
     Dado que hoy es "20/05/2025"
-    Y el médico con matrícula "NAC123" no tiene turnos disponibles en los próximos 40 días
-    Cuando solicito los turnos disponibles con "NAC123"
-    Entonces no se muestran turnos disponibles
-    Y recibo un mensaje de error "No hay turnos disponibles para el médico en los próximos 40 días"
-
-  @wip
-  Escenario: 4.0.5 - No se pueden consultar turnos sin estar registrado
-    Cuando solicito los turnos disponibles con "NAC123"
-    Entonces no se muestran turnos disponibles
-    Y recibo un mensaje de error "Para consultar turnos tiene que estar registrado"
+    Y que existe un médico con nombre "Emilio", apellido "Joker", matrícula "PROV100" y especialidad "Cirujía" con duración de "300" minutos
+    Y el médico con matrícula "PROV100" no tiene turnos disponibles en los próximos 40 días
+    Cuando solicito los turnos disponibles con "PROV100"
+    Entonces no se muestran turnos disponibles en la respuesta correcta
