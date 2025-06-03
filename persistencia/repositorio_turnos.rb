@@ -10,6 +10,7 @@ class RepositorioTurnos < AbstractRepository
   def initialize(logger)
     super()
     @logger = logger
+    @repositorio_pacientes = RepositorioPacientes.new(@logger)
   end
 
   def find_by_medico_id(medico_id)

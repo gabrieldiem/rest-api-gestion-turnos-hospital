@@ -10,10 +10,10 @@ class RepositorioPacientes < AbstractRepository
   end
 
   def find_by_dni(dni)
-    found_record = dataset.first(dni:)
-    return nil if found_record.nil?
+    records = dataset.where(dni:).first
+    return nil if records.nil?
 
-    load_object(found_record)
+    load_object(records)
   end
 
   protected

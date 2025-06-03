@@ -121,7 +121,7 @@ describe Turnero do
     end
 
     def llenar_turnos_de_un_dia(matricula_medico, fecha_a_llenar, duracion_turno)
-      dni = '100_'
+      dni = "100_#{fecha_a_llenar}_"
       hora_inicio_jornada = Hora.new(8, 0)
       hora_fin_jornada = Hora.new(18, 0)
       cantidad_turnos = cantidad_turnos_en_un_dia(hora_inicio_jornada, hora_fin_jornada, duracion_turno)
@@ -163,6 +163,19 @@ describe Turnero do
       expect do
         turnero.obtener_turnos_disponibles('NAC999')
       end.to raise_error(MedicoInexistenteException)
+    end
+
+    it 'obtener turnos disponibles cuando no hay turnos en los proximos 40 dias me da ningun turno disponible' do
+      especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+
+      fecha_de_maniana = fecha_de_hoy + 1
+      40.times do |i|
+        llenar_turnos_de_un_dia('NAC456', fecha_de_maniana + i, especialidad_cirujano.duracion)
+      end
+
+      turnos = turnero.obtener_turnos_disponibles('NAC456')
+      expect(turnos).to eq([])
     end
   end
 

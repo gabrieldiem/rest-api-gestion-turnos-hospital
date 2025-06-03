@@ -7,13 +7,16 @@ class RepositorioMedicos < AbstractRepository
   def initialize(logger)
     super()
     @logger = logger
+    @repositorio_turnos = RepositorioTurnos.new(logger)
+    @repositorio_especialidades = RepositorioEspecialidades.new(logger)
   end
 
   def find_by_matricula(matricula)
-    found_record = dataset.first(matricula:)
-    return nil if found_record.nil?
+    records = dataset.where(matricula:).first
 
-    medico = load_object(found_record)
+    return nil if records.nil?
+
+    medico = load_object(records)
     medico.turnos_asignados = load_turnos(medico.id)
     medico
   end
@@ -25,15 +28,13 @@ class RepositorioMedicos < AbstractRepository
   protected
 
   def load_turnos(id)
-    RepositorioTurnos.new(@logger).find_by_medico_id(id)
+    @repositorio_turnos.find_by_medico_id(id)
   end
 
   def load_object(a_hash)
     @logger.debug "Buscando medico desde la DB: #{a_hash.inspect}"
-    especialidad = RepositorioEspecialidades.new(@logger).find(a_hash[:especialidad]) if a_hash[:especialidad]
-    medico = Medico.new(a_hash[:nombre], a_hash[:apellido], a_hash[:matricula], especialidad, a_hash[:id])
-    @logger.debug "Medico encontrado: #{medico.inspect}"
-    medico
+    especialidad = @repositorio_especialidades.find(a_hash[:especialidad]) if a_hash[:especialidad]
+    Medico.new(a_hash[:nombre], a_hash[:apellido], a_hash[:matricula], especialidad, a_hash[:id])
   end
 
   def changeset(medico)
