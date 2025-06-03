@@ -9,4 +9,10 @@ describe Medico do
     medico = described_class.new('Juan', 'Pérez', 'NAC123', especialidad)
     expect(medico).to have_attributes(nombre: 'Juan', apellido: 'Pérez', matricula: 'NAC123', especialidad:)
   end
+
+  it 'podemos comparar dos médicos con el mismo nombre, apellido, matrícula y especialidad' do
+    medico1 = described_class.new('Juan', 'Pérez', 'NAC123', especialidad)
+    medico2 = described_class.new('Juan', 'Pérez', 'NAC123', especialidad)
+    expect(medico1).to eq(medico2)
+  end
 end
