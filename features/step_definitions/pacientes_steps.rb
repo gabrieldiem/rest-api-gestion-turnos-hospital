@@ -41,3 +41,15 @@ Entonces('recibo un mensaje de error {string}') do |error_msg|
   parsed_response = JSON.parse(@response.body)
   expect(parsed_response['mensaje_error']).to eq(error_msg)
 end
+
+Cuando('solicito mis datos de paciente') do
+  @response = Faraday.get("/pacientes?username=#{@username}")
+  expect(@response.status).to eq(200)
+end
+
+Entonces('recibo mis datos de paciente') do
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['username']).to eq(@username)
+  expect(parsed_response['dni']).not_to be_nil
+  expect(parsed_response['email']).not_to be_nil
+end

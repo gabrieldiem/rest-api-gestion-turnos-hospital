@@ -9,6 +9,7 @@ require_relative './lib/version'
 require_relative './lib/proveedor_de_fecha'
 require_relative './lib/proveedor_de_hora'
 require_relative './dominio/exceptions/medico_inexistente_exception'
+require_relative './dominio/exceptions/paciente_inexistente_exception'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -141,4 +142,21 @@ post '/medicos' do
     especialidad: medico.especialidad.codigo,
     created_on: medico.created_on
   }.to_json
+end
+
+get '/pacientes' do
+  logger.debug("GET /pacientes/#{params[:username]}")
+
+  paciente = turnero.buscar_paciente_por_username(params[:username])
+  status 200
+  {
+    username: paciente.username,
+    dni: paciente.dni,
+    email: paciente.email
+  }.to_json
+
+rescue PacienteInexistenteException => e
+  logger.error("Error al buscar paciente: #{e.message}")
+  status 404
+  { mensaje_error: e.message }.to_json
 end
