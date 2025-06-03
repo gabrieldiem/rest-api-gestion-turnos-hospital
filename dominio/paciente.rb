@@ -19,4 +19,11 @@ class Paciente
     @id = id
     validate!
   end
+
+  def ==(other)
+    other.is_a?(Paciente) &&
+      @dni == other.dni &&
+      @email == other.email &&
+      @username == other.username
+  end
 end

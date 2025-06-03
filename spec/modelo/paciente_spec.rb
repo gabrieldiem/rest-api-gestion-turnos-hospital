@@ -7,6 +7,12 @@ describe Paciente do
     expect(paciente).to have_attributes(email: 'juan.perez@example.com', dni: '12345678', username: '@juanperez')
   end
 
+  it 'podemos comparar dos pacientes con el mismo dni, email y username' do
+    paciente1 = described_class.new('juan.perez@example.com', '12345678', '@juanperez')
+    paciente2 = described_class.new('juan.perez@example.com', '12345678', '@juanperez')
+    expect(paciente1).to eq(paciente2)
+  end
+
   describe '- validaciones -' do
     it 'no se crea si el dni es vacío' do
       expect do
