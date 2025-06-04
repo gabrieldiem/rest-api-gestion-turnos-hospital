@@ -304,5 +304,11 @@ describe Turnero do
         turnero.buscar_paciente_por_username('noexiste')
       end.to raise_error(PacienteInexistenteException)
     end
+
+    it 'no se encuentra un paciente por username vacio' do
+      expect do
+        turnero.buscar_paciente_por_username('')
+      end.to raise_error(PacienteInexistenteException)
+    end
   end
 end
