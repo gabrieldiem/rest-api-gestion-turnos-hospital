@@ -30,5 +30,12 @@ describe Horario do
 
       expect(h1.hay_superposicion?(h2, duracion_1h)).to be true
     end
+
+    it 'no hay superposición si están separados cuando están en la misma fecha' do
+      h1 = described_class.new(fecha, Hora.new(10, 0))
+      h2 = described_class.new(fecha, Hora.new(11, 1))
+
+      expect(h1.hay_superposicion?(h2, duracion_1h)).to be false
+    end
   end
 end
