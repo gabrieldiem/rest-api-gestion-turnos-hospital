@@ -123,4 +123,28 @@ describe CalculadorDeTurnosLibres do
                           Horario.new(fecha_de_pasado_maniana, Hora.new(9, 30)),
                           Horario.new(fecha_de_pasado_maniana, Hora.new(10, 0))])
   end
+
+  it 'calculador de turnos me dice cuando el turno no fue reservado aun' do
+    fecha_de_maniana = fecha_de_hoy + 1
+    hora_a_chequear = Hora.new(9, 0)
+
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
+                                                      Hora.new(18, 0),
+                                                      proveedor_de_fecha,
+                                                      proveedor_de_hora)
+    expect(calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, fecha_de_maniana, hora_a_chequear)).to be false
+  end
+
+  it 'calculador de turnos me dice cuando el turno ya fue reservado' do
+    fecha_de_maniana = fecha_de_hoy + 1
+    hora_a_chequear = Hora.new(9, 0)
+
+    paciente = Paciente.new('j@a.com', '123456789', 'juancito')
+    asignar_un_turno(hora_a_chequear, fecha_de_maniana, paciente)
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
+                                                      Hora.new(18, 0),
+                                                      proveedor_de_fecha,
+                                                      proveedor_de_hora)
+    expect(calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, fecha_de_maniana, hora_a_chequear)).to be true
+  end
 end
