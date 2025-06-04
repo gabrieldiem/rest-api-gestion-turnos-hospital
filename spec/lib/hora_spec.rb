@@ -80,5 +80,12 @@ describe Hora do
 
       expect(h1.hay_superposicion?(h2, duracion_1h)).to be false
     end
+
+    it 'detecta superposición completa' do
+      h1 = described_class.new(10, 0)
+      h2 = described_class.new(10, 0)
+
+      expect(h1.hay_superposicion?(h2, duracion_1h)).to be true
+    end
   end
 end
