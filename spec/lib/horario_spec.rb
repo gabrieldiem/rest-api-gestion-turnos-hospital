@@ -37,5 +37,12 @@ describe Horario do
 
       expect(h1.hay_superposicion?(h2, duracion_1h)).to be false
     end
+
+    it 'hay superposición total si empiezan igual cuando están en la misma fecha' do
+      h1 = described_class.new(fecha, Hora.new(9, 0))
+      h2 = described_class.new(fecha, Hora.new(9, 0))
+
+      expect(h1.hay_superposicion?(h2, duracion_1h)).to be true
+    end
   end
 end
