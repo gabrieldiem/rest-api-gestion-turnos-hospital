@@ -54,4 +54,20 @@ describe RepositorioMedicos do
     medico = repositorio_medico.find_by_matricula('NAC123')
     expect(medico.turnos_asignados).to include(Turno.new(paciente, medico, horario))
   end
+
+  it 'obtener un médico por id sin turnos' do
+    horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
+    medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez')
+    repositorio_pacientes.save(paciente)
+
+    repositorio_medico = described_class.new(logger)
+    repositorio_medico.save(medico)
+
+    turno = medico.asignar_turno(horario, paciente)
+    repositorio_turnos.save turno
+
+    medico = repositorio_medico.find_without_loading_turnos(medico.id)
+    expect(medico.turnos_asignados).to eq []
+  end
 end
