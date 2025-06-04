@@ -1,4 +1,4 @@
-Dado('Y que existe un medico registrado con nombre {string} y apellido {string} con matricula {string}') do |nombre, apellido, matricula|
+Dado('que existe un medico registrado con nombre {string} y apellido {string} con matricula {string}') do |nombre, apellido, matricula|
   @matricula = matricula
   especialidad_body = { nombre: 'Cardiologia', duracion: 20, recurrencia_maxima: 5, codigo: 'card' }.to_json
   response = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
@@ -10,8 +10,8 @@ Dado('Y que existe un medico registrado con nombre {string} y apellido {string} 
 end
 
 Dado('que tiene un turno el día {string} a las {string} para {string} con DNI {string} con el medico {string}') do |fecha, hora, username, dni_paciente, matricula|
-  paciente_body = { username:, email: "#{username}@test.com", dni: dni_paciente }.to_json
-  response = Faraday.post('/pacientes', paciente_body, { 'Content-Type' => 'application/json' })
+  paciente_body = { username:, email: "#{username}@test.com", dni: dni_paciente }
+  response = Faraday.post('/pacientes', paciente_body.to_json, { 'Content-Type' => 'application/json' })
   expect(response.status).to eq(201)
 
   body = {
@@ -27,7 +27,7 @@ end
 
 Entonces('el sistema debe mostrar que hay {string} turnos asignados en total') do |cantidad_turnos|
   @response_body = JSON.parse(@response_turnos.body, symbolize_names: true)
-  expect(response_body[:cantidad_turnos]).to eq(cantidad_turnos.to_i)
+  expect(@response_body[:cantidad_turnos]).to eq(cantidad_turnos.to_i)
 end
 
 Entonces('debe listar el turno del {string} a las {string} para {string} con DNI {string}') do |fecha, hora, _username, dni|
@@ -41,7 +41,7 @@ Entonces('debe listar el turno del {string} a las {string} para {string} con DNI
   expect(@response_body[:turnos]).to include(turno_esperado)
 end
 
-Cuando('consulto la jornada del medico con matricula {string}') do |_string|
+Cuando('consulto la jornada del medico con matricula {string}') do |matricula|
   @response_turnos = Faraday.get("/medicos/#{matricula}/turnos-reservados")
   expect(@response_turnos.status).to eq(200)
 end

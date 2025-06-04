@@ -201,3 +201,31 @@ rescue SinTurnosException => e
   status 404
   { mensaje_error: e.message }.to_json
 end
+
+get '/medicos/:matricula/turnos-reservados' do
+  logger.debug("GET /medicos/#{params[:matricula]}/turnos-reservados")
+
+  turnos = turnero.obtener_turnos_reservados_por_medico(params[:matricula])
+
+  status 200
+  {
+    cantidad_turnos: turnos.size,
+    turnos: turnos.map do |turno|
+      {
+        fecha: turno[:fecha].to_s,
+        hora: turno[:hora].to_s,
+        paciente: {
+          dni: turno[:paciente][:dni].to_s
+        }
+      }
+    end
+  }.to_json
+rescue MedicoInexistenteException => e
+  logger.error("Error al buscar médico: #{e.message}")
+  status 404
+  { mensaje_error: e.message }.to_json
+rescue SinTurnosException => e
+  logger.error("Error El médico #{params[:matricula]} no tiene turnos: #{e.message}")
+  status 404
+  { mensaje_error: e.message }.to_json
+end
