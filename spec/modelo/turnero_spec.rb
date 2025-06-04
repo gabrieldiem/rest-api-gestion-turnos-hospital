@@ -104,7 +104,7 @@ describe Turnero do
       expect(turnos_reservados.size).to eq(cantidad_turnos)
     end
 
-    xit 'cuando consulto los turnos de un médico sin turnos me devuelve un error' do
+    it 'cuando consulto los turnos de un médico sin turnos me devuelve un error' do
       especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
 
