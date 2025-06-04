@@ -177,6 +177,32 @@ describe Turnero do
       turnos = turnero.obtener_turnos_disponibles('NAC456')
       expect(turnos).to eq([])
     end
+
+    it 'asignar un turno a un paciente' do
+      especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+
+      dni = '999999999'
+      paciente = turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
+      fecha_de_maniana = fecha_de_hoy + 1
+      turno_asignado = turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '8:00', dni)
+      expect(turno_asignado).to have_attributes(medico: have_attributes(matricula: 'NAC456'),
+                                                paciente: have_attributes(dni: paciente.dni),
+                                                horario: have_attributes(fecha: fecha_de_maniana, hora: have_attributes(hora: 8, minutos: 0)))
+    end
+
+    xit 'asignar un turno despues de las 18 produce un error FueraDeHorarioException' do
+      especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+
+      dni = '999999999'
+      turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
+      fecha_de_maniana = fecha_de_hoy + 1
+      expect do
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '18:30', dni)
+      end
+        .to raise_error(FueraDeHorarioException, 'El turno no puede ser asignado despues de las 18:00')
+    end
   end
 
   describe '- Capacidades de Pacientes - ' do
