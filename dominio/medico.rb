@@ -1,6 +1,7 @@
 require_relative '../dominio/turnero'
 require_relative '../dominio/turno'
 require_relative '../dominio/exceptions/turno_no_disponible_exception'
+require_relative '../dominio/exceptions/horario_superpuesto_exception'
 require_relative '../dominio/calculador_de_turnos_libres'
 
 class Medico
@@ -19,7 +20,9 @@ class Medico
   def asignar_turno(horario, paciente)
     raise TurnoNoDisponibleException if turno_reservado?(horario)
 
-    paciente.tiene_disponibilidad?(horario, Hora.new(0, especialidad.duracion))
+    tiene_paciente_disponibilidad = paciente.tiene_disponibilidad?(horario, Hora.new(0, especialidad.duracion))
+    raise HorarioSuperpuestoException unless tiene_paciente_disponibilidad
+
     turno = Turno.new(paciente, self, horario)
 
     @turnos_asignados.push(turno)

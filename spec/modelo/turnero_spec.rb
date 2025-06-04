@@ -216,8 +216,11 @@ describe Turnero do
       turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
       fecha_de_maniana = fecha_de_hoy + 1
       turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '10:00', dni)
+
+      _paciente = repositorio_pacientes.find_by_dni '999999999'
+
       expect do
-        turnero.asignar_turno('NAC000', fecha_de_maniana.to_s, '11:00', dni)
+        turnero.asignar_turno('NAC000', fecha_de_maniana.to_s, '12:00', dni)
       end
         .to raise_error(HorarioSuperpuestoException)
     end

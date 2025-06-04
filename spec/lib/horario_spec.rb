@@ -74,5 +74,14 @@ describe Horario do
 
       expect(h1.hay_superposicion?(h2, duracion_30m)).to be true
     end
+
+    it 'hay superposición con duración larga de 5h reciproca' do
+      h1 = described_class.new(fecha, Hora.new(8, 0))
+      h2 = described_class.new(fecha, Hora.new(12, 0))
+      duracion = Hora.new(5, 0)
+
+      expect(h1.hay_superposicion?(h2, duracion)).to be true
+      expect(h2.hay_superposicion?(h1, duracion)).to be true
+    end
   end
 end
