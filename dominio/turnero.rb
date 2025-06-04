@@ -82,7 +82,27 @@ class Turnero
     paciente
   end
 
+  def obtener_turnos_reservados_del_paciente_por_dni(dni)
+    paciente = buscar_paciente_por_dni(dni)
+    paciente.turnos_reservados.map do |turno|
+      {
+        fecha: turno.horario.fecha.to_s,
+        hora: "#{turno.horario.hora.hora}:#{turno.horario.hora.minutos.to_s.rjust(2, '0')}",
+        medico: obtener_informacion_del_medico(turno.medico)
+      }
+    end
+  end
+
   private
+
+  def obtener_informacion_del_medico(medico)
+    {
+      nombre: medico.nombre,
+      apellido: medico.apellido,
+      matricula: medico.matricula,
+      especialidad: medico.especialidad.codigo
+    }
+  end
 
   def paciente_ya_existente?(dni)
     if @repositorio_pacientes.find_by_dni(dni)
