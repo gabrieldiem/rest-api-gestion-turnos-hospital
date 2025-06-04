@@ -313,5 +313,11 @@ describe Turnero do
         turnero.buscar_paciente_por_username('')
       end.to raise_error(PacienteInexistenteException)
     end
+
+    xit 'se obtiene un paciente por dni' do
+      paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
+      paciente_encontrado = turnero.buscar_paciente_por_dni('12345678')
+      expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
+    end
   end
 end
