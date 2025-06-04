@@ -2,6 +2,16 @@ require 'integration_helper'
 require_relative '../../dominio/paciente'
 
 describe Paciente do
+  let(:logger) do
+    SemanticLogger.default_level = :fatal
+    Configuration.logger
+  end
+  let(:especialidad) { Especialidad.new('Cardiología', 30, 5, 'card') }
+  let(:repositorio_especialidades) { RepositorioEspecialidades.new(logger) }
+  let(:repositorio_turnos) { RepositorioTurnos.new(logger) }
+  let(:repositorio_medico) { RepositorioMedicos.new(logger) }
+  let(:repositorio_pacientes) { RepositorioPacientes.new(logger) }
+
   it 'se crea exitosamente con dni 12345678, email juan.perez@example.com y username @juanperez ' do
     paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez')
     expect(paciente).to have_attributes(email: 'juan.perez@example.com', dni: '12345678', username: '@juanperez')
@@ -59,5 +69,24 @@ describe Paciente do
     horario = Horario.new(fecha, hora)
 
     expect(paciente.tiene_disponibilidad?(horario)).to be true
+  end
+
+  xit 'no tiene disponibilidad cuando tiene ningun turno reservado con superposicion' do
+    paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez')
+    repositorio_pacientes.save(paciente)
+
+    medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+    repositorio_especialidades.save especialidad
+    repositorio_medico.save medico
+
+    horario_turno_reservado = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
+    turno = medico.asignar_turno(horario_turno_reservado, paciente)
+    repositorio_turnos.save turno
+
+    hora = Hora.new(10, 31)
+    fecha = Date.parse('25/10/1999')
+    horario_que_quiero_reservar = Horario.new(fecha, hora)
+
+    expect(paciente.tiene_disponibilidad?(horario_que_quiero_reservar)).to be false
   end
 end
