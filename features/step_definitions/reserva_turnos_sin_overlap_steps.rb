@@ -61,3 +61,7 @@ Entonces('recibe el mensaje de error {string}') do |mensaje|
   parsed_response = JSON.parse(@response.body)
   expect(parsed_response['mensaje_error']).to eq(mensaje)
 end
+
+Entonces('la respuesta es exitosa') do
+  expect(@response.status).to eq(201)
+end
