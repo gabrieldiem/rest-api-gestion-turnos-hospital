@@ -320,7 +320,7 @@ describe Turnero do
       expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
     end
 
-    xit 'no se encuentra un paciente por dni inexistente' do
+    it 'no se encuentra un paciente por dni inexistente' do
       expect do
         turnero.buscar_paciente_por_dni('noexiste')
       end.to raise_error(PacienteInexistenteException)

@@ -76,7 +76,10 @@ class Turnero
   end
 
   def buscar_paciente_por_dni(dni)
-    @repositorio_pacientes.find_by_dni(dni)
+    paciente = @repositorio_pacientes.find_by_dni(dni)
+    raise PacienteInexistenteException, "No existe un paciente con el DNI #{dni}" if paciente.nil?
+
+    paciente
   end
 
   private
