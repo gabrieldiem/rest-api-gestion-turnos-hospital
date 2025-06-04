@@ -24,7 +24,7 @@ Característica: Consultar turnos disponibles por médico
   Escenario: 4.0.3 - Consultar turnos de un médico que no existe no muestra turnos
     Cuando solicito los turnos disponibles con "ABC000"
     Entonces no se muestran turnos disponibles en la respuesta erronea
-    Y recibo un mensaje de error "No existe un médico con la matrícula ABC000"
+    Y recibo mensaje de error "No existe un médico con la matrícula ABC000"
 
   Escenario: 4.0.4 - Se puede consultar turnos de un médico sin turnos disponibles en los próximos 40 días
     Dado que hoy es "20/05/2025"

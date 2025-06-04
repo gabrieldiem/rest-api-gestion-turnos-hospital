@@ -143,3 +143,8 @@ Dado('el médico con matrícula {string} no tiene turnos disponibles en los pró
   turnos = turnero.obtener_turnos_disponibles(matricula)
   expect(turnos).to eq([])
 end
+
+Entonces('recibo mensaje de error {string}') do |error_msg|
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['mensaje_error']).to eq(error_msg)
+end
