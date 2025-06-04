@@ -182,3 +182,16 @@ rescue PacienteInexistenteException => e
   status 404
   { mensaje_error: e.message }.to_json
 end
+
+get '/pacientes/:dni/turnos-reservados' do
+  logger.debug("GET /pacientes/#{params[:dni]}/turnos-reservados")
+
+  turnos = turnero.obtener_turnos_reservados_del_paciente_por_dni(params[:dni])
+
+  status 200
+  { turnos:, cantidad_de_turnos: turnos.size }.to_json
+rescue PacienteInexistenteException => e
+  logger.error("Error al buscar paciente: #{e.message}")
+  status 404
+  { mensaje_error: e.message }.to_json
+end
