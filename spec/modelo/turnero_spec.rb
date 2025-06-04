@@ -103,6 +103,13 @@ describe Turnero do
       turnos_reservados = turnero.obtener_turnos_reservados_por_medico('NAC456')
       expect(turnos_reservados.size).to eq(cantidad_turnos)
     end
+
+    xit 'cuando consulto los turnos de un médico sin turnos me devuelve un error' do
+      especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+
+      expect { turnero.obtener_turnos_reservados_por_medico('NAC456') }.to raise_error(SinTurnosException)
+    end
   end
 
   describe '- Capacidades de Turnos - ' do
