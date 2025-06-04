@@ -51,6 +51,7 @@ class Turnero
   def asignar_turno(matricula, fecha, hora, dni)
     medico = buscar_medico(matricula)
     paciente = @repositorio_pacientes.find_by_dni(dni)
+    raise PacienteInexistenteException, 'Para reservar un turno se debe estar registrado' if paciente.nil?
 
     fecha = Date.parse(fecha)
     hora = Hora.new(*hora.split(':').map(&:to_i))

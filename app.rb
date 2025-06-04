@@ -10,6 +10,7 @@ require_relative './lib/proveedor_de_fecha'
 require_relative './lib/proveedor_de_hora'
 require_relative './dominio/exceptions/medico_inexistente_exception'
 require_relative './dominio/exceptions/paciente_inexistente_exception'
+require_relative './dominio/exceptions/fuera_de_horario_exception'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -145,6 +146,14 @@ post '/medicos/:matricula/turnos-reservados' do
   }.to_json
 rescue MedicoInexistenteException => e
   logger.error("Error al reservar con medico: #{e.message}")
+  status 404
+  { mensaje_error: e.message }.to_json
+rescue FueraDeHorarioException => e
+  logger.error("Error al reservar turno: #{e.message}")
+  status 400
+  { mensaje_error: e.message }.to_json
+rescue PacienteInexistenteException => e
+  logger.error("Error al buscar paciente: #{e.message}")
   status 404
   { mensaje_error: e.message }.to_json
 end

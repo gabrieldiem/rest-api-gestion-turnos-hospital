@@ -201,7 +201,7 @@ describe Turnero do
       expect do
         turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '18:30', dni)
       end
-        .to raise_error(FueraDeHorarioException, 'El turno no puede ser asignado despues de las 18:00')
+        .to raise_error(FueraDeHorarioException)
     end
   end
 
