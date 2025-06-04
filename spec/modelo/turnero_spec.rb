@@ -206,7 +206,7 @@ describe Turnero do
         .to raise_error(FueraDeHorarioException)
     end
 
-    xit 'asignar un turno en el mismo horario con otro turno del paciente un error HorarioSuperpuestoException' do
+    it 'asignar un turno en el mismo horario con otro turno del paciente un error HorarioSuperpuestoException' do
       especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
       especialidad_pediatra = turnero.crear_especialidad('Pediatra', 20, 1, 'pedi')
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
