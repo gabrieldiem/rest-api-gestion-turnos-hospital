@@ -44,7 +44,7 @@ Dado('que {string} reservo el turno disponible con el médico de matrícula {str
   expect(response.status).to eq(201)
 end
 
-Cuando('reserva el turno con el médico de matrícula {string} en la fecha {string} y la hora {string}') do |matricula, fecha, hora|
+Cuando('reservo el turno con el medico de matrícula {string} en la fecha {string} y la hora {string}') do |matricula, fecha, hora|
   hora, minutos = hora.split('.', 2)
   body = {
     dni: @dni_por_nombre[@nombre_paciente],
