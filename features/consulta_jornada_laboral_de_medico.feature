@@ -40,10 +40,10 @@ Escenario: 7.0.3 - Consultar jornada con turnos asignado solo del medico solicit
   Entonces el sistema debe mostrar que hay "2" turnos asignados en total
   Y debe listar el turno del "2025-06-03" a las "10:00" para "carlosgomez" con DNI "35222333"
   Y debe listar el turno del "2025-06-04" a las "11:00" para "luisarodriguez" con DNI "28333444"
-@wip
+
 Escenario: 7.0.4 - Consultar medico sin turnos asignados
   Dado que hoy es "2025-06-03"
   Y que existe un medico registrado con nombre "Pedro" y apellido "Lopez" con matricula "42572"
   Y que no tiene ningún turno asignado
-  Cuando consulto la jornada del medico con matricula "42572"
+  Cuando intento consultar la jornada del medico con matricula "42572"
   Entonces debe mostrar el mensaje "El medico no tiene turnos asignados"

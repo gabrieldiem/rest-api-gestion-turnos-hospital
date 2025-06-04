@@ -51,5 +51,14 @@ Entonces('el sistema debe indicar que hay {int} turnos asignados') do |cantidad_
 end
 
 Entonces('debe mostrar el mensaje {string}') do |mensaje|
-  expect(@response_body[:mensaje_error]).to eq(mensaje)
+  @respuesta_fallida_parseada = JSON.parse(@respuesta_fallida.body, symbolize_names: true)
+  expect(@respuesta_fallida_parseada[:mensaje_error]).to eq(mensaje)
+end
+
+Dado('que no tiene ningún turno asignado') do
+end
+
+Cuando('intento consultar la jornada del medico con matricula {string}') do |matricula|
+  @respuesta_fallida = Faraday.get("/medicos/#{matricula}/turnos-reservados")
+  expect(@respuesta_fallida.status).to eq(404)
 end
