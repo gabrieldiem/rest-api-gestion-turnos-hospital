@@ -66,6 +66,7 @@ describe Hora do
 
   describe '- superposicion -' do
     let(:duracion_1h) { described_class.new(1, 0) }
+    let(:duracion_1h30) { described_class.new(1, 30) }
 
     it 'detecta superposición parcial' do
       h1 = described_class.new(10, 0)
@@ -100,6 +101,13 @@ describe Hora do
       h2 = described_class.new(11, 0)
 
       expect(h1.hay_superposicion?(h2, duracion_1h)).to be false
+    end
+
+    it 'detecta superposición completa al cruzar la medianoche' do
+      h1 = described_class.new(23, 0)
+      h2 = described_class.new(22, 30)
+
+      expect(h1.hay_superposicion?(h2, duracion_1h30)).to be true
     end
   end
 end
