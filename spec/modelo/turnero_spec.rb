@@ -204,6 +204,22 @@ describe Turnero do
         .to raise_error(FueraDeHorarioException)
     end
 
+    xit 'asignar un turno en el mismo horario con otro turno del paciente un error HorarioSuperpuestoException' do
+      especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
+      especialidad_pediatra = turnero.crear_especialidad('Pediatra', 20, 1, 'pedi')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+      turnero.crear_medico('Pablo', 'Pediatra', 'NAC000', especialidad_pediatra.codigo)
+
+      dni = '999999999'
+      turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
+      fecha_de_maniana = fecha_de_hoy + 1
+      turnero.asignar_turno('NAC000', fecha_de_maniana.to_s, '10:00', dni)
+      expect do
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '10:00', dni)
+      end
+        .to raise_error(HorarioSuperpuestoException)
+    end
+
     xit 'asignar un turno ya reservado produce un error TurnoNoDisponibleException' do
       especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)

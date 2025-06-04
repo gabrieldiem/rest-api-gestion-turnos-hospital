@@ -7,6 +7,10 @@ describe RepositorioPacientes do
     SemanticLogger.default_level = :fatal
     Configuration.logger
   end
+  let(:especialidad) { Especialidad.new('Cardiología', 30, 5, 'card') }
+  let(:repositorio_especialidades) { RepositorioEspecialidades.new(logger) }
+  let(:repositorio_turnos) { RepositorioTurnos.new(logger) }
+  let(:repositorio_medico) { RepositorioMedicos.new(logger) }
 
   it 'deberia guardar y asignar id si el paciente es nuevo' do
     juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
@@ -41,5 +45,21 @@ describe RepositorioPacientes do
   it 'deberia retornar nil si no encuentra un paciente por username' do
     repositorio = described_class.new(logger)
     expect(repositorio.find_by_username('@noexiste')).to be_nil
+  end
+
+  it 'obtener un paciente con turno tiene los turnos reservados' do
+    horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
+    repositorio_especialidades.save especialidad
+    medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez')
+    repositorio_pacientes = described_class.new(logger)
+    repositorio_pacientes.save(paciente)
+    repositorio_medico.save(medico)
+
+    turno = medico.asignar_turno(horario, paciente)
+    repositorio_turnos.save turno
+
+    paciente = repositorio_pacientes.find_by_dni('12345678')
+    expect(paciente.turnos_reservados).to eq [Turno.new(paciente, medico, horario)]
   end
 end

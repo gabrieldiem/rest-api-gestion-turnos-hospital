@@ -10,12 +10,19 @@ class RepositorioTurnos < AbstractRepository
   def initialize(logger)
     super()
     @logger = logger
-    @repositorio_pacientes = RepositorioPacientes.new(@logger)
   end
 
   def find_by_medico_id(medico_id)
     @logger.info("Buscando turnos para el médico con ID: #{medico_id}")
     records = dataset.where(medico: medico_id)
+    return [] if records.empty?
+
+    load_collection(records)
+  end
+
+  def find_by_paciente_id(paciente_id)
+    @logger.info("Buscando turnos para el médico con ID: #{paciente_id}")
+    records = dataset.where(paciente: paciente_id)
     return [] if records.empty?
 
     load_collection(records)
@@ -37,7 +44,7 @@ class RepositorioTurnos < AbstractRepository
   end
 
   def load_object(a_hash)
-    paciente = RepositorioPacientes.new(@logger).find(a_hash[:paciente])
+    paciente = RepositorioPacientes.new(@logger).find_without_loading_turnos(a_hash[:paciente])
     medico = RepositorioMedicos.new(@logger).find_without_loading_turnos(a_hash[:medico])
     horario = crear_objeto_horario(a_hash)
     cargar_fechas_de_creacion_y_actualizacion(paciente, medico, horario, a_hash)
