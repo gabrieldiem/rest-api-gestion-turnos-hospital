@@ -75,6 +75,10 @@ class Turnero
     paciente
   end
 
+  def buscar_paciente_por_dni(dni)
+    @repositorio_pacientes.find_by_dni(dni)
+  end
+
   private
 
   def paciente_ya_existente?(dni)
