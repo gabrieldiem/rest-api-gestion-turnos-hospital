@@ -7,6 +7,8 @@ require_relative '../../dominio/paciente'
 require_relative '../../dominio/calculador_de_turnos_libres'
 require_relative '../../dominio/exceptions/medico_inexistente_exception'
 require_relative '../../dominio/exceptions/paciente_inexistente_exception'
+require_relative '../../dominio/exceptions/fuera_de_horario_exception'
+require_relative '../../dominio/exceptions/turno_no_disponible_exception'
 require_relative '../../persistencia/repositorio_pacientes'
 require_relative '../../persistencia/repositorio_especialidades'
 require_relative '../../persistencia/repositorio_medicos'
@@ -204,7 +206,7 @@ describe Turnero do
         .to raise_error(FueraDeHorarioException)
     end
 
-    xit 'asignar un turno ya reservado produce un error TurnoNoDisponibleException' do
+    it 'asignar un turno ya reservado produce un error TurnoNoDisponibleException' do
       especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
       fecha_de_maniana = fecha_de_hoy + 1
