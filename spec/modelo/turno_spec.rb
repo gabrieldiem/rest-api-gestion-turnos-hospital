@@ -6,6 +6,7 @@ require_relative '../../dominio/especialidad'
 require_relative '../../dominio/paciente'
 require_relative '../../lib/hora'
 require_relative '../../lib/horario'
+require_relative '../../dominio/exceptions/fuera_de_horario_exception'
 
 describe Turno do
   let(:especialidad) { Especialidad.new('Cardiología', 30, 5, 'card') }
@@ -24,8 +25,13 @@ describe Turno do
     expect(turno1).to eq(turno2)
   end
 
-  xit 'no puedo crear un turno para despues de las 18:00' do
+  it 'no puedo crear un turno para despues de las 18:00' do
     horario_tarde = Horario.new(Date.new(2025, 6, 11), Hora.new(18, 30))
     expect { described_class.new(paciente, medico, horario_tarde) }.to raise_error(FueraDeHorarioException, 'El turno no puede ser asignado despues de las 18:00')
+  end
+
+  it 'puedo crear un turno para las 17:59' do
+    horario_tarde = Horario.new(Date.new(2025, 6, 11), Hora.new(17, 59))
+    expect { described_class.new(paciente, medico, horario_tarde) }.not_to raise_error
   end
 end
