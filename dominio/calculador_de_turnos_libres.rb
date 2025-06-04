@@ -78,8 +78,7 @@ class CalculadorDeTurnosLibres
 
   def existe_turno_asignado?(horario_a_verificar, turnos_ya_asignados)
     turnos_ya_asignados.each do |turno|
-      comparacion = turno.horario == horario_a_verificar
-      return true if comparacion
+      return true if turno.horario == horario_a_verificar
     end
     false
   end
