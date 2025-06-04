@@ -11,6 +11,7 @@ require_relative './lib/proveedor_de_hora'
 require_relative './dominio/exceptions/medico_inexistente_exception'
 require_relative './dominio/exceptions/paciente_inexistente_exception'
 require_relative './dominio/exceptions/fuera_de_horario_exception'
+require_relative './dominio/exceptions/turno_no_disponible_exception'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -130,9 +131,7 @@ end
 
 post '/medicos/:matricula/turnos-reservados' do
   logger.debug("POST /medicos/#{@params['matricula']}/turnos-reservados con params: #{@params}")
-
   turno = turnero.asignar_turno(@params['matricula'], @params[:turno][:fecha].to_s, @params[:turno][:hora].to_s, @params[:dni].to_s)
-
   status 201
   {
     id: turno.id,
@@ -144,17 +143,9 @@ post '/medicos/:matricula/turnos-reservados' do
     },
     created_at: turno.created_on.to_s
   }.to_json
-rescue MedicoInexistenteException => e
+rescue StandardError => e
   logger.error("Error al reservar con medico: #{e.message}")
-  status 404
-  { mensaje_error: e.message }.to_json
-rescue FueraDeHorarioException => e
-  logger.error("Error al reservar turno: #{e.message}")
   status 400
-  { mensaje_error: e.message }.to_json
-rescue PacienteInexistenteException => e
-  logger.error("Error al buscar paciente: #{e.message}")
-  status 404
   { mensaje_error: e.message }.to_json
 end
 

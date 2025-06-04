@@ -10,7 +10,7 @@ Característica: No se puede pedir turnos superpuestos
     Y que existe un paciente registrado llamado "Juan Perez" con username "juanperez"
     Y que existe un medico registrado llamado "María Fernández" con matricula "NAC123" que atiende en "trau"
     Y que existe un medico registrado llamado "Sargento Garcia" con matricula "PROV111" que atiende en "trau"
-  @wip @indev
+  @wip
   Escenario: 5.1.1 - No se pueden reservar turnos superpuestos
     Dado que "Juan Perez" reservo el turno disponible con el médico de matrícula "NAC123" en la fecha "03/06/2025" y la hora "10.15"
     Cuando reserva el turno con el médico de matrícula "PROV111" en la fecha "03/06/2025" y la hora "10.25"
