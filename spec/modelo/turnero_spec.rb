@@ -9,6 +9,7 @@ require_relative '../../dominio/exceptions/medico_inexistente_exception'
 require_relative '../../dominio/exceptions/paciente_inexistente_exception'
 require_relative '../../dominio/exceptions/fuera_de_horario_exception'
 require_relative '../../dominio/exceptions/turno_no_disponible_exception'
+require_relative '../../dominio/exceptions/sin_turnos_exception'
 require_relative '../../persistencia/repositorio_pacientes'
 require_relative '../../persistencia/repositorio_especialidades'
 require_relative '../../persistencia/repositorio_medicos'
@@ -256,7 +257,7 @@ describe Turnero do
       expect(turnos_reservados.first[:medico][:matricula]).to eq('NAC456')
     end
 
-    xit 'obtener turnos reservados de un paciente sin turnos devuelve un error' do
+    it 'obtener turnos reservados de un paciente sin turnos devuelve un error' do
       dni = '999999999'
       turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
 
