@@ -28,7 +28,7 @@ Característica: Reserva de turnos médicos
     Dado el Dr. con matricula "NAC123" tiene un turno disponible el "20/05/2025" a las "15:30"
     Cuando intento reservar el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "15:30" con el username "juandiaz"
     Entonces recibo el mensaje "Para reservar un turno se debe estar registrado"
-  @wip  
+  
   Escenario: 5.0.5 - No puedo reservar un turno si alguien ya lo reservó
     Dado que hay un paciente registrado con username "juanperez"
     Y el Dr. con matricula "NAC123" tenía un turno disponible el "20/05/2025" a las "15:30" y alguien más lo reservó
