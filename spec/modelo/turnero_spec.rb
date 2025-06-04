@@ -84,6 +84,25 @@ describe Turnero do
     it 'no encuentra un médico por matrícula inexistente' do
       expect { turnero.buscar_medico('NAC999') }.to raise_error(MedicoInexistenteException)
     end
+
+    xit 'puedo consultar todos los turnos reservados con un médico' do
+      especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+      paciente = turnero.crear_paciente('juancito@test.com', '999999999', 'juancito')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+
+      fecha_de_maniana = fecha_de_hoy + 1
+      hora_inicio_jornada = Hora.new(8, 0)
+      hora_fin_jornada = Hora.new(18, 0)
+
+      cantidad_turnos = (hora_fin_jornada.hora - hora_inicio_jornada.hora) * 2 # Cada turno dura 30 minutos
+      cantidad_turnos.times do |i|
+        hora_a_asignar = hora_inicio_jornada + Hora.new(0, i * 30)
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}", paciente.dni)
+      end
+
+      turnos_reservados = turnero.obtener_turnos_reservados_por_medico('NAC456')
+      expect(turnos_reservados.size).to eq(cantidad_turnos)
+    end
   end
 
   describe '- Capacidades de Turnos - ' do
