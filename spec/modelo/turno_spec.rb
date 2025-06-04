@@ -23,4 +23,9 @@ describe Turno do
     turno2 = described_class.new(paciente, medico, horario)
     expect(turno1).to eq(turno2)
   end
+
+  xit 'no puedo crear un turno para despues de las 18:00' do
+    horario_tarde = Horario.new(Date.new(2025, 6, 11), Hora.new(18, 30))
+    expect { described_class.new(paciente, medico, horario_tarde) }.to raise_error(FueraDeHorarioException, 'El turno no puede ser asignado despues de las 18:00')
+  end
 end
