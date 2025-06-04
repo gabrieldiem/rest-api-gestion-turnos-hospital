@@ -127,6 +127,28 @@ rescue MedicoInexistenteException => e
   { mensaje_error: e.message }.to_json
 end
 
+post '/medicos/:matricula/turnos-disponibles' do
+  logger.debug("POST /medicos/#{@params['matricula']}/turnos-disponibles con params: #{@params}")
+
+  turno = turnero.asignar_turno(@params['matricula'], @params[:turno][:fecha].to_s, @params[:turno][:hora].to_s, @params[:dni].to_s)
+
+  status 201
+  {
+    id: turno.id,
+    matricula: turno.medico.matricula,
+    dni: turno.paciente.dni,
+    turno: {
+      fecha: turno.horario.fecha.to_s,
+      hora: "#{turno.horario.hora.hora}:#{turno.horario.hora.minutos.to_s.rjust(2, '0')}"
+    },
+    created_at: turno.created_on.to_s
+  }.to_json
+rescue MedicoInexistenteException => e
+  logger.error("Error al reservar con medico: #{e.message}")
+  status 404
+  { mensaje_error: e.message }.to_json
+end
+
 post '/medicos' do
   logger.debug("POST /medicos con params: #{@params}")
   medico = turnero.crear_medico(@params[:nombre].to_s,
