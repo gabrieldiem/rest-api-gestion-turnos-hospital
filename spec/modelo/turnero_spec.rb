@@ -255,6 +255,15 @@ describe Turnero do
       expect(turnos_reservados.first[:fecha].to_s).to include(fecha_de_maniana.to_s)
       expect(turnos_reservados.first[:medico][:matricula]).to eq('NAC456')
     end
+
+    xit 'obtener turnos reservados de un paciente sin turnos devuelve un error' do
+      dni = '999999999'
+      turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
+
+      expect do
+        turnero.obtener_turnos_reservados_del_paciente_por_dni(dni)
+      end.to raise_error(SinTurnosException)
+    end
   end
 
   describe '- Capacidades de Pacientes - ' do
