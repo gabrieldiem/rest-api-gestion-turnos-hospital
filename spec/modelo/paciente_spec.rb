@@ -18,8 +18,8 @@ describe Paciente do
   let(:repositorio_medico) { RepositorioMedicos.new(logger) }
   let(:repositorio_pacientes) { RepositorioPacientes.new(logger) }
   let(:horario_que_quiero_reservar) do
-    hora = Hora.new(8, 0o2)
-    fecha = Date.parse('25/10/1999')
+    hora = Hora.new(8, 15)
+    fecha = Date.parse('11/06/2025')
     Horario.new(fecha, hora)
   end
 
@@ -82,7 +82,7 @@ describe Paciente do
     expect(paciente.tiene_disponibilidad?(horario, Hora.new(0, especialidad.duracion))).to be true
   end
 
-  xit 'no tiene disponibilidad cuando tiene ningun turno reservado con superposicion' do
+  it 'no tiene disponibilidad cuando tiene un turno reservado con superposicion' do
     paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez')
     repositorio_pacientes.save(paciente)
 
