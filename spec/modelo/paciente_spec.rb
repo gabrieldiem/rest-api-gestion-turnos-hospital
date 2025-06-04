@@ -50,4 +50,14 @@ describe Paciente do
       end.to raise_error(ActiveModel::ValidationError)
     end
   end
+
+  it 'tiene disponibilidad cuando no tiene ningun turno reservado' do
+    paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez')
+
+    hora = Hora.new(10, 31)
+    fecha = Date.parse('25/10/1999')
+    horario = Horario.new(fecha, hora)
+
+    expect(paciente.tiene_disponibilidad?(horario)).to be true
+  end
 end

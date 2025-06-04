@@ -16,8 +16,10 @@ class Medico
   end
 
   def asignar_turno(horario, paciente)
-    turno = Turno.new(paciente, self, horario)
     raise TurnoNoDisponibleException if turno_reservado?(horario)
+
+    paciente.tiene_disponibilidad?(horario)
+    turno = Turno.new(paciente, self, horario)
 
     @turnos_asignados.push(turno)
     turno

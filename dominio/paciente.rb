@@ -21,6 +21,13 @@ class Paciente
     validate!
   end
 
+  def tiene_disponibilidad?(horario)
+    @turnos_reservados.each do |turno|
+      return false if turno.horario == horario
+    end
+    true
+  end
+
   def ==(other)
     other.is_a?(Paciente) &&
       @dni == other.dni &&
