@@ -13,12 +13,12 @@ Característica: Reserva de turnos médicos
     Y el Dr. con matricula "NAC123" tiene un turno disponible el "20/05/2025" a las "9:00"
     Cuando reservo el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "9:00"
     Entonces recibo el mensaje "Turno reservado con Dr. Ernesto García para el 20/05/2025 a las 9:00"
-  @wip  
+    
   Escenario: 5.0.2 - No puedo reservar un turno con médico inexistente
     Dado que hay un paciente registrado con username "juanperez"
-    Cuando reservo el turno con el médico de matrícula "ABC000" en la fecha "20/05/2025" y la hora "15.30"
+    Cuando intento reservar el turno con el médico de matrícula "ABC000" en la fecha "20/05/2025" y la hora "15.30"
     Entonces recibo el mensaje "No existe un médico con la matrícula ABC000"
-  @wip  
+  @wip
   Escenario: 5.0.3 - No puedo reservar un turno fuera del horario de atención
     Dado que hay un paciente registrado con username "juanperez"
     Cuando reservo el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "19.00"

@@ -51,6 +51,19 @@ Cuando('reservo el turno con el médico de matrícula {string} en la fecha {stri
   expect(@turno_reservado[:id]).not_to be_nil
 end
 
+Cuando('intento reservar el turno con el médico de matrícula {string} en la fecha {string} y la hora {string}') do |matricula, fecha, hora|
+  body = {
+    dni: @dni_paciente,
+    turno: {
+      fecha:,
+      hora:
+    }
+  }
+  response = Faraday.post("/medicos/#{matricula}/turnos-disponibles", body.to_json, { 'Content-Type' => 'application/json' })
+
+  expect(response.status).to eq(404)
+end
+
 Entonces('recibo el mensaje {string}') do |_string|
 end
 
