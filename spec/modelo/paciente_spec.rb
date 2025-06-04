@@ -1,5 +1,11 @@
 require 'integration_helper'
 require_relative '../../dominio/paciente'
+require_relative '../../dominio/medico'
+require_relative '../../dominio/especialidad'
+require_relative '../../persistencia/repositorio_pacientes'
+require_relative '../../persistencia/repositorio_especialidades'
+require_relative '../../persistencia/repositorio_turnos'
+require_relative '../../persistencia/repositorio_medicos'
 
 describe Paciente do
   let(:logger) do
@@ -11,6 +17,11 @@ describe Paciente do
   let(:repositorio_turnos) { RepositorioTurnos.new(logger) }
   let(:repositorio_medico) { RepositorioMedicos.new(logger) }
   let(:repositorio_pacientes) { RepositorioPacientes.new(logger) }
+  let(:horario_que_quiero_reservar) do
+    hora = Hora.new(8, 0o2)
+    fecha = Date.parse('25/10/1999')
+    Horario.new(fecha, hora)
+  end
 
   it 'se crea exitosamente con dni 12345678, email juan.perez@example.com y username @juanperez ' do
     paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez')
@@ -68,7 +79,7 @@ describe Paciente do
     fecha = Date.parse('25/10/1999')
     horario = Horario.new(fecha, hora)
 
-    expect(paciente.tiene_disponibilidad?(horario)).to be true
+    expect(paciente.tiene_disponibilidad?(horario, Hora.new(0, especialidad.duracion))).to be true
   end
 
   xit 'no tiene disponibilidad cuando tiene ningun turno reservado con superposicion' do
@@ -83,10 +94,11 @@ describe Paciente do
     turno = medico.asignar_turno(horario_turno_reservado, paciente)
     repositorio_turnos.save turno
 
-    hora = Hora.new(10, 31)
-    fecha = Date.parse('25/10/1999')
-    horario_que_quiero_reservar = Horario.new(fecha, hora)
+    duracion = Hora.new(0, especialidad.duracion)
 
-    expect(paciente.tiene_disponibilidad?(horario_que_quiero_reservar)).to be false
+    paciente = repositorio_pacientes.find_by_dni('12345678')
+    expect(
+      paciente.tiene_disponibilidad?(horario_que_quiero_reservar, duracion)
+    ).to be false
   end
 end

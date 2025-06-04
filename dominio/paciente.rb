@@ -21,9 +21,9 @@ class Paciente
     validate!
   end
 
-  def tiene_disponibilidad?(horario)
+  def tiene_disponibilidad?(horario, duracion)
     @turnos_reservados.each do |turno|
-      return false if turno.horario == horario
+      return false if turno.horario.hay_superposicion?(horario, duracion)
     end
     true
   end

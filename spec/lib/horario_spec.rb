@@ -19,4 +19,16 @@ describe Horario do
 
     expect(horario).to eq described_class.new(fecha, hora)
   end
+
+  describe '- superposicion -' do
+    let(:fecha) { Date.new(2024, 6, 1) }
+    let(:duracion_1h) { Hora.new(1, 0) }
+
+    it 'hay superposición parcial cuando están en la misma fecha' do
+      h1 = described_class.new(fecha, Hora.new(10, 0))
+      h2 = described_class.new(fecha, Hora.new(10, 30))
+
+      expect(h1.hay_superposicion?(h2, duracion_1h)).to be true
+    end
+  end
 end
