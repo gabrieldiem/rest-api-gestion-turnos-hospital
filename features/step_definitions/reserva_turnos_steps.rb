@@ -1,9 +1,16 @@
 require 'date'
 
-Dado('que existe un doctor de nombre {string} y apellido {string} registrado con matrícula {string}') do |nombre, apellido, matricula|
-  RepositorioMedicos.new(@logger).delete_all
-  RepositorioEspecialidades.new(@logger).delete_all
+Before do
+  SemanticLogger.default_level = :fatal
+  @logger = Configuration.logger
 
+  RepositorioTurnos.new(@logger).delete_all
+  RepositorioMedicos.new(@logger).delete_all
+  RepositorioPacientes.new(@logger).delete_all
+  RepositorioEspecialidades.new(@logger).delete_all
+end
+
+Dado('que existe un doctor de nombre {string} y apellido {string} registrado con matrícula {string}') do |nombre, apellido, matricula|
   @matricula = matricula
   especialidad_body = { nombre: 'Cardiologia', duracion: 20, recurrencia_maxima: 5, codigo: 'card' }.to_json
   response = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
@@ -15,8 +22,6 @@ Dado('que existe un doctor de nombre {string} y apellido {string} registrado con
 end
 
 Dado('que hay un paciente registrado con username {string}') do |username|
-  RepositorioPacientes.new(@logger).delete_all
-
   @dni_paciente = '000000000'
   paciente_body = { username:, email: 'paciente_test@test.com', dni: @dni_paciente }.to_json
   response = Faraday.post('/pacientes', paciente_body, { 'Content-Type' => 'application/json' })
