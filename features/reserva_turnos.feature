@@ -31,6 +31,6 @@ Característica: Reserva de turnos médicos
   @wip  
   Escenario: 5.0.5 - No puedo reservar un turno si alguien ya lo reservó
     Dado que hay un paciente registrado con username "juanperez"
-    Y el Dr. con matricula "NAC123" tenía un turno disponible el "20/05/2025" a las "15.30" y alguien más lo reservó
-    Cuando reservo el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "15.30"
+    Y el Dr. con matricula "NAC123" tenía un turno disponible el "20/05/2025" a las "15:30" y alguien más lo reservó
+    Cuando intento reservar el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "15:30"
     Entonces recibo el mensaje "Este turno no está disponible"

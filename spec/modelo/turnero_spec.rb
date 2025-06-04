@@ -203,6 +203,22 @@ describe Turnero do
       end
         .to raise_error(FueraDeHorarioException)
     end
+
+    xit 'asignar un turno ya reservado produce un error TurnoNoDisponibleException' do
+      especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+      fecha_de_maniana = fecha_de_hoy + 1
+
+      dni = '999999999'
+      dni2 = '88888888'
+      turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
+      turnero.crear_paciente('paciente2@test.com', dni2, 'paciente2_test')
+      turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '8:00', dni)
+      expect do
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '8:00', dni2)
+      end
+        .to raise_error(TurnoNoDisponibleException)
+    end
   end
 
   describe '- Capacidades de Pacientes - ' do

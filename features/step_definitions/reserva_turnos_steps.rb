@@ -84,8 +84,15 @@ Cuando('intento reservar el turno con el médico de matrícula {string} en la fe
   @respuesta_fallida = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
 end
 
-Dado('el Dr. con matricula {string} tenía un turno disponible el {string} a las {string} y alguien más lo reservó') do |_matricula, _fecha, _hora|
-  pending # Write code here that turns the phrase above into concrete actions
+Dado('el Dr. con matricula {string} tenía un turno disponible el {string} a las {string} y alguien más lo reservó') do |matricula, fecha, hora|
+  medico = RepositorioMedicos.new(@logger).find_by_matricula(matricula)
+  paciente = Paciente.new('test_user@email.com', '11111111', 'test_user')
+  RepositorioPacientes.new(@logger).save(paciente)
+  fecha = Date.parse(fecha)
+  hora = Hora.new(hora[0..1].to_i, hora[3..4].to_i)
+  turno = Turno.new(paciente, medico, Horario.new(fecha, hora))
+  RepositorioTurnos.new(@logger).save(turno)
+  expect(turno.id).not_to be_nil
 end
 
 Entonces('recibo el mensaje {string}') do |msg|
