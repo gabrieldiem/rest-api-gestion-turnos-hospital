@@ -22,9 +22,8 @@ describe Horario do
 
   describe '- superposicion -' do
     let(:fecha) { Date.new(2024, 6, 1) }
+    let(:dia_siguiente_a_fecha) { Date.new(2024, 6, 2) }
     let(:duracion_1h) { Hora.new(1, 0) }
-    let(:otra_fecha) { Date.new(2024, 6, 2) }
-
 
     it 'hay superposición parcial cuando están en la misma fecha' do
       h1 = described_class.new(fecha, Hora.new(10, 0))
@@ -56,9 +55,16 @@ describe Horario do
 
     it 'cuando cruzan medianoche hay superposición si uno cruza medianoche y el otro empieza después' do
       h1 = described_class.new(fecha, Hora.new(23, 30))
-      h2 = described_class.new(otra_fecha, Hora.new(0, 0))
+      h2 = described_class.new(dia_siguiente_a_fecha, Hora.new(0, 0))
 
       expect(h1.hay_superposicion?(h2, duracion_1h)).to be true
+    end
+
+    it 'cuando cruzan medianoche no hay superposición si no se tocan, aunque uno cruce medianoche' do
+      h1 = described_class.new(fecha, Hora.new(23, 0))
+      h2 = described_class.new(dia_siguiente_a_fecha, Hora.new(1, 0))
+
+      expect(h1.hay_superposicion?(h2, duracion_1h)).to be false
     end
   end
 end
