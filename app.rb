@@ -12,6 +12,8 @@ require_relative './dominio/exceptions/medico_inexistente_exception'
 require_relative './dominio/exceptions/paciente_inexistente_exception'
 require_relative './dominio/exceptions/fuera_de_horario_exception'
 require_relative './dominio/exceptions/turno_no_disponible_exception'
+require_relative './dominio/exceptions/sin_turnos_exception'
+
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 
@@ -192,6 +194,10 @@ get '/pacientes/:dni/turnos-reservados' do
   { turnos:, cantidad_de_turnos: turnos.size }.to_json
 rescue PacienteInexistenteException => e
   logger.error("Error al buscar paciente: #{e.message}")
+  status 404
+  { mensaje_error: e.message }.to_json
+rescue SinTurnosException => e
+  logger.error("Error El paciente #{params[:dni]} no tiene turnos: #{e.message}")
   status 404
   { mensaje_error: e.message }.to_json
 end

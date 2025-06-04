@@ -51,7 +51,6 @@ end
 
 Cuando('quiero ver mis turnos') do
   @respuesta = Faraday.get("/pacientes/#{@dni_registrado}/turnos-reservados")
-  expect(@respuesta.status).to eq(200)
   @respuesta_parseada = JSON.parse(@respuesta.body, symbolize_names: true)
 end
 

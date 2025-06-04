@@ -84,7 +84,7 @@ class Turnero
 
   def obtener_turnos_reservados_del_paciente_por_dni(dni)
     paciente = buscar_paciente_por_dni(dni)
-    raise SinTurnosException, 'El paciente no tiene turnos reservados' if paciente.turnos_reservados.empty?
+    raise SinTurnosException, 'No tenés turnos reservados' if paciente.turnos_reservados.empty?
 
     paciente.turnos_reservados.map do |turno|
       obtener_informacion_de_los_turnos(turno)
