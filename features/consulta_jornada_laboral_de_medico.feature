@@ -4,7 +4,7 @@ Característica: Consultar jornada de atención por nombre del medico
   Quiero poder consultar la jornada de atención de un medico por su nombre completo
   Para planificar eficientemente el trabajo del personal durante la jornada
 
-@indev
+
 Escenario: 7.0.1 - Consultar jornada con turnos asignados
   Dado que hoy es "2025-06-03"
   Y que existe un medico registrado con nombre "María" y apellido "Fernández" con matricula "18293"
