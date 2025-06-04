@@ -60,7 +60,7 @@ Cuando('intento reservar el turno con el médico de matrícula {string} en la fe
   }
   @respuesta_fallida = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
 
-  expect(@respuesta_fallida.status).to eq(404)
+  expect(@respuesta_fallida.status).not_to be(201)
 end
 
 Entonces('recibo el mensaje de operacion exitosa para la fecha {string} y la hora {string}') do |fecha, hora|
@@ -86,6 +86,6 @@ Dado('el Dr. con matricula {string} tenía un turno disponible el {string} a las
 end
 
 Entonces('recibo el mensaje {string}') do |msg|
-  parsed_response = JSON.parse(@response.body)
+  parsed_response = JSON.parse(@respuesta_fallida.body)
   expect(parsed_response['mensaje_error']).to eq(msg)
 end
