@@ -152,6 +152,10 @@ rescue FueraDeHorarioException => e
   logger.error("Error al reservar turno: #{e.message}")
   status 400
   { mensaje_error: e.message }.to_json
+rescue PacienteInexistenteException => e
+  logger.error("Error al buscar paciente: #{e.message}")
+  status 404
+  { mensaje_error: e.message }.to_json
 end
 
 post '/medicos' do

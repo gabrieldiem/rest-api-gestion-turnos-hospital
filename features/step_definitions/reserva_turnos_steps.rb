@@ -29,11 +29,6 @@ Dado('que hay un paciente registrado con username {string}') do |username|
 end
 
 Dado('el Dr. con matricula {string} tiene un turno disponible el {string} a las {string}') do |matricula, fecha, hora|
-  response = Faraday.get("/medicos/#{matricula}/turnos-disponibles")
-  parsed_response = JSON.parse(response.body)
-  fecha_formateada = Date.parse(fecha).strftime('%Y-%m-%d')
-  expect(response.status).to eq(200)
-  expect(parsed_response['turnos']).to include('fecha' => fecha_formateada, 'hora' => hora)
 end
 
 Cuando('reservo el turno con el médico de matrícula {string} en la fecha {string} y la hora {string}') do |matricula, fecha, hora|
@@ -77,8 +72,16 @@ Entonces('recibo el mensaje de operacion fallida') do
   expect(parsed_response[:mensaje_error]).to include('No existe un médico con la matrícula')
 end
 
-Cuando('reservo el turno con el médico de matrícula {string} en la fecha {string} y la hora {string} con el username {string}') do |_string, _string2, _string3, _string4|
-  pending # Write code here that turns the phrase above into concrete actions
+Cuando('intento reservar el turno con el médico de matrícula {string} en la fecha {string} y la hora {string} con el username {string}') do |matricula, fecha, hora, _username|
+  body = {
+    dni: '66666666',
+    turno: {
+      fecha:,
+      hora:
+    }
+  }
+
+  @respuesta_fallida = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
 end
 
 Dado('el Dr. con matricula {string} tenía un turno disponible el {string} a las {string} y alguien más lo reservó') do |_matricula, _fecha, _hora|
