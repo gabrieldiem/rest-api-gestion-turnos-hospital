@@ -67,6 +67,8 @@ class Turnero
   end
 
   def buscar_paciente_por_username(username)
+    raise PacienteInexistenteException, 'Debe tener un username para poder realizar esta accion' if username.nil? || username.empty?
+
     paciente = @repositorio_pacientes.find_by_username(username)
     raise PacienteInexistenteException, "No existe un paciente con el username #{username}" if paciente.nil?
 
