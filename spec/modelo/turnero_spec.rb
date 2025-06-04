@@ -240,6 +240,20 @@ describe Turnero do
       end
         .to raise_error(TurnoNoDisponibleException)
     end
+
+    xit 'obtener turnos reservados de un paciente' do
+      especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+      fecha_de_maniana = fecha_de_hoy + 1
+
+      dni = '999999999'
+      paciente = turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
+      turno = turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '8:00', dni)
+
+      turnos_reservados = turnero.obtener_turnos_reservados_del_paciente_por_dni(dni)
+      expect(turnos_reservados).to include(turno)
+      expect(turnos_reservados.size).to eq(1)
+    end
   end
 
   describe '- Capacidades de Pacientes - ' do
