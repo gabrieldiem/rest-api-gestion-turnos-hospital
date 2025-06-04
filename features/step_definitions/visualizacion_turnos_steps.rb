@@ -50,23 +50,26 @@ Dado('que hay {int} turnos reservados para {string}') do |turnos, _username|
 end
 
 Cuando('quiero ver mis turnos') do
-  respuesta = Faraday.get("/pacientes/#{@dni_registrado}/turnos-reservados")
-  expect(respuesta.status).to eq(200)
-  @respuesta_parseada = JSON.parse(respuesta.body, symbolize_names: true)
+  @respuesta = Faraday.get("/pacientes/#{@dni_registrado}/turnos-reservados")
+  expect(@respuesta.status).to eq(200)
+  @respuesta_parseada = JSON.parse(@respuesta.body, symbolize_names: true)
 end
 
 Entonces('debo ver un mensaje con la lista de mis turnos y todos sus datos deben ser correctos') do
+  expect(@respuesta.status).to eq(200)
   expect(@respuesta_parseada[:turnos]).to be_a(Array)
-  if @cantidad_de_turnos_esperados == 0
-    expect(@respuesta_parseada[:turnos]).to be_empty
-  else
-    @respuesta_parseada[:turnos].each do |turno|
-      expect(turno).to include(:fecha, :hora, :medico)
-      expect(turno[:medico][:matricula]).to eq(@matricula)
-      expect(turno[:medico][:nombre]).to eq(@medico_nombre)
-      expect(turno[:medico][:apellido]).to eq(@medico_apellido)
-      expect(turno[:medico][:especialidad]).to eq(@especialidad_codigo)
-    end
+  expect(@respuesta_parseada[:turnos].empty?).to be false
+  @respuesta_parseada[:turnos].each do |turno|
+    expect(turno).to include(:fecha, :hora, :medico)
+    expect(turno[:medico][:matricula]).to eq(@matricula)
+    expect(turno[:medico][:nombre]).to eq(@medico_nombre)
+    expect(turno[:medico][:apellido]).to eq(@medico_apellido)
+    expect(turno[:medico][:especialidad]).to eq(@especialidad_codigo)
   end
   expect(@respuesta_parseada[:cantidad_de_turnos]).to eq(@cantidad_de_turnos_esperados)
+end
+
+Entonces('recibo un mensaje con {string}') do |mensaje_error|
+  expect(@respuesta.status).to eq(404)
+  expect(@respuesta_parseada[:mensaje_error]).to eq(mensaje_error)
 end
