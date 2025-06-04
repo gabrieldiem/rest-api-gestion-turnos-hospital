@@ -4,6 +4,7 @@ Dado('que existe un doctor de nombre {string} y apellido {string} registrado con
   RepositorioMedicos.new(@logger).delete_all
   RepositorioEspecialidades.new(@logger).delete_all
 
+  @matricula = matricula
   especialidad_body = { nombre: 'Cardiologia', duracion: 20, recurrencia_maxima: 5, codigo: 'card' }.to_json
   response = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
   expect(response.status).to eq(201)
@@ -40,15 +41,8 @@ Cuando('reservo el turno con el médico de matrícula {string} en la fecha {stri
   }
   response = Faraday.post("/medicos/#{matricula}/turnos-disponibles", body.to_json, { 'Content-Type' => 'application/json' })
 
-  expect(response.status).to eq(201)
   @turno_reservado = JSON.parse(response.body, symbolize_names: true)
-  puts @turno_reservado
-  expect(@turno_reservado[:dni]).to eq(@dni_paciente)
-  expect(@turno_reservado[:matricula]).to eq(matricula)
-  expect(@turno_reservado[:turno][:fecha]).to eq(Date.parse(fecha).strftime('%Y-%m-%d'))
-  expect(@turno_reservado[:turno][:hora]).to eq(hora)
-  expect(@turno_reservado[:created_at]).not_to be_nil
-  expect(@turno_reservado[:id]).not_to be_nil
+  expect(response.status).to eq(201)
 end
 
 Cuando('intento reservar el turno con el médico de matrícula {string} en la fecha {string} y la hora {string}') do |matricula, fecha, hora|
@@ -59,12 +53,23 @@ Cuando('intento reservar el turno con el médico de matrícula {string} en la fe
       hora:
     }
   }
-  response = Faraday.post("/medicos/#{matricula}/turnos-disponibles", body.to_json, { 'Content-Type' => 'application/json' })
+  @respuesta_fallida = Faraday.post("/medicos/#{matricula}/turnos-disponibles", body.to_json, { 'Content-Type' => 'application/json' })
 
-  expect(response.status).to eq(404)
+  expect(@respuesta_fallida.status).to eq(404)
 end
 
-Entonces('recibo el mensaje {string}') do |_string|
+Entonces('recibo el mensaje de operacion exitosa para la fecha {string} y la hora {string}') do |fecha, hora|
+  expect(@turno_reservado[:dni]).to eq(@dni_paciente)
+  expect(@turno_reservado[:matricula]).to eq(@matricula)
+  expect(@turno_reservado[:turno][:fecha]).to eq(Date.parse(fecha).strftime('%Y-%m-%d'))
+  expect(@turno_reservado[:turno][:hora]).to eq(hora)
+  expect(@turno_reservado[:created_at]).not_to be_nil
+  expect(@turno_reservado[:id]).not_to be_nil
+end
+
+Entonces('recibo el mensaje de operacion fallida') do
+  parsed_response = JSON.parse(@respuesta_fallida.body, symbolize_names: true)
+  expect(parsed_response[:mensaje_error]).to include('No existe un médico con la matrícula')
 end
 
 Cuando('reservo el turno con el médico de matrícula {string} en la fecha {string} y la hora {string} con el username {string}') do |_string, _string2, _string3, _string4|
