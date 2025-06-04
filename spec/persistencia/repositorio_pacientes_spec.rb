@@ -63,7 +63,7 @@ describe RepositorioPacientes do
     expect(paciente.turnos_reservados).to eq [Turno.new(paciente, medico, horario)]
   end
 
-  it 'obtener un médico por id sin turno' do
+  it 'obtener un paciente por id sin turno' do
     horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
     repositorio_especialidades.save especialidad
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
