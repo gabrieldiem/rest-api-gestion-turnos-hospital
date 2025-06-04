@@ -44,7 +44,7 @@ Cuando('reservo el turno con el médico de matrícula {string} en la fecha {stri
       hora:
     }
   }
-  response = Faraday.post("/medicos/#{matricula}/turnos-disponibles", body.to_json, { 'Content-Type' => 'application/json' })
+  response = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
 
   @turno_reservado = JSON.parse(response.body, symbolize_names: true)
   expect(response.status).to eq(201)
@@ -58,7 +58,7 @@ Cuando('intento reservar el turno con el médico de matrícula {string} en la fe
       hora:
     }
   }
-  @respuesta_fallida = Faraday.post("/medicos/#{matricula}/turnos-disponibles", body.to_json, { 'Content-Type' => 'application/json' })
+  @respuesta_fallida = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
 
   expect(@respuesta_fallida.status).to eq(404)
 end
@@ -83,4 +83,9 @@ end
 
 Dado('el Dr. con matricula {string} tenía un turno disponible el {string} a las {string} y alguien más lo reservó') do |_matricula, _fecha, _hora|
   pending # Write code here that turns the phrase above into concrete actions
+end
+
+Entonces('recibo el mensaje {string}') do |msg|
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['mensaje_error']).to eq(msg)
 end

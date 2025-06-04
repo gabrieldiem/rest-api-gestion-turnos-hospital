@@ -127,8 +127,8 @@ rescue MedicoInexistenteException => e
   { mensaje_error: e.message }.to_json
 end
 
-post '/medicos/:matricula/turnos-disponibles' do
-  logger.debug("POST /medicos/#{@params['matricula']}/turnos-disponibles con params: #{@params}")
+post '/medicos/:matricula/turnos-reservados' do
+  logger.debug("POST /medicos/#{@params['matricula']}/turnos-reservados con params: #{@params}")
 
   turno = turnero.asignar_turno(@params['matricula'], @params[:turno][:fecha].to_s, @params[:turno][:hora].to_s, @params[:dni].to_s)
 
