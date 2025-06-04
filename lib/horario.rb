@@ -14,12 +14,12 @@ class Horario
     other.is_a?(Horario) && hora == other.hora && fecha == other.fecha
   end
 
-  def hay_superposicion?(otro_horario, duracion)
+  def hay_superposicion?(otro_horario, otra_duracion, duracion)
     inicio1 = to_datetime
     fin1 = inicio1 + duracion_en_racional(duracion)
 
     inicio2 = otro_horario.to_datetime
-    fin2 = inicio2 + duracion_en_racional(duracion)
+    fin2 = inicio2 + duracion_en_racional(otra_duracion)
 
     (inicio1 < fin2) && (inicio2 < fin1)
   end

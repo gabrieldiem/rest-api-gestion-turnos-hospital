@@ -26,56 +26,56 @@ describe Horario do
     let(:duracion_1h) { Hora.new(1, 0) }
     let(:duracion_30m) { Hora.new(0, 30) }
 
-    xit 'hay superposición parcial cuando están en la misma fecha' do
+    it 'hay superposición parcial cuando están en la misma fecha' do
       h1 = described_class.new(fecha, Hora.new(10, 0))
       h2 = described_class.new(fecha, Hora.new(10, 30))
 
       expect(h1.hay_superposicion?(h2, duracion_1h, duracion_1h)).to be true
     end
 
-    xit 'no hay superposición si están separados cuando están en la misma fecha' do
+    it 'no hay superposición si están separados cuando están en la misma fecha' do
       h1 = described_class.new(fecha, Hora.new(10, 0))
       h2 = described_class.new(fecha, Hora.new(11, 1))
 
       expect(h1.hay_superposicion?(h2, duracion_1h, duracion_1h)).to be false
     end
 
-    xit 'hay superposición total si empiezan igual cuando están en la misma fecha' do
+    it 'hay superposición total si empiezan igual cuando están en la misma fecha' do
       h1 = described_class.new(fecha, Hora.new(9, 0))
       h2 = described_class.new(fecha, Hora.new(9, 0))
 
       expect(h1.hay_superposicion?(h2, duracion_1h, duracion_1h)).to be true
     end
 
-    xit 'no hay superposición si uno termina justo donde el otro empieza cuando están en la misma fecha' do
+    it 'no hay superposición si uno termina justo donde el otro empieza cuando están en la misma fecha' do
       h1 = described_class.new(fecha, Hora.new(10, 0))
       h2 = described_class.new(fecha, Hora.new(11, 0))
 
       expect(h1.hay_superposicion?(h2, duracion_1h, duracion_1h)).to be false
     end
 
-    xit 'cuando cruzan medianoche hay superposición si uno cruza medianoche y el otro empieza después' do
+    it 'cuando cruzan medianoche hay superposición si uno cruza medianoche y el otro empieza después' do
       h1 = described_class.new(fecha, Hora.new(23, 30))
       h2 = described_class.new(dia_siguiente_a_fecha, Hora.new(0, 0))
 
       expect(h1.hay_superposicion?(h2, duracion_1h, duracion_1h)).to be true
     end
 
-    xit 'cuando cruzan medianoche no hay superposición si no se tocan, aunque uno cruce medianoche' do
+    it 'cuando cruzan medianoche no hay superposición si no se tocan, aunque uno cruce medianoche' do
       h1 = described_class.new(fecha, Hora.new(23, 0))
       h2 = described_class.new(dia_siguiente_a_fecha, Hora.new(1, 0))
 
       expect(h1.hay_superposicion?(h2, duracion_1h, duracion_1h)).to be false
     end
 
-    xit 'hay superposición con duración corta de 30 minutos' do
+    it 'hay superposición con duración corta de 30 minutos' do
       h1 = described_class.new(fecha, Hora.new(8, 0))
       h2 = described_class.new(fecha, Hora.new(8, 15))
 
       expect(h1.hay_superposicion?(h2, duracion_30m, duracion_30m)).to be true
     end
 
-    xit 'hay superposición con duración larga de 5h reciproca' do
+    it 'hay superposición con duración larga de 5h reciproca' do
       h1 = described_class.new(fecha, Hora.new(8, 0))
       h2 = described_class.new(fecha, Hora.new(12, 0))
       duracion = Hora.new(5, 0)
@@ -84,13 +84,13 @@ describe Horario do
       expect(h2.hay_superposicion?(h1, duracion, duracion)).to be true
     end
 
-    xit 'dos horarios con duraciones distintas, pero que se superponen' do
+    it 'dos horarios con duraciones distintas, pero que se superponen' do
       h1 = described_class.new(fecha, Hora.new(8, 0))
       h2 = described_class.new(fecha, Hora.new(9, 0))
-      
+
       duracion1 = Hora.new(2, 0)
       duracion2 = Hora.new(1, 0)
-      
+
       expect(h1.hay_superposicion?(h2, duracion2, duracion1)).to be true
     end
   end
