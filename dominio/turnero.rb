@@ -91,6 +91,15 @@ class Turnero
     end
   end
 
+  def obtener_turnos_reservados_por_medico(matricula)
+    medico = buscar_medico(matricula)
+    raise SinTurnosException, 'No tenés turnos reservados' if medico.turnos_asignados.empty?
+
+    medico.turnos_asignados.map do |turno|
+      obtener_informacion_de_los_turnos_por_medico(turno)
+    end
+  end
+
   private
 
   def obtener_informacion_de_los_turnos(turno)
@@ -107,6 +116,16 @@ class Turnero
       apellido: medico.apellido,
       matricula: medico.matricula,
       especialidad: medico.especialidad.codigo
+    }
+  end
+
+  def obtener_informacion_de_los_turnos_por_medico(turno)
+    {
+      fecha: turno.horario.fecha.to_s,
+      hora: "#{turno.horario.hora.hora}:#{turno.horario.hora.minutos.to_s.rjust(2, '0')}",
+      paciente: {
+        dni: turno.paciente.dni
+      }
     }
   end
 
