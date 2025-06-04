@@ -17,6 +17,7 @@ class Paciente
     @dni = dni
     @username = username
     @id = id
+    @turnos_reservados = []
     validate!
   end
 
