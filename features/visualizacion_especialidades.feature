@@ -22,7 +22,6 @@ Característica: Consultar especialidades dadas de alta
     Y se observa la especialidad "Cardiología" con código "card", duración de turno de "30" minutos y recurrencia máxima de "1" turnos
     Y se observa la especialidad "Pediatría" con código "pedi", duración de turno de "15" minutos y recurrencia máxima de "2" turnos
 
-  @wip
   Escenario: 17.0.3 - Consultar especialidades cuando no hay ninguna dada de alta
     Dado que no existe ninguna especialiadad dada de alta
     Cuando consulto las especialidades dadas de alta
