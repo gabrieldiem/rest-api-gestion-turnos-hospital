@@ -1,21 +1,21 @@
 require 'integration_helper'
 
-require_relative '../../dominio/turnero'
-require_relative '../../dominio/especialidad'
-require_relative '../../dominio/medico'
-require_relative '../../dominio/paciente'
-require_relative '../../dominio/calculador_de_turnos_libres'
-require_relative '../../dominio/exceptions/medico_inexistente_exception'
-require_relative '../../dominio/exceptions/paciente_inexistente_exception'
-require_relative '../../dominio/exceptions/fuera_de_horario_exception'
-require_relative '../../dominio/exceptions/turno_no_disponible_exception'
-require_relative '../../dominio/exceptions/sin_turnos_exception'
-require_relative '../../persistencia/repositorio_pacientes'
-require_relative '../../persistencia/repositorio_especialidades'
-require_relative '../../persistencia/repositorio_medicos'
-require_relative '../../lib/proveedor_de_fecha'
-require_relative '../../lib/proveedor_de_hora'
-require_relative '../../lib/hora'
+require_relative '../../../dominio/turnero'
+require_relative '../../../dominio/especialidad'
+require_relative '../../../dominio/medico'
+require_relative '../../../dominio/paciente'
+require_relative '../../../dominio/calculador_de_turnos_libres'
+require_relative '../../../dominio/exceptions/medico_inexistente_exception'
+require_relative '../../../dominio/exceptions/paciente_inexistente_exception'
+require_relative '../../../dominio/exceptions/fuera_de_horario_exception'
+require_relative '../../../dominio/exceptions/turno_no_disponible_exception'
+require_relative '../../../dominio/exceptions/sin_turnos_exception'
+require_relative '../../../persistencia/repositorio_pacientes'
+require_relative '../../../persistencia/repositorio_especialidades'
+require_relative '../../../persistencia/repositorio_medicos'
+require_relative '../../../lib/proveedor_de_fecha'
+require_relative '../../../lib/proveedor_de_hora'
+require_relative '../../../lib/hora'
 
 describe Turnero do
   let(:logger) do
@@ -38,93 +38,6 @@ describe Turnero do
   end
   let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, repositorio_turnos, proveedor_de_fecha, proveedor_de_hora) }
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
-
-  describe '- Capacidades de Especialidades - ' do
-    it 'crea una especialidad nuevo' do
-      especialidad_nuevo = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      expect(especialidad_nuevo).to have_attributes(nombre: 'Cardiología', duracion: 30, recurrencia_maxima: 5, codigo: 'card')
-    end
-
-    it 'crea una especialidad nuevo y lo guarda en el repositorio' do
-      especialidad_nuevo = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      especialidad_guardada = repositorio_especialidades.all.first
-      expect(repositorio_especialidades.all.size).to eq(1)
-      expect(especialidad_guardada).to have_attributes(nombre: especialidad_nuevo.nombre, duracion: especialidad_nuevo.duracion, recurrencia_maxima: especialidad_nuevo.recurrencia_maxima,
-                                                       codigo: especialidad_nuevo.codigo)
-    end
-
-    it 'obtener todas las especialidades' do
-      especialidad_una = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      especialidad_dos = turnero.crear_especialidad('Pediatría', 20, 3, 'pedi')
-      especialidad_tres = turnero.crear_especialidad('Cirugía', 60, 2, 'ciru')
-
-      especialidades = turnero.obtener_especialidades
-      expect(especialidades.size).to eq(3)
-      expect(especialidades).to include(
-        have_attributes(nombre: especialidad_una.nombre, duracion: especialidad_una.duracion, recurrencia_maxima: especialidad_una.recurrencia_maxima, codigo: especialidad_una.codigo),
-        have_attributes(nombre: especialidad_dos.nombre, duracion: especialidad_dos.duracion, recurrencia_maxima: especialidad_dos.recurrencia_maxima, codigo: especialidad_dos.codigo),
-        have_attributes(nombre: especialidad_tres.nombre, duracion: especialidad_tres.duracion, recurrencia_maxima: especialidad_tres.recurrencia_maxima, codigo: especialidad_tres.codigo)
-      )
-    end
-  end
-
-  describe '- Capacidades de Medicos - ' do
-    it 'crea un médico nuevo' do
-      especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      medico_nuevo = turnero.crear_medico('Juan', 'Pérez', 'NAC123', 'card')
-
-      expect(medico_nuevo).to have_attributes(nombre: 'Juan', apellido: 'Pérez', matricula: 'NAC123')
-      expect(medico_nuevo.especialidad).to have_attributes(nombre: especialidad.nombre,
-                                                           duracion: especialidad.duracion,
-                                                           recurrencia_maxima: especialidad.recurrencia_maxima,
-                                                           codigo: especialidad.codigo)
-    end
-
-    it 'crea un médico nuevo y lo guarda en el repositorio' do
-      turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      medico_nuevo = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', 'card')
-      medico_guardado = repositorio_medicos.all.first
-      expect(repositorio_medicos.all.size).to eq(1)
-      expect(medico_guardado.matricula).to eq(medico_nuevo.matricula)
-    end
-
-    it 'busca un médico por matrícula' do
-      turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      medico_nuevo = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', 'card')
-      medico_encontrado = turnero.buscar_medico('NAC456')
-      expect(medico_encontrado).to have_attributes(nombre: medico_nuevo.nombre, apellido: medico_nuevo.apellido, matricula: medico_nuevo.matricula)
-    end
-
-    it 'no encuentra un médico por matrícula inexistente' do
-      expect { turnero.buscar_medico('NAC999') }.to raise_error(MedicoInexistenteException)
-    end
-
-    it 'puedo consultar todos los turnos reservados con un médico' do
-      especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      paciente = turnero.crear_paciente('juancito@test.com', '999999999', 'juancito')
-      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
-
-      fecha_de_maniana = fecha_de_hoy + 1
-      hora_inicio_jornada = Hora.new(8, 0)
-      hora_fin_jornada = Hora.new(18, 0)
-
-      cantidad_turnos = (hora_fin_jornada.hora - hora_inicio_jornada.hora) * 2 # Cada turno dura 30 minutos
-      cantidad_turnos.times do |i|
-        hora_a_asignar = hora_inicio_jornada + Hora.new(0, i * 30)
-        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}", paciente.dni)
-      end
-
-      turnos_reservados = turnero.obtener_turnos_reservados_por_medico('NAC456')
-      expect(turnos_reservados.size).to eq(cantidad_turnos)
-    end
-
-    it 'cuando consulto los turnos de un médico sin turnos me devuelve un error' do
-      especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
-
-      expect { turnero.obtener_turnos_reservados_por_medico('NAC456') }.to raise_error(SinTurnosException)
-    end
-  end
 
   describe '- Capacidades de Turnos - ' do
     it 'obtener turnos disponibles de un médico' do
@@ -304,91 +217,6 @@ describe Turnero do
       expect do
         turnero.obtener_turnos_reservados_del_paciente_por_dni(dni)
       end.to raise_error(SinTurnosException)
-    end
-  end
-
-  describe '- Capacidades de Pacientes - ' do
-    it 'crea un paciente nuevo valido' do
-      paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
-
-      expect(paciente).to have_attributes(email: 'juan.perez@example.com', dni: '12345678', username: 'juanperez')
-    end
-
-    it 'crea un paciente nuevo y lo guarda en el repositorio' do
-      paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
-
-      paciente_guardado = repositorio_pacientes.all.first
-      expect(repositorio_pacientes.all.size).to eq(1)
-      expect(paciente_guardado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
-    end
-
-    it 'no se puede crear un paciente con DNI repetido' do
-      dni = '12345678'
-      _paciente_valido = turnero.crear_paciente('gabriel.dominguez@example.com', dni, 'gabrieldominguez')
-
-      expect do
-        turnero.crear_paciente('juan.perez@example.com', dni, 'juanperez')
-      end.to raise_error(ActiveModel::ValidationError)
-    end
-
-    it 'no se puede crear un paciente con email sin arroba (@)' do
-      expect do
-        turnero.crear_paciente('juan.perezexample.com', '12345678', 'juanperez')
-      end.to raise_error(ActiveModel::ValidationError)
-    end
-
-    it 'no se puede crear un paciente con email sin dominio' do
-      expect do
-        turnero.crear_paciente('juan.perez@example', '12345678', 'juanperez')
-      end.to raise_error(ActiveModel::ValidationError)
-    end
-
-    it 'no se puede crear un paciente con email vacio' do
-      expect do
-        turnero.crear_paciente('', '12345678', 'juanperez')
-      end.to raise_error(ActiveModel::ValidationError)
-    end
-
-    it 'no se puede crear un paciente con DNI vacio' do
-      expect do
-        turnero.crear_paciente('juan.perez@example.com', '', 'juanperez')
-      end.to raise_error(ActiveModel::ValidationError)
-    end
-
-    it 'no se puede crear un paciente con username vacio' do
-      expect do
-        turnero.crear_paciente('juan.perez@example.com', '12345678', '')
-      end.to raise_error(ActiveModel::ValidationError)
-    end
-
-    it 'se obtiene un paciente por username' do
-      paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
-      paciente_encontrado = turnero.buscar_paciente_por_username('juanperez')
-      expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
-    end
-
-    it 'no se encuentra un paciente por username inexistente' do
-      expect do
-        turnero.buscar_paciente_por_username('noexiste')
-      end.to raise_error(PacienteInexistenteException)
-    end
-
-    it 'no se encuentra un paciente por username vacio' do
-      expect do
-        turnero.buscar_paciente_por_username('')
-      end.to raise_error(PacienteInexistenteException)
-    end
-
-    it 'se obtiene un paciente por dni' do
-      paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
-      paciente_encontrado = turnero.buscar_paciente_por_dni('12345678')
-      expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
-    end
-
-    it 'no se encuentra un paciente por dni inexistente' do
-      expect do
-        turnero.buscar_paciente_por_dni('noexiste')
-      end.to raise_error(PacienteInexistenteException)
     end
   end
 end
