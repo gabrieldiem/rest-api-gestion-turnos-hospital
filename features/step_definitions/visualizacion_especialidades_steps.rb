@@ -29,13 +29,17 @@ Entonces('se muestran {string} especialidades en total') do |total|
   expect(@response_body[:cantidad_total]).to eq(total.to_i)
 end
 
-Entonces('se observa la especialidad {string} con código {string}, duración de turno de {string} minutos y recurrencia máxima de {string} turnos') do |nombre, _codigo, duracion, recurrencia_maxima|
-  expect(@response_body[:especialidades]).to include({
-                                                       nombre:,
-                                                       codigo: nombre2,
-                                                       duracion: duracion.to_i,
-                                                       recurrencia_maxima: recurrencia_maxima.to_i
-                                                     })
+Entonces('se observa la especialidad {string} con código {string}, duración de turno de {string} minutos y recurrencia máxima de {string} turnos') do |nombre, codigo, duracion, recurrencia_maxima|
+  expect(@response_body[:especialidades]).to include(
+    match(
+      codigo:,
+      created_on: be_present,
+      duracion: duracion.to_i,
+      id: be_present,
+      nombre:,
+      recurrencia_maxima: recurrencia_maxima.to_i
+    )
+  )
 end
 
 Dado('que no existe ninguna especialiadad dada de alta') do

@@ -4,7 +4,6 @@ Característica: Consultar especialidades dadas de alta
   Quiero poder consultar las especialidades dadas de alta
   Para comprobar el estado del sistema
 
-  @wip
   Escenario: 17.0.1 - Consultar especialidades cuando hay 1 sola dada de alta
     Dado que existe la especialidad "Traumatologia" con código "trau", duración de turno de "45" minutos y recurrencia máxima de "3" turnos
     Cuando consulto las especialidades dadas de alta

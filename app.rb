@@ -84,6 +84,26 @@ rescue ActiveModel::ValidationError => e
   { mensaje_error: e.model.errors.first.message }.to_json
 end
 
+get '/especialidades' do
+  logger.debug('GET /especialidades')
+  especialidades = turnero.obtener_especialidades
+
+  status 200
+  {
+    cantidad_total: especialidades.size,
+    especialidades: especialidades.map do |especialidad|
+      {
+        id: especialidad.id,
+        nombre: especialidad.nombre,
+        duracion: especialidad.duracion,
+        recurrencia_maxima: especialidad.recurrencia_maxima,
+        codigo: especialidad.codigo,
+        created_on: especialidad.created_on
+      }
+    end
+  }.to_json
+end
+
 post '/especialidades' do
   logger.debug("POST /especialidades con params: #{@params}")
   especialidad = turnero.crear_especialidad(@params[:nombre].to_s,

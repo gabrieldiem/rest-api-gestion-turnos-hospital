@@ -99,7 +99,7 @@ class Turnero
       obtener_informacion_de_los_turnos_por_medico(turno)
     end
   end
-  
+
   def obtener_especialidades
     @repositorio_especialidades.all
   end
