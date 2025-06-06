@@ -11,7 +11,6 @@ Característica: Consultar especialidades dadas de alta
     Y se muestran "1" especialidades en total
     Y se observa la especialidad "Traumatologia" con código "trau", duración de turno de "45" minutos y recurrencia máxima de "3" turnos
 
-  @wip
   Escenario: 17.0.2 - Consultar especialidades cuando hay 3 dadas de alta
     Dado que existe la especialidad "Traumatologia" con código "trau", duración de turno de "45" minutos y recurrencia máxima de "3" turnos
     Dado que existe la especialidad "Cardiología" con código "card", duración de turno de "30" minutos y recurrencia máxima de "1" turnos
