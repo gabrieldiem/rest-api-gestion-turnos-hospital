@@ -53,7 +53,7 @@ describe Turnero do
                                                        codigo: especialidad_nuevo.codigo)
     end
 
-    xit 'obtener todos las especialidades' do
+    it 'obtener todas las especialidades' do
       especialidad_una = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
       especialidad_dos = turnero.crear_especialidad('Pediatría', 20, 3, 'pedi')
       especialidad_tres = turnero.crear_especialidad('Cirugía', 60, 2, 'ciru')
