@@ -52,6 +52,20 @@ describe Turnero do
       expect(especialidad_guardada).to have_attributes(nombre: especialidad_nuevo.nombre, duracion: especialidad_nuevo.duracion, recurrencia_maxima: especialidad_nuevo.recurrencia_maxima,
                                                        codigo: especialidad_nuevo.codigo)
     end
+
+    xit 'obtener todos las especialidades' do
+      especialidad_una = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+      especialidad_dos = turnero.crear_especialidad('Pediatría', 20, 3, 'pedi')
+      especialidad_tres = turnero.crear_especialidad('Cirugía', 60, 2, 'ciru')
+
+      especialidades = turnero.obtener_especialidades
+      expect(especialidades.size).to eq(3)
+      expect(especialidades).to include(
+        have_attributes(nombre: especialidad_una.nombre, duracion: especialidad_una.duracion, recurrencia_maxima: especialidad_una.recurrencia_maxima, codigo: especialidad_una.codigo),
+        have_attributes(nombre: especialidad_dos.nombre, duracion: especialidad_dos.duracion, recurrencia_maxima: especialidad_dos.recurrencia_maxima, codigo: especialidad_dos.codigo),
+        have_attributes(nombre: especialidad_tres.nombre, duracion: especialidad_tres.duracion, recurrencia_maxima: especialidad_tres.recurrencia_maxima, codigo: especialidad_tres.codigo)
+      )
+    end
   end
 
   describe '- Capacidades de Medicos - ' do
