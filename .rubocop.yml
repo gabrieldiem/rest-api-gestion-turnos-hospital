@@ -5,6 +5,11 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - 'bin/**/*'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'routes/**/*'
+
 # Avoid methods longer than 30 lines of code
 Metrics/MethodLength:
   Max: 30
