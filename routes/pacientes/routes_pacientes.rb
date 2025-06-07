@@ -2,6 +2,7 @@ Dir[File.join(__dir__, '../dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../dominio/exceptions', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../persistencia', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../../vistas/pacientes', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../../vistas/error', '*.rb')].each { |file| require file }
 
 module RoutesPacientes
   def self.registered(app)
@@ -19,7 +20,7 @@ module RoutesPacientes
     rescue PacienteInexistenteException => e
       logger.error("Error al buscar paciente: #{e.message}")
       status 404
-      { mensaje_error: e.message }.to_json
+      MensajeErrorResponse.new(e.message).to_json
     end
 
     app.post '/pacientes' do
@@ -30,7 +31,7 @@ module RoutesPacientes
     rescue ActiveModel::ValidationError => e
       logger.error("Error al crear paciente: #{e.message}")
       status 400
-      { mensaje_error: e.model.errors.first.message }.to_json
+      MensajeErrorResponse.new(e.model.errors.first.message).to_json
     end
 
     app.get '/pacientes/:dni/turnos-reservados' do
@@ -43,11 +44,11 @@ module RoutesPacientes
     rescue PacienteInexistenteException => e
       logger.error("Error al buscar paciente: #{e.message}")
       status 404
-      { mensaje_error: e.message }.to_json
+      MensajeErrorResponse.new(e.message).to_json
     rescue SinTurnosException => e
       logger.error("Error El paciente #{params[:dni]} no tiene turnos: #{e.message}")
       status 404
-      { mensaje_error: e.message }.to_json
+      MensajeErrorResponse.new(e.message).to_json
     end
   end
 end
