@@ -31,4 +31,23 @@ describe TodosMedicosResponse do
     response = described_class.new(medicos).to_json
     expect(response).to eq(respuesta_esperada(medicos))
   end
+
+  it 'transforma exitosamente a JSON cuando hay 2 médicos' do
+    especialidad = Especialidad.new('Cardiologia', 45, 1, 'card')
+    especialidad.id = 1
+    especialidad.created_on = DateTime.new(2025, 6, 10, 12, 0, 0)
+
+    medico1 = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+    medico1.id = 1
+    medico1.created_on = DateTime.new(2025, 6, 10, 12, 0, 0)
+
+    medico2 = Medico.new('Pedro', 'Sueco', 'NAC123', especialidad)
+    medico2.id = 1
+    medico2.created_on = DateTime.new(2025, 6, 11, 12, 0, 0)
+
+    medicos = [medico1, medico2]
+
+    response = described_class.new(medicos).to_json
+    expect(response).to eq(respuesta_esperada(medicos))
+  end
 end
