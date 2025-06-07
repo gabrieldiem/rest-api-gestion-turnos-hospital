@@ -5,7 +5,7 @@ class Turno
   attr_accessor :created_on, :updated_on, :id
 
   def initialize(paciente, medico, horario, id = nil)
-    raise FueraDeHorarioException if horario_despues_de_18?(horario)
+    raise FueraDeHorarioException if es_fuera_de_horario_de_atencion?(horario)
 
     @paciente = paciente
     @medico = medico
@@ -20,7 +20,12 @@ class Turno
       @horario == other.horario
   end
 
-  def horario_despues_de_18?(horario)
-    horario.hora.hora >= Turnero::HORA_DE_FIN_DE_JORNADA.hora && horario.hora.minutos >= Turnero::HORA_DE_FIN_DE_JORNADA.minutos
+  private
+
+  def es_fuera_de_horario_de_atencion?(horario)
+    return true if horario.hora.hora < Turnero::HORA_DE_COMIENZO_DE_JORNADA.hora
+    return true if horario.hora.hora >= Turnero::HORA_DE_FIN_DE_JORNADA.hora && horario.hora.minutos >= Turnero::HORA_DE_FIN_DE_JORNADA.minutos
+
+    false
   end
 end
