@@ -1,7 +1,7 @@
 Dir[File.join(__dir__, '../dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../dominio/exceptions', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../persistencia', '*.rb')].each { |file| require file }
-Dir[File.join(__dir__, './vistas', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../../vistas/medicos', '*.rb')].each { |file| require file }
 
 module RoutesMedicos
   def self.registered(app)

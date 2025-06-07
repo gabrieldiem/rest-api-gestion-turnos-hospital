@@ -1,5 +1,5 @@
 require 'integration_helper'
-require_relative '../../../routes/medicos/vistas/turnos_reservados_response'
+require_relative '../../../vistas/medicos/turnos_reservados_response'
 
 describe TurnosReservadosResponse do
   def convertir_hora(hora)

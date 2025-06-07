@@ -1,5 +1,5 @@
 require 'integration_helper'
-require_relative '../../../routes/medicos/vistas/todos_medicos_response'
+require_relative '../../../vistas/medicos/todos_medicos_response'
 
 describe TodosMedicosResponse do
   def respuesta_esperada(medicos)

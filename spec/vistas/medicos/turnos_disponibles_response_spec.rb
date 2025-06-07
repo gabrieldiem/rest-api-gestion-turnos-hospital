@@ -1,5 +1,5 @@
 require 'integration_helper'
-require_relative '../../../routes/medicos/vistas/turnos_disponibles_response'
+require_relative '../../../vistas/medicos/turnos_disponibles_response'
 
 describe TurnosDisponiblesResponse do
   def respuesta_esperada(medico, turnos_disponibles)
