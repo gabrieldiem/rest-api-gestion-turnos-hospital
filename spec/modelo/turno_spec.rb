@@ -34,4 +34,9 @@ describe Turno do
     horario_tarde = Horario.new(Date.new(2025, 6, 11), Hora.new(17, 59))
     expect { described_class.new(paciente, medico, horario_tarde) }.not_to raise_error
   end
+
+  xit 'los turnos por defecto tiene estado reservado' do
+    turno = described_class.new(paciente, medico, horario)
+    expect(turno.estado).to eq('reservado')
+  end
 end
