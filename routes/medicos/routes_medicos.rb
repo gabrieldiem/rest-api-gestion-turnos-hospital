@@ -76,16 +76,8 @@ module RoutesMedicos
       logger.debug("POST /medicos/#{@params['matricula']}/turnos-reservados con params: #{@params}")
       turno = turnero.asignar_turno(@params['matricula'], @params[:turno][:fecha].to_s, @params[:turno][:hora].to_s, @params[:dni].to_s)
       status 201
-      {
-        id: turno.id,
-        matricula: turno.medico.matricula,
-        dni: turno.paciente.dni,
-        turno: {
-          fecha: turno.horario.fecha.to_s,
-          hora: "#{turno.horario.hora.hora}:#{turno.horario.hora.minutos.to_s.rjust(2, '0')}"
-        },
-        created_at: turno.created_on.to_s
-      }.to_json
+
+      NuevoTurnoReservadoResponse.new(turno).to_json
     rescue StandardError => e
       logger.error("Error al reservar con medico: #{e.message}")
       status 400
