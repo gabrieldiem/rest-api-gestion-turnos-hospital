@@ -9,6 +9,22 @@ Before do
   RepositorioEspecialidades.new(@logger).delete_all
 end
 
+def cargar_asistencias(turno_ids, cant_asistidos, cant_ausentes)
+  cant_asistidos.to_i.times do
+    id = turno_ids.shift
+    turno = @repo_turnos.find(id)
+    turno.asistido = true
+    @repo_turnos.save(turno)
+  end
+
+  cant_ausentes.to_i.times do
+    id = turno_ids.shift
+    turno = @repo_turnos.find(id)
+    turno.asistido = false
+    @repo_turnos.save(turno)
+  end
+end
+
 Cuando('el paciente con DNI {string} tiene {string} turnos asistidos y {string} turnos ausentes y {string} turnos reservado') do |dni, cant_asistidos, cant_ausentes, cant_reservados|
   total_turnos = cant_asistidos.to_i + cant_ausentes.to_i + cant_reservados.to_i
 
@@ -27,30 +43,16 @@ Cuando('el paciente con DNI {string} tiene {string} turnos asistidos y {string} 
         hora:
       }
     }
-    response = Faraday.post(
-      "/medicos/#{@matricula}/turnos-reservados",
-      body.to_json,
-      { 'Content-Type' => 'application/json' }
-    )
+    response = Faraday.post("/medicos/#{@matricula}/turnos-reservados", body.to_json, {
+                              'Content-Type' => 'application/json'
+                            })
     expect(response.status).to eq(201)
     turno_ids << JSON.parse(response.body, symbolize_names: true)[:id]
   end
 
   # TODO: refactorizar con el endpoint de asistencia de turnos para evitar usar repo de turnos
 
-  cant_asistidos.to_i.times do
-    id = turno_ids.shift
-    turno = @repo_turnos.find(id)
-    turno.asistido = true
-    @repo_turnos.save(turno)
-  end
-
-  cant_ausentes.to_i.times do
-    id = turno_ids.shift
-    turno = @repo_turnos.find(id)
-    turno.asistido = false
-    @repo_turnos.save(turno)
-  end
+  cargar_asistencias(turno_ids, cant_asistidos, cant_ausentes)
 end
 
 Cuando('el paciente con DNI {string} reserva {string} turnos con el médico {string}') do |dni, _cant_reservas, _matricula|
