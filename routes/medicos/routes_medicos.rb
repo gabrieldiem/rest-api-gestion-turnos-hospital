@@ -1,6 +1,7 @@
 Dir[File.join(__dir__, '../dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../dominio/exceptions', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../persistencia', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, './vistas', '*.rb')].each { |file| require file }
 
 module RoutesMedicos
   def self.registered(app)
@@ -18,19 +19,7 @@ module RoutesMedicos
       medicos = turnero.obtener_medicos
 
       status 200
-      {
-        cantidad_total: medicos.size,
-        medicos: medicos.map do |medico|
-          {
-            id: medico.id,
-            nombre: medico.nombre,
-            apellido: medico.apellido,
-            matricula: medico.matricula,
-            especialidad: medico.especialidad.nombre,
-            created_on: medico.created_on
-          }
-        end
-      }.to_json
+      TodosMedicosResponse.new(medicos).to_json
     end
   end
 
