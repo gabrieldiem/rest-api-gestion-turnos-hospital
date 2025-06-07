@@ -11,7 +11,7 @@ require_relative '../../dominio/exceptions/fuera_de_horario_exception'
 describe Turno do
   let(:especialidad) { Especialidad.new('Cardiología', 30, 5, 'card') }
   let(:medico) { Medico.new('Juan', 'Pérez', 'NAC123', especialidad) }
-  let(:paciente) { Paciente.new('anagomez@example.com', '12345678', 'anagomez') }
+  let(:paciente) { Paciente.new('anagomez@example.com', '12345678', 'anagomez', 1) }
   let(:horario) { Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0)) }
 
   it 'se crea exitosamente con Paciente, Medico y Horario' do

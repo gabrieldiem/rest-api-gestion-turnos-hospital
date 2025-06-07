@@ -14,7 +14,9 @@ Cuando('el paciente con DNI {string} tiene {string} turnos asistidos y {string} 
 
   turnos_disponibles = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")['turnos']
 
-  turno_ids = turnos_disponibles.map do |turno|
+  turno_ids = []
+  total_turnos.times do |i|
+    turno = turnos_disponibles[i]
     fecha = Date.parse(turno['fecha'])
     hora = Time.parse(turno['hora'])
 
@@ -31,7 +33,7 @@ Cuando('el paciente con DNI {string} tiene {string} turnos asistidos y {string} 
       { 'Content-Type' => 'application/json' }
     )
     expect(response.status).to eq(201)
-    JSON.parse(response.body, symbolize_names: true)[:id]
+    turno_ids << JSON.parse(response.body, symbolize_names: true)[:id]
   end
 
   # TODO: refactorizar con el endpoint de asistencia de turnos para evitar usar repo de turnos
