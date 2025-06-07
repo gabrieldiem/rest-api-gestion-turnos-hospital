@@ -38,6 +38,7 @@ class RepositorioTurnos < AbstractRepository
 
   def cargar_fechas_de_creacion_y_actualizacion(paciente, medico, horario, a_hash)
     turno = Turno.new(paciente, medico, horario, a_hash[:id])
+    turno.estado = a_hash[:estado]
     turno.created_on = DateTime.parse(a_hash[:created_on].to_s)
     turno.updated_on = DateTime.parse(a_hash[:updated_on].to_s) if a_hash[:updated_on]
     turno
@@ -54,7 +55,8 @@ class RepositorioTurnos < AbstractRepository
     {
       paciente: turno.paciente.id,
       medico: turno.medico.id,
-      horario: turno.horario.to_datetime
+      horario: turno.horario.to_datetime,
+      estado: turno.estado
     }
   end
 end

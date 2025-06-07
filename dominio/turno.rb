@@ -2,7 +2,7 @@ require_relative './exceptions/fuera_de_horario_exception'
 
 class Turno
   attr_reader :paciente, :medico, :horario
-  attr_accessor :created_on, :updated_on, :id
+  attr_accessor :created_on, :updated_on, :id, :estado
 
   def initialize(paciente, medico, horario, id = nil)
     raise FueraDeHorarioException if es_fuera_de_horario_de_atencion?(horario)
@@ -11,6 +11,7 @@ class Turno
     @medico = medico
     @horario = horario
     @id = id
+    @estado = '0'
   end
 
   def ==(other)
