@@ -32,7 +32,10 @@ module RoutesResourceTurnosReservados
   def self.post_turnos_reservados(app)
     app.post '/medicos/:matricula/turnos-reservados' do
       logger.debug("POST /medicos/#{@params['matricula']}/turnos-reservados con params: #{@params}")
-      turno = turnero.asignar_turno(@params['matricula'], @params[:turno][:fecha].to_s, @params[:turno][:hora].to_s, @params[:dni].to_s)
+      turno = turnero.asignar_turno(@params['matricula'],
+                                    @params[:turno][:fecha].to_s,
+                                    @params[:turno][:hora].to_s,
+                                    @params[:dni].to_s)
       status 201
 
       NuevoTurnoReservadoResponse.new(turno).to_json
