@@ -2,6 +2,7 @@ Dir[File.join(__dir__, '../dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../dominio/exceptions', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../persistencia', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../../vistas/medicos', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../../vistas/error', '*.rb')].each { |file| require file }
 
 module RoutesMedicos
   def self.registered(app)
@@ -44,11 +45,10 @@ module RoutesMedicos
 
       status 200
       TurnosDisponiblesResponse.new(medico, turnos_disponibles).to_json
-
     rescue MedicoInexistenteException => e
       logger.error("Error al buscar médico: #{e.message}")
       status 404
-      { mensaje_error: e.message }.to_json
+      MensajeErrorResponse.new(e.message).to_json
     end
   end
 
@@ -63,11 +63,11 @@ module RoutesMedicos
     rescue MedicoInexistenteException => e
       logger.error("Error al buscar médico: #{e.message}")
       status 404
-      { mensaje_error: e.message }.to_json
+      MensajeErrorResponse.new(e.message).to_json
     rescue SinTurnosException => e
       logger.error("Error El médico #{params[:matricula]} no tiene turnos: #{e.message}")
       status 404
-      { mensaje_error: e.message }.to_json
+      MensajeErrorResponse.new(e.message).to_json
     end
   end
 
@@ -81,7 +81,7 @@ module RoutesMedicos
     rescue StandardError => e
       logger.error("Error al reservar con medico: #{e.message}")
       status 400
-      { mensaje_error: e.message }.to_json
+      MensajeErrorResponse.new(e.message).to_json
     end
   end
 end
