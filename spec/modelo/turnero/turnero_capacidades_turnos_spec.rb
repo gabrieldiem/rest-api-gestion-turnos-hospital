@@ -38,8 +38,6 @@ describe Turnero do
   end
   let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, repositorio_turnos, proveedor_de_fecha, proveedor_de_hora) }
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
-  let(:medico) { turnero.crear_medico('Julian', 'Alvarez', '123456', especialidad.codigo) }
-  let(:paciente) { turnero.crear_paciente('j@perez.com', '999999999', 'juanperez') }
 
   describe '- Capacidades de Turnos - ' do
     it 'obtener turnos disponibles de un médico' do
