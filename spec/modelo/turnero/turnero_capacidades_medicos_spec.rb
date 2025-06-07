@@ -80,13 +80,15 @@ describe Turnero do
       hora_fin_jornada = Hora.new(18, 0)
 
       cantidad_turnos = (hora_fin_jornada.hora - hora_inicio_jornada.hora) * 2 # Cada turno dura 30 minutos
+      turnos_asignados = []
       cantidad_turnos.times do |i|
         hora_a_asignar = hora_inicio_jornada + Hora.new(0, i * 30)
-        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}", paciente.dni)
+        turno_asignado = turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}", paciente.dni)
+        turnos_asignados.push turno_asignado
       end
 
       turnos_reservados = turnero.obtener_turnos_reservados_por_medico('NAC456')
-      expect(turnos_reservados.size).to eq(cantidad_turnos)
+      expect(turnos_reservados).to eq(turnos_asignados)
     end
 
     it 'cuando consulto los turnos de un médico sin turnos me devuelve un error' do
