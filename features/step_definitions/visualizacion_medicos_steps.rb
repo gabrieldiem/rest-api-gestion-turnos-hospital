@@ -1,4 +1,5 @@
 Dado('que existe un medico dado de alta con nombre {string}, apellido {string}, matricula {string} y especialidad con codigo {string}') do |nombre, apellido, matricula, especialidad|
+  @matricula = matricula
   body = {
     nombre:,
     apellido:,
