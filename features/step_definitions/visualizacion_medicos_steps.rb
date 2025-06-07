@@ -19,16 +19,13 @@ Entonces('se muestran {string} médicos en total') do |cantidad_total|
   expect(@response_body[:cantidad_total]).to eq(cantidad_total.to_i)
 end
 
-Entonces('se observa el médico con nombre {string}, apellido {string}, matricula {string}, especialista en {string} con codigo de especialidad {string}') do |nombre, apellido, matricula, especialidad_nombre, codigo|
+Entonces('se observa el médico con nombre {string}, apellido {string}, matricula {string}, especialista en {string}') do |nombre, apellido, matricula, especialidad|
   expect(@response_body[:medicos]).to include(
     a_hash_including(
       nombre:,
       apellido:,
       matricula:,
-      especialidad: a_hash_including(
-        nombre: especialidad_nombre,
-        codigo:
-      )
+      especialidad:
     )
   )
 end

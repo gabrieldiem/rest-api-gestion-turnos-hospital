@@ -14,7 +14,7 @@ Dado que existe un medico dado de alta con nombre "María", apellido "Fernández
 Cuando consulto los médicos dados de alta
 Entonces se obtiene una respuesta exitosa
 Y se muestran "1" médicos en total
-Y se observa el médico con nombre "María", apellido "Fernández", matricula "NAC123", especialista en "Traumatologia" con codigo de especialidad "trau"
+Y se observa el médico con nombre "María", apellido "Fernández", matricula "NAC123", especialista en "Traumatologia"
 
 Escenario: 17.1.2 - Consultar médicos cuando hay 3 dados de alta
 Dado que existe un medico dado de alta con nombre "María", apellido "Fernández", matricula "NAC123" y especialidad con codigo "trau"
@@ -23,9 +23,9 @@ Dado que existe un medico dado de alta con nombre "Juan", apellido "Perez", matr
 Cuando consulto los médicos dados de alta
 Entonces se obtiene una respuesta exitosa
 Y se muestran "3" médicos en total
-Y se observa el médico con nombre "María", apellido "Fernández", matricula "NAC123", especialista en "Traumatologia" con codigo de especialidad "trau"
-Y se observa el médico con nombre "Pedro", apellido "Sueco", matricula "NAC001", especialista en "Cardiología" con codigo de especialidad "card"
-Y se observa el médico con nombre "Juan", apellido "Perez", matricula "PROV001", especialista en "Pediatría" con codigo de especialidad "pedi"
+Y se observa el médico con nombre "María", apellido "Fernández", matricula "NAC123", especialista en "Traumatologia"
+Y se observa el médico con nombre "Pedro", apellido "Sueco", matricula "NAC001", especialista en "Cardiología"
+Y se observa el médico con nombre "Juan", apellido "Perez", matricula "PROV001", especialista en "Pediatría"
 
 Escenario: 17.1.3 - Consultar médicos cuando no hay ninguno dado de alta
 Dado que no existe ningún médico dado de alta

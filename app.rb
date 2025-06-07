@@ -136,10 +136,7 @@ get '/medicos' do
         nombre: medico.nombre,
         apellido: medico.apellido,
         matricula: medico.matricula,
-        especialidad: {
-          nombre: medico.especialidad.nombre,
-          codigo: medico.especialidad.codigo
-        },
+        especialidad: medico.especialidad.nombre,
         created_on: medico.created_on
       }
     end
