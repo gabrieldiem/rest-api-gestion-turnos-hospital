@@ -34,7 +34,9 @@ class RepositorioMedicos < AbstractRepository
   def load_object(a_hash)
     @logger.debug "Buscando medico desde la DB: #{a_hash.inspect}"
     especialidad = @repositorio_especialidades.find(a_hash[:especialidad]) if a_hash[:especialidad]
-    Medico.new(a_hash[:nombre], a_hash[:apellido], a_hash[:matricula], especialidad, a_hash[:id])
+    medico = Medico.new(a_hash[:nombre], a_hash[:apellido], a_hash[:matricula], especialidad, a_hash[:id])
+    medico.created_on = DateTime.parse(a_hash[:created_on].to_s) unless a_hash[:created_on].nil?
+    medico
   end
 
   def changeset(medico)

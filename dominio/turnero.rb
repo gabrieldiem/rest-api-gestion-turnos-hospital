@@ -106,6 +106,10 @@ class Turnero
     @repositorio_especialidades.all
   end
 
+  def obtener_medicos
+    @repositorio_medicos.all
+  end
+
   private
 
   def obtener_informacion_de_los_turnos(turno)

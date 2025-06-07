@@ -122,6 +122,30 @@ post '/especialidades' do
   }.to_json
 end
 
+get '/medicos' do
+  logger.debug('GET /medicos')
+
+  medicos = turnero.obtener_medicos
+
+  status 200
+  {
+    cantidad_total: medicos.size,
+    medicos: medicos.map do |medico|
+      {
+        id: medico.id,
+        nombre: medico.nombre,
+        apellido: medico.apellido,
+        matricula: medico.matricula,
+        especialidad: {
+          nombre: medico.especialidad.nombre,
+          codigo: medico.especialidad.codigo
+        },
+        created_on: medico.created_on
+      }
+    end
+  }.to_json
+end
+
 get '/medicos/:matricula/turnos-disponibles' do
   logger.debug("POST /medicos/#{params[:matricula]}/turnos-disponibles: #{@params}")
 
