@@ -15,30 +15,39 @@ Dado('que existe un paciente con DNI {string}') do |dni|
   expect(@response.status).to eq(201)
 end
 
-Dado('existe un turno con ID {string} para ese paciente') do |id_turno|
+def construir_especialidad
   nombre_especialidad = 'Cardiología'
   duracion_turno = 30
-  codigo_especialidad = nombre_especialidad.downcase[0..3]
-  body = {
+  @codigo_especialidad = nombre_especialidad.downcase[0..3]
+  @duracion_turno = duracion_turno.to_i
+  {
     nombre: nombre_especialidad,
     duracion: duracion_turno,
     recurrencia_maxima: 5,
-    codigo: codigo_especialidad
+    codigo: @codigo_especialidad
   }
-  @duracion_turno = duracion_turno.to_i
+end
+
+def construir_medico
+  nombre_medico = 'Julian'
+  apellido_medico = 'Alvarez'
+  @matricula_medico = '123456'
+
+  {
+    nombre: nombre_medico,
+    apellido: apellido_medico,
+    matricula: @matricula_medico,
+    especialidad: @codigo_especialidad
+  }
+end
+
+Dado('existe un turno con ID {string} para ese paciente') do |id_turno|
+  body = construir_especialidad
   @response = Faraday.post('/especialidades', body.to_json, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
 
-  nombre_medico = 'Julian'
-  apellido_medico = 'Alvarez'
-  matricula_medico = '123456'
+  body = construir_medico
 
-  body = {
-    nombre: nombre_medico,
-    apellido: apellido_medico,
-    matricula: matricula_medico,
-    especialidad: codigo_especialidad
-  }
   @response = Faraday.post('/medicos', body.to_json, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
 
@@ -52,7 +61,7 @@ Dado('existe un turno con ID {string} para ese paciente') do |id_turno|
       hora: '8:00'
     }
   }
-  @response = Faraday.post("/medicos/#{matricula_medico}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
+  @response = Faraday.post("/medicos/#{@matricula_medico}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
   @id_turno = JSON.parse(@response.body, symbolize_names: true)[:id]
   expect(@response.status).to eq(201)
 end
