@@ -31,14 +31,7 @@ module RoutesMedicos
                                     @params[:matricula].to_s,
                                     @params[:especialidad].to_s)
       status 201
-      {
-        id: medico.id,
-        nombre: medico.nombre,
-        apellido: medico.apellido,
-        matricula: medico.matricula,
-        especialidad: medico.especialidad.codigo,
-        created_on: medico.created_on
-      }.to_json
+      NuevoMedicoCreadoResponse.new(medico).to_json
     end
   end
 
