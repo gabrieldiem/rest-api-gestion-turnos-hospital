@@ -6,6 +6,12 @@ Dir[File.join(__dir__, '../../vistas/error', '*.rb')].each { |file| require file
 
 module RoutesPacientes
   def self.registered(app)
+    get_paciente_por_username(app)
+    post_paciente(app)
+    get_turnos_reservados(app)
+  end
+
+  def self.get_paciente_por_username(app)
     app.get '/pacientes' do
       logger.debug("GET /pacientes/#{params[:username]}")
 
@@ -22,7 +28,9 @@ module RoutesPacientes
       status 404
       MensajeErrorResponse.new(e.message).to_json
     end
+  end
 
+  def self.post_paciente(app)
     app.post '/pacientes' do
       logger.debug("POST /pacientes con params: #{@params}")
       paciente = turnero.crear_paciente(@params[:email].to_s, @params[:dni].to_s, @params[:username].to_s)
@@ -33,7 +41,9 @@ module RoutesPacientes
       status 400
       MensajeErrorResponse.new(e.model.errors.first.message).to_json
     end
+  end
 
+  def self.get_turnos_reservados(app)
     app.get '/pacientes/:dni/turnos-reservados' do
       logger.debug("GET /pacientes/#{params[:dni]}/turnos-reservados")
 
