@@ -9,12 +9,18 @@ class TurnosReservadosResponse
       turnos: @turnos.map do |turno|
         {
           fecha: turno.horario.fecha.to_s,
-          hora: "#{turno.horario.hora.hora}:#{turno.horario.hora.minutos.to_s.rjust(2, '0')}",
+          hora: convertir_hora(turno.horario.hora),
           paciente: {
             dni: turno.paciente.dni.to_s
           }
         }
       end
     }.to_json
+  end
+
+  private
+
+  def convertir_hora(hora)
+    "#{hora.hora}:#{hora.minutos.to_s.rjust(2, '0')}"
   end
 end
