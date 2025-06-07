@@ -39,14 +39,15 @@ class RepositorioPacientes < AbstractRepository
   end
 
   def load_object(a_hash)
-    Paciente.new(a_hash[:email], a_hash[:dni], a_hash[:username], a_hash[:id])
+    Paciente.new(a_hash[:email], a_hash[:dni], a_hash[:username], a_hash[:reputacion], a_hash[:id])
   end
 
   def changeset(paciente)
     {
       email: paciente.email,
       dni: paciente.dni,
-      username: paciente.username
+      username: paciente.username,
+      reputacion: paciente.reputacion
     }
   end
 end

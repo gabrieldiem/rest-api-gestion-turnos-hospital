@@ -42,7 +42,7 @@ describe RepositorioMedicos do
   it 'cuando se asigna un turno a un médico se guarda correctamente' do
     horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
-    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez')
+    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez', 1)
     repositorio_pacientes.save(paciente)
 
     repositorio_medico = described_class.new(logger)
@@ -58,7 +58,7 @@ describe RepositorioMedicos do
   it 'obtener un médico por id sin turnos' do
     horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
-    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez')
+    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez', 1)
     repositorio_pacientes.save(paciente)
 
     repositorio_medico = described_class.new(logger)

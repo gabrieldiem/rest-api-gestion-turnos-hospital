@@ -23,7 +23,7 @@ describe NuevoTurnoReservadoResponse do
     especialidad = Especialidad.new('Cardiologia', 45, 1, 'card')
     especialidad.created_on = DateTime.new(2025, 6, 10, 12, 0, 0)
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
-    paciente = Paciente.new('roberto@mail.com', '12345', 'robertito')
+    paciente = Paciente.new('roberto@mail.com', '12345', 'robertito', 1)
 
     horario = Horario.new(DateTime.new(2025, 6, 10), Hora.new(8, 30))
     turno = Turno.new(paciente, medico, horario)

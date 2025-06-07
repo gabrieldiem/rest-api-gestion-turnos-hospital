@@ -5,19 +5,20 @@ class Paciente
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-  attr_reader :email, :dni, :username
+  attr_reader :email, :dni, :username, :reputacion
   attr_accessor :id, :updated_on, :created_on, :turnos_reservados
 
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX, message: 'El formato del email es inválido' }
   validates :dni, presence: { message: 'El DNI es requerido' }
   validates :username, presence: { message: 'El username es requerido' }
 
-  def initialize(email, dni, username, id = nil)
+  def initialize(email, dni, username, reputacion, id = nil)
     @email = email
     @dni = dni
     @username = username
     @id = id
     @turnos_reservados = []
+    @reputacion = reputacion
     validate!
   end
 

@@ -13,7 +13,7 @@ describe RepositorioPacientes do
   let(:repositorio_medico) { RepositorioMedicos.new(logger) }
 
   it 'deberia guardar y asignar id si el paciente es nuevo' do
-    juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
+    juan = Paciente.new('juan@test.com', '12345678', '@juanperez', 1)
     described_class.new(logger).save(juan)
     expect(juan.id).not_to be_nil
   end
@@ -21,14 +21,14 @@ describe RepositorioPacientes do
   it 'deberia recuperar todos' do
     repositorio = described_class.new(logger)
     cantidad_de_pacientes_iniciales = repositorio.all.size
-    juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
+    juan = Paciente.new('juan@test.com', '12345678', '@juanperez', 1)
     repositorio.save(juan)
     expect(repositorio.all.size).to be(cantidad_de_pacientes_iniciales + 1)
   end
 
   it 'deberia encontrar un paciente por dni' do
     repositorio = described_class.new(logger)
-    juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
+    juan = Paciente.new('juan@test.com', '12345678', '@juanperez', 1)
     repositorio.save(juan)
     juan_encontrado = repositorio.find_by_dni('12345678')
     expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)
@@ -36,7 +36,7 @@ describe RepositorioPacientes do
 
   it 'deberia encontrar un paciente por username' do
     repositorio = described_class.new(logger)
-    juan = Paciente.new('juan@test.com', '12345678', '@juanperez')
+    juan = Paciente.new('juan@test.com', '12345678', '@juanperez', 1)
     repositorio.save(juan)
     juan_encontrado = repositorio.find_by_username('@juanperez')
     expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)
@@ -51,7 +51,7 @@ describe RepositorioPacientes do
     horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
     repositorio_especialidades.save especialidad
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
-    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez')
+    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez', 1)
     repositorio_pacientes = described_class.new(logger)
     repositorio_pacientes.save(paciente)
     repositorio_medico.save(medico)
@@ -67,7 +67,7 @@ describe RepositorioPacientes do
     horario = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
     repositorio_especialidades.save especialidad
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
-    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez')
+    paciente = Paciente.new('anagomez@example.com', '12345678', 'anagomez', 1)
     repositorio_pacientes = described_class.new(logger)
     repositorio_pacientes.save(paciente)
 

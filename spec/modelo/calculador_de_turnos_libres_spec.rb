@@ -57,7 +57,7 @@ describe CalculadorDeTurnosLibres do
   end
 
   it 'obtener turnos disponibles dado que ya se asigno un turno' do
-    paciente = Paciente.new('j@perez.com', '999999999', 'juanperez')
+    paciente = Paciente.new('j@perez.com', '999999999', 'juanperez', 1)
     repositorio_pacientes.save paciente
 
     calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
@@ -100,7 +100,7 @@ describe CalculadorDeTurnosLibres do
     cantidad_turnos.times do |i|
       hora_a_asignar += Hora.new(0, duracion_turno) if i != 0
       nuevo_dni = "#{dni}+#{i}"
-      paciente = Paciente.new("j+#{i}@perez.com", nuevo_dni, "juanperez+#{i}")
+      paciente = Paciente.new("j+#{i}@perez.com", nuevo_dni, "juanperez+#{i}", 1)
       asignar_un_turno(hora_a_asignar, fecha_a_llenar, paciente)
     end
   end
@@ -139,7 +139,7 @@ describe CalculadorDeTurnosLibres do
     fecha_de_maniana = fecha_de_hoy + 1
     hora_a_chequear = Hora.new(9, 0)
 
-    paciente = Paciente.new('j@a.com', '123456789', 'juancito')
+    paciente = Paciente.new('j@a.com', '123456789', 'juancito', 1)
     asignar_un_turno(hora_a_chequear, fecha_de_maniana, paciente)
     calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
                                                       Hora.new(18, 0),

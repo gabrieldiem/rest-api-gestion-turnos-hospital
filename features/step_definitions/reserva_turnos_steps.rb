@@ -86,7 +86,7 @@ end
 
 Dado('el Dr. con matricula {string} tenía un turno disponible el {string} a las {string} y alguien más lo reservó') do |matricula, fecha, hora|
   medico = RepositorioMedicos.new(@logger).find_by_matricula(matricula)
-  paciente = Paciente.new('test_user@email.com', '11111111', 'test_user')
+  paciente = Paciente.new('test_user@email.com', '11111111', 'test_user', 1)
   RepositorioPacientes.new(@logger).save(paciente)
   fecha = Date.parse(fecha)
   hora = Hora.new(hora[0..1].to_i, hora[3..4].to_i)
