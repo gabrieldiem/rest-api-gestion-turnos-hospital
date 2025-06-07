@@ -38,6 +38,8 @@ describe Turnero do
   end
   let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, repositorio_turnos, proveedor_de_fecha, proveedor_de_hora) }
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
+  let(:medico) { turnero.crear_medico('Julian', 'Alvarez', '123456', especialidad.codigo) }
+  let(:paciente) { turnero.crear_paciente('j@perez.com', '999999999', 'juanperez') }
 
   describe '- Capacidades de Turnos - ' do
     it 'obtener turnos disponibles de un médico' do
@@ -217,6 +219,13 @@ describe Turnero do
       expect do
         turnero.obtener_turnos_reservados_del_paciente_por_dni(dni)
       end.to raise_error(SinTurnosException)
+    end
+
+    xit 'cambiar la asistencia de un turno' do
+      fecha_de_maniana = fecha_de_hoy + 1
+      turno = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+      turno_actualizado = turnero.cambiar_asistencia_turno(turno.id, paciente.dni, true)
+      expect(turno_actualizado.estado).to eq('presente')
     end
   end
 end

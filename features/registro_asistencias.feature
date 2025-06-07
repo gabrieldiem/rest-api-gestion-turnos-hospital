@@ -7,7 +7,7 @@ Característica: Registrar asistencia de paciente al turno
   Antecedentes:
     Dado que hoy es "2025-06-02"
 
-  @wip
+  @wip @indev
   Escenario: 18.0.1 - Registrar asistencia exitosa (presente)
     Dado que existe un paciente con DNI "12345678"
     Y existe un turno con ID "1" para ese paciente
