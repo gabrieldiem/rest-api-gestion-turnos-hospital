@@ -1,6 +1,7 @@
 Dir[File.join(__dir__, '../dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../dominio/exceptions', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../persistencia', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../../vistas/pacientes', '*.rb')].each { |file| require file }
 
 module RoutesPacientes
   def self.registered(app)
@@ -25,13 +26,7 @@ module RoutesPacientes
       logger.debug("POST /pacientes con params: #{@params}")
       paciente = turnero.crear_paciente(@params[:email].to_s, @params[:dni].to_s, @params[:username].to_s)
       status 201
-      {
-        id: paciente.id,
-        username: paciente.username,
-        dni: paciente.dni,
-        email: paciente.email,
-        created_on: paciente.created_on
-      }.to_json
+      NuevoPacienteCreadoResponse.new(paciente).to_json
     rescue ActiveModel::ValidationError => e
       logger.error("Error al crear paciente: #{e.message}")
       status 400
