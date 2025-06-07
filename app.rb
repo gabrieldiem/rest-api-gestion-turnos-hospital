@@ -12,6 +12,10 @@ require_relative './lib/proveedor_de_hora'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'routes', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, 'routes/control', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, 'routes/medicos', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, 'routes/pacientes', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, 'routes/especialidades', '*.rb')].each { |file| require file }
 
 configure do
   api_logger = Configuration.logger
