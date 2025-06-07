@@ -1,5 +1,5 @@
 require 'integration_helper'
-require_relative '../../routes/especialidades/todas_especialidades_response'
+require_relative '../../routes/especialidades/vistas/todas_especialidades_response'
 
 describe TodasEspecialidadesResponse do
   def respuesta_esperada(especialidades)
