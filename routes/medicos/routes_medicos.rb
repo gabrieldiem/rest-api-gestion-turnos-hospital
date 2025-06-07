@@ -59,18 +59,7 @@ module RoutesMedicos
       turnos = turnero.obtener_turnos_reservados_por_medico(params[:matricula])
 
       status 200
-      {
-        cantidad_turnos: turnos.size,
-        turnos: turnos.map do |turno|
-          {
-            fecha: turno[:fecha].to_s,
-            hora: turno[:hora].to_s,
-            paciente: {
-              dni: turno[:paciente][:dni].to_s
-            }
-          }
-        end
-      }.to_json
+      TurnosReservadosResponse.new(turnos).to_json
     rescue MedicoInexistenteException => e
       logger.error("Error al buscar médico: #{e.message}")
       status 404

@@ -97,9 +97,7 @@ class Turnero
     medico = buscar_medico(matricula)
     raise SinTurnosException, 'El medico no tiene turnos asignados' if medico.turnos_asignados.empty?
 
-    medico.turnos_asignados.map do |turno|
-      obtener_informacion_de_los_turnos_por_medico(turno)
-    end
+    medico.turnos_asignados
   end
 
   def obtener_especialidades
