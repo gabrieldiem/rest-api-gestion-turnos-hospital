@@ -17,12 +17,7 @@ module RoutesPacientes
 
       paciente = turnero.buscar_paciente_por_username(params[:username])
       status 200
-      {
-        username: paciente.username,
-        dni: paciente.dni,
-        email: paciente.email
-      }.to_json
-
+      PacienteResponse.new(paciente).to_json
     rescue PacienteInexistenteException => e
       logger.error("Error al buscar paciente: #{e.message}")
       status 404
