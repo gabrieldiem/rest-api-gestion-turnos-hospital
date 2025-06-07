@@ -1,5 +1,5 @@
 require 'integration_helper'
-require_relative '../../../routes/especialidades/vistas/nueva_especialidad_creada_response'
+require_relative '../../../vistas/especialidades/nueva_especialidad_creada_response'
 
 describe NuevaEspecialidadCreadaResponse do
   it 'transforma exitosamente a JSON' do
