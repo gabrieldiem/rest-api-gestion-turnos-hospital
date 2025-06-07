@@ -31,7 +31,7 @@ describe RepositorioPacientes do
     juan = Paciente.new('juan@test.com', '12345678', '@juanperez', 1)
     repositorio.save(juan)
     juan_encontrado = repositorio.find_by_dni('12345678')
-    expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)
+    expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username, reputacion: juan.reputacion)
   end
 
   it 'deberia encontrar un paciente por username' do
@@ -39,7 +39,7 @@ describe RepositorioPacientes do
     juan = Paciente.new('juan@test.com', '12345678', '@juanperez', 1)
     repositorio.save(juan)
     juan_encontrado = repositorio.find_by_username('@juanperez')
-    expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)
+    expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username, reputacion: juan.reputacion)
   end
 
   it 'deberia retornar nil si no encuentra un paciente por username' do

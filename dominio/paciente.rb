@@ -11,6 +11,7 @@ class Paciente
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX, message: 'El formato del email es inválido' }
   validates :dni, presence: { message: 'El DNI es requerido' }
   validates :username, presence: { message: 'El username es requerido' }
+  validates :reputacion, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1, message: 'La reputación debe estar entre 0 y 1' }
 
   def initialize(email, dni, username, reputacion, id = nil)
     @email = email
