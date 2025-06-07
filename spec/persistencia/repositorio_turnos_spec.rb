@@ -50,4 +50,16 @@ describe RepositorioTurnos do
     turnos = described_class.new(logger).find_by_paciente_id(paciente.id)
     expect(turnos).to eq([turno])
   end
+
+  xit 'los turnos tiene por defecto estado reservado' do
+    especialidad = RepositorioEspecialidades.new(logger).save(Especialidad.new('Cardiología', 30, 5, 'card'))
+    medico = RepositorioMedicos.new(logger).save(Medico.new('Juan', 'Pérez', 'NAC123', especialidad))
+    paciente = RepositorioPacientes.new(logger).save(Paciente.new('anagomez@example.com', '12345678', 'anagomez'))
+
+    turno = Turno.new(paciente, medico, Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0)))
+    described_class.new(logger).save(turno)
+
+    turno = described_class.new(logger).find(turno.id)
+    expect(turno.estado).to eq(0)
+  end
 end

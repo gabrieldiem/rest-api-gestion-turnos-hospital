@@ -16,6 +16,8 @@ Dado('que existe un paciente con DNI {string}') do |dni|
 end
 
 Dado('existe un turno con ID {string} para ese paciente') do |id_turno|
+  nombre_especialidad = 'Cardiología'
+  duracion_turno = 30
   codigo_especialidad = nombre_especialidad.downcase[0..3]
   body = {
     nombre: nombre_especialidad,
@@ -26,6 +28,10 @@ Dado('existe un turno con ID {string} para ese paciente') do |id_turno|
   @duracion_turno = duracion_turno.to_i
   @response = Faraday.post('/especialidades', body.to_json, { 'Content-Type' => 'application/json' })
   expect(@response.status).to eq(201)
+
+  nombre_medico = 'Julian'
+  apellido_medico = 'Alvarez'
+  matricula_medico = '123456'
 
   body = {
     nombre: nombre_medico,
@@ -39,15 +45,14 @@ Dado('existe un turno con ID {string} para ese paciente') do |id_turno|
   @id_turno = id_turno
   fecha_de_maniana = Date.today + 1
 
-  hora, minutos = hora.split('.', 2)
   body = {
-    dni: @dni_por_nombre[@nombre_paciente],
+    dni: @dni,
     turno: {
       fecha: fecha_de_maniana,
       hora: '8:00'
     }
   }
-  @response = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
+  @response = Faraday.post("/medicos/#{matricula_medico}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
   @id_turno = JSON.parse(@response.body, symbolize_names: true)[:id]
   expect(@response.status).to eq(201)
 end
