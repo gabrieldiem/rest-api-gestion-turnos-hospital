@@ -57,6 +57,8 @@ class Turnero
     hora = Hora.new(*hora.split(':').map(&:to_i))
     horario = Horario.new(fecha, hora)
 
+    raise TurnoNoDisponibleException if @calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, fecha, hora)
+
     turno = medico.asignar_turno(horario, paciente)
     @repositorio_turnos.save(turno)
   end

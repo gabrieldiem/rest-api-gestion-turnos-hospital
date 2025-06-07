@@ -18,8 +18,6 @@ class Medico
   end
 
   def asignar_turno(horario, paciente)
-    raise TurnoNoDisponibleException if turno_reservado?(horario)
-
     tiene_paciente_disponibilidad = paciente.tiene_disponibilidad?(horario, Hora.new(0, especialidad.duracion))
     raise HorarioSuperpuestoException unless tiene_paciente_disponibilidad
 
@@ -35,15 +33,5 @@ class Medico
       @apellido == other.apellido &&
       @matricula == other.matricula &&
       @especialidad == other.especialidad
-  end
-
-  private
-
-  def turno_reservado?(horario)
-    CalculadorDeTurnosLibres.new(Turnero::HORA_DE_COMIENZO_DE_JORNADA,
-                                 Turnero::HORA_DE_FIN_DE_JORNADA,
-                                 ProveedorDeFecha.new,
-                                 ProveedorDeHora.new)
-                            .chequear_si_tiene_turno_asignado(self, horario.fecha, horario.hora)
   end
 end
