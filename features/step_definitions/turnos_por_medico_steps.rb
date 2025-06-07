@@ -16,8 +16,7 @@ Dado('que esta registrado el username {string} y DNI {string}') do |username, dn
   expect(@response.status).to eq(201)
 end
 
-Dado('que existe un médico con nombre {string}, apellido {string}, matrícula {string} y especialidad {string} con duración de {string} minutos') do
-|nombre_medico, apellido_medico, matricula_medico, nombre_especialidad, duracion_turno|
+Dado('que existe un médico con nombre {string}, apellido {string}, matrícula {string} y especialidad {string} con duración de {string} minutos') do |nombre_medico, apellido_medico, matricula_medico, nombre_especialidad, duracion_turno|
   codigo_especialidad = nombre_especialidad.downcase[0..3]
   body = {
     nombre: nombre_especialidad,
