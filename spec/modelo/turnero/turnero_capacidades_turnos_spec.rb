@@ -208,8 +208,8 @@ describe Turnero do
 
       turnos_reservados = turnero.obtener_turnos_reservados_del_paciente_por_dni(dni)
       expect(turnos_reservados.size).to eq(1)
-      expect(turnos_reservados.first[:fecha].to_s).to include(fecha_de_maniana.to_s)
-      expect(turnos_reservados.first[:medico][:matricula]).to eq('NAC456')
+      expect(turnos_reservados.first.horario.fecha.to_s).to include(fecha_de_maniana.to_s)
+      expect(turnos_reservados.first.medico.matricula).to eq('NAC456')
     end
 
     it 'obtener turnos reservados de un paciente sin turnos devuelve un error' do

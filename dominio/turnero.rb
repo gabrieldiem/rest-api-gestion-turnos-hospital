@@ -88,9 +88,7 @@ class Turnero
     paciente = buscar_paciente_por_dni(dni)
     raise SinTurnosException, 'No tenés turnos reservados' if paciente.turnos_reservados.empty?
 
-    paciente.turnos_reservados.map do |turno|
-      obtener_informacion_de_los_turnos(turno)
-    end
+    paciente.turnos_reservados
   end
 
   def obtener_turnos_reservados_por_medico(matricula)
@@ -106,35 +104,6 @@ class Turnero
 
   def obtener_medicos
     @repositorio_medicos.all
-  end
-
-  private
-
-  def obtener_informacion_de_los_turnos(turno)
-    {
-      fecha: turno.horario.fecha.to_s,
-      hora: "#{turno.horario.hora.hora}:#{turno.horario.hora.minutos.to_s.rjust(2, '0')}",
-      medico: obtener_informacion_del_medico(turno.medico)
-    }
-  end
-
-  def obtener_informacion_del_medico(medico)
-    {
-      nombre: medico.nombre,
-      apellido: medico.apellido,
-      matricula: medico.matricula,
-      especialidad: medico.especialidad.codigo
-    }
-  end
-
-  def obtener_informacion_de_los_turnos_por_medico(turno)
-    {
-      fecha: turno.horario.fecha.to_s,
-      hora: "#{turno.horario.hora.hora}:#{turno.horario.hora.minutos.to_s.rjust(2, '0')}",
-      paciente: {
-        dni: turno.paciente.dni
-      }
-    }
   end
 
   def paciente_ya_existente?(dni)
