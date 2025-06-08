@@ -36,7 +36,12 @@ describe ConvertidorDeTiempo do
     expect(convertidor.presentar_hora(hora)).to eq('8:30')
   end
 
-  xit 'fecha se presenta correctamente acorde al formato' do
+  it 'hora cuando tiene una unidad de minutos se presenta correctamente acorde al formato' do
+    hora = Hora.new(8, 4)
+    expect(convertidor.presentar_hora(hora)).to eq('8:04')
+  end
+
+  it 'fecha se presenta correctamente acorde al formato' do
     fecha = Date.new(2025, 6, 15)
     expect(convertidor.presentar_fecha(fecha)).to eq('2025-06-15')
   end
