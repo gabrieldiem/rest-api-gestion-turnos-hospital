@@ -75,6 +75,12 @@ class Turnero
     @calculador_de_turnos_libres.calcular_turnos_disponibles_por_medico(medico)
   end
 
+  def cambiar_asistencia_turno(id_turno, _dni, asistio)
+    turno = @repositorio_turnos.find(id_turno)
+    turno.cambiar_asistencia(asistio)
+    @repositorio_turnos.save(turno)
+  end
+
   def buscar_paciente_por_username(username)
     raise PacienteInexistenteException, 'Debe tener un username para poder realizar esta accion' if username.nil? || username.empty?
 
