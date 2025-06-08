@@ -1,7 +1,8 @@
 class TurnosDisponiblesResponse
-  def initialize(medico, turnos_disponibles)
+  def initialize(medico, turnos_disponibles, convertidor_de_tiempo)
     @medico = medico
     @turnos_disponibles = turnos_disponibles
+    @convertidor_de_tiempo = convertidor_de_tiempo
   end
 
   def to_json(*_args)
@@ -21,8 +22,8 @@ class TurnosDisponiblesResponse
   def parsear_turnos
     @turnos_disponibles.map do |turno|
       {
-        fecha: turno.fecha.to_s,
-        hora: "#{turno.hora.hora}:#{turno.hora.minutos.to_s.rjust(2, '0')}"
+        fecha: @convertidor_de_tiempo.presentar_fecha(turno.fecha),
+        hora: @convertidor_de_tiempo.presentar_hora(turno.hora)
       }
     end
   end
