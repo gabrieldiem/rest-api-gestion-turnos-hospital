@@ -245,5 +245,12 @@ describe Turnero do
       turno_obtenido = turnero.buscar_turno(turno.id)
       expect(turno_obtenido.id).to eq(turno.id)
     end
+
+    xit 'cuando obtengo un turno por id que no existe produce un error TurnoInexistenteException' do
+      expect do
+        turnero.buscar_turno(9999)
+      end
+        .to raise_error(TurnoInexistenteException)
+    end
   end
 end
