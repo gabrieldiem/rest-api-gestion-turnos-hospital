@@ -33,4 +33,9 @@ describe EstadoTurnoFactory do
     estado = described_class.crear_estado_por_descripcion('presente')
     expect(estado.class).to eq(EstadoTurnoPresente)
   end
+
+  xit 'podemos obtener el estado ausente a partir de su tipo' do
+    estado = described_class.crear_estado('2')
+    expect(estado.class).to eq(EstadoTurnoAusente)
+  end
 end
