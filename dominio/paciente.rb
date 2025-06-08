@@ -31,6 +31,10 @@ class Paciente
     true
   end
 
+  def actualizar_reputacion
+    @reputacion = 1.0 if @turnos_reservados.empty?
+  end
+
   def ==(other)
     other.is_a?(Paciente) &&
       @dni == other.dni &&
