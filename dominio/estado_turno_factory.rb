@@ -1,4 +1,4 @@
-require_relative './estado_turnos'
+require_relative './estado_turno_reservado'
 
 class EstadoTurnoFactory
   def self.crear_estado(tipo)
