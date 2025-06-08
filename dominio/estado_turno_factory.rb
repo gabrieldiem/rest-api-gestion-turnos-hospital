@@ -20,6 +20,8 @@ class EstadoTurnoFactory
     case descripcion
     when 'reservado'
       EstadoTurnoReservado.new
+    when 'presente'
+      EstadoTurnoPresente.new
     end
   end
 end
