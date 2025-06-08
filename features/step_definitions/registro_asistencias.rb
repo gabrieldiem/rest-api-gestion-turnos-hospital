@@ -68,17 +68,18 @@ end
 
 Cuando('envío los datos de asistencia con DNI {string}, ID de turno {string} y asistencia {string}') do |dni, _id_turno, asistencia|
   body = {
-    paciente: dni,
-    asitio: asistencia
+    dni_paciente: dni,
+    asistio: asistencia
   }
-  @response = Faraday.post("/turnos/#{@id_turno}", body.to_json, { 'Content-Type' => 'application/json' })
+  @response = Faraday.put("/turnos/#{@id_turno}", body.to_json, { 'Content-Type' => 'application/json' })
   @parsed_response = JSON.parse(@response.body, symbolize_names: true)
 end
 
 Entonces('el estado del turno queda como {string}') do |estado|
   response = Faraday.get("/turnos/#{@id_turno}")
+  @parsed_response = JSON.parse(response.body, symbolize_names: true)
   expect(response.status).to eq(200)
-  expect(response.body).to include(estado)
+  expect(@parsed_response[:estado]).to include(estado)
 end
 
 Dado('ya está registrada la asistencia para este turno como {string}') do |estado|
