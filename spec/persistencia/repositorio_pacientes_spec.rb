@@ -81,7 +81,7 @@ describe RepositorioPacientes do
   end
 
   it 'cuando se crea un paciente la fecha de creacion tiene fecha y hora' do
-    hora_actual = Time.new(2025, 6, 11, 12, 39)
+    hora_actual = DateTime.new(2025, 6, 11, 12, 39)
     allow(Time).to receive(:now).and_return(hora_actual)
 
     repositorio = described_class.new(logger)
