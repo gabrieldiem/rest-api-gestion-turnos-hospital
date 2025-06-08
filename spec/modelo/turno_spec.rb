@@ -41,7 +41,7 @@ describe Turno do
     expect(turno.estado.class).to eq(EstadoTurnoReservado)
   end
 
-  xit 'puedo cambiar el estado del turno a presente' do
+  it 'puedo cambiar el estado del turno a presente' do
     turno = described_class.new(paciente, medico, horario)
     turno.cambiar_asistencia(true)
     expect(turno.estado.class).to eq(EstadoTurnoPresente)

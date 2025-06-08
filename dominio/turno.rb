@@ -22,6 +22,10 @@ class Turno
       @horario == other.horario
   end
 
+  def cambiar_asistencia(_asistio)
+    @estado = EstadoTurnoPresente.new
+  end
+
   private
 
   def es_fuera_de_horario_de_atencion?(horario)
