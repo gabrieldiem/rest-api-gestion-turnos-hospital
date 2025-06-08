@@ -230,6 +230,8 @@ describe Turnero do
 
     xit 'cambiar la asistencia de un turno' do
       fecha_de_maniana = fecha_de_hoy + 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
       turno = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
       turno_actualizado = turnero.cambiar_asistencia_turno(turno.id, paciente.dni, true)
       expect(turno_actualizado.estado).to eq('presente')
