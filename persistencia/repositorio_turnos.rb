@@ -2,6 +2,7 @@ require 'date'
 require_relative './abstract_repository'
 require_relative '../lib/hora'
 require_relative '../lib/horario'
+require_relative '../dominio/estado_turno_factory'
 
 class RepositorioTurnos < AbstractRepository
   self.table_name = :turnos
@@ -38,7 +39,7 @@ class RepositorioTurnos < AbstractRepository
 
   def cargar_fechas_de_creacion_y_actualizacion(paciente, medico, horario, a_hash)
     turno = Turno.new(paciente, medico, horario, a_hash[:id])
-    turno.estado = a_hash[:estado]
+    turno.estado = EstadoTurnoFactory.crear_estado(a_hash[:estado]) if a_hash[:estado]
     turno.created_on = DateTime.parse(a_hash[:created_on].to_s)
     turno.updated_on = DateTime.parse(a_hash[:updated_on].to_s) if a_hash[:updated_on]
     turno
@@ -56,7 +57,7 @@ class RepositorioTurnos < AbstractRepository
       paciente: turno.paciente.id,
       medico: turno.medico.id,
       horario: turno.horario.to_datetime,
-      estado: turno.estado
+      estado: EstadoTurnoFactory.obtener_tipo(turno.estado)
     }
   end
 end

@@ -1,4 +1,5 @@
 require_relative './exceptions/fuera_de_horario_exception'
+require_relative './estado_turno_reservado'
 
 class Turno
   attr_reader :paciente, :medico, :horario
@@ -11,7 +12,7 @@ class Turno
     @medico = medico
     @horario = horario
     @id = id
-    @estado = '0'
+    @estado = EstadoTurnoReservado.new
   end
 
   def ==(other)
