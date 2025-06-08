@@ -12,4 +12,10 @@ describe ConvertidorDeTiempo do
     fecha = convertidor.estandarizar_fecha('2025-06-06')
     expect(fecha).to eq(Date.new(2025, 6, 6))
   end
+
+  it 'al convertir la fecha cuando la fecha es inválida lanza FechaInvalidaException' do
+    expect do
+      convertidor.estandarizar_fecha('06/06/2025')
+    end.to raise_error(FechaInvalidaException)
+  end
 end
