@@ -47,7 +47,7 @@ describe Turnero do
     described_class.new(repositorio_pacientes,
                         repositorio_especialidades,
                         repositorio_medicos,
-                        ProveedorDeFeriados.new(ENV['API_TURNERO_URL']),
+                        ProveedorDeFeriados.new(ENV['API_TURNERO_URL'], logger),
                         repositorio_turnos,
                         proveedor_de_fecha,
                         proveedor_de_hora,

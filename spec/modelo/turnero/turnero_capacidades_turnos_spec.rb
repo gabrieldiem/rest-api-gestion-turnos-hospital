@@ -48,7 +48,7 @@ describe Turnero do
                         repositorio_especialidades,
                         repositorio_medicos,
                         repositorio_turnos,
-                        ProveedorDeFeriados.new(ENV['API_TURNERO_URL']),
+                        ProveedorDeFeriados.new(ENV['API_TURNERO_URL'], logger),
                         proveedor_de_fecha,
                         proveedor_de_hora,
                         convertidor_de_tiempo)

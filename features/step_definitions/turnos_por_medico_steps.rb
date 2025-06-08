@@ -136,7 +136,7 @@ Dado('el médico con matrícula {string} no tiene turnos disponibles en los pró
                         RepositorioEspecialidades.new(@logger),
                         RepositorioMedicos.new(@logger),
                         RepositorioTurnos.new(@logger),
-                        ProveedorDeFeriados.new(@api_feriado_url),
+                        ProveedorDeFeriados.new(@api_feriado_url, @logger),
                         ProveedorDeFecha.new,
                         ProveedorDeHora.new,
                         convertidor_de_tiempo)
