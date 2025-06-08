@@ -3,6 +3,7 @@ require 'date'
 Before do
   SemanticLogger.default_level = :fatal
   @logger = Configuration.logger
+  @convertidor_de_tiempo = ConvertidorDeTiempo.new('%Y-%m-%d', ':', '%-H:%M')
 
   RepositorioTurnos.new(@logger).delete_all
   RepositorioMedicos.new(@logger).delete_all
@@ -29,13 +30,14 @@ Dado('que hay un paciente registrado con username {string}') do |username|
 end
 
 Dado('el Dr. con matricula {string} tiene un turno disponible el {string} a las {string}') do |matricula, fecha, hora|
+  # Nada para hacer
 end
 
 Cuando('reservo el turno con el médico de matrícula {string} en la fecha {string} y la hora {string}') do |matricula, fecha, hora|
   body = {
     dni: @dni_paciente,
     turno: {
-      fecha:,
+      fecha: @convertidor_de_tiempo.presentar_fecha(Date.parse(fecha)),
       hora:
     }
   }
@@ -49,7 +51,7 @@ Cuando('intento reservar el turno con el médico de matrícula {string} en la fe
   body = {
     dni: @dni_paciente,
     turno: {
-      fecha:,
+      fecha: @convertidor_de_tiempo.presentar_fecha(Date.parse(fecha)),
       hora:
     }
   }
@@ -61,7 +63,7 @@ end
 Entonces('recibo el mensaje de operacion exitosa para la fecha {string} y la hora {string}') do |fecha, hora|
   expect(@turno_reservado[:dni]).to eq(@dni_paciente)
   expect(@turno_reservado[:matricula]).to eq(@matricula)
-  expect(@turno_reservado[:turno][:fecha]).to eq(Date.parse(fecha).strftime('%Y-%m-%d'))
+  expect(@turno_reservado[:turno][:fecha]).to eq(@convertidor_de_tiempo.presentar_fecha(Date.parse(fecha)))
   expect(@turno_reservado[:turno][:hora]).to eq(hora)
   expect(@turno_reservado[:created_at]).not_to be_nil
   expect(@turno_reservado[:id]).not_to be_nil

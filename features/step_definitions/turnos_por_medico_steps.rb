@@ -128,12 +128,15 @@ def llenar_turnos_de_un_dia(matricula_medico, fecha_a_llenar, duracion_turno, tu
 end
 
 Dado('el médico con matrícula {string} no tiene turnos disponibles en los próximos {int} días') do |matricula, dias|
+  convertidor_de_tiempo = ConvertidorDeTiempo.new('%Y-%m-%d', ':', '%-H:%M')
+
   turnero = Turnero.new(RepositorioPacientes.new(@logger),
                         RepositorioEspecialidades.new(@logger),
                         RepositorioMedicos.new(@logger),
                         RepositorioTurnos.new(@logger),
                         ProveedorDeFecha.new,
-                        ProveedorDeHora.new)
+                        ProveedorDeHora.new,
+                        convertidor_de_tiempo)
   fecha_de_maniana = @fecha_de_hoy + 1
   dias.to_i.times do |i|
     llenar_turnos_de_un_dia(matricula, fecha_de_maniana + i, @duracion_turno, turnero)

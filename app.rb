@@ -29,13 +29,15 @@ configure do
   set :logger, api_logger
   set :default_content_type, :json
   set :environment, ENV['APP_MODE'].to_sym
+  convertidor_de_tiempo_ = ConvertidorDeTiempo.new(FORMATO_FECHA, SEPARADOR_DE_HORA, FORMATO_HORA_OUTPUT)
+  set :convertidor_de_tiempo, convertidor_de_tiempo_
   set :turnero, Turnero.new(RepositorioPacientes.new(api_logger),
                             RepositorioEspecialidades.new(api_logger),
                             RepositorioMedicos.new(api_logger),
                             RepositorioTurnos.new(api_logger),
                             ProveedorDeFecha.new,
-                            ProveedorDeHora.new)
-  set :convertidor_de_tiempo, ConvertidorDeTiempo.new(FORMATO_FECHA, SEPARADOR_DE_HORA, FORMATO_HORA_OUTPUT)
+                            ProveedorDeHora.new,
+                            convertidor_de_tiempo_)
   api_logger.info('Iniciando turnero...')
 end
 

@@ -36,7 +36,16 @@ describe Turnero do
     proveedor_double = class_double(Time, now: hora_actual)
     ProveedorDeHora.new(proveedor_double)
   end
-  let(:turnero) { described_class.new(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, repositorio_turnos, proveedor_de_fecha, proveedor_de_hora) }
+  let(:turnero) do
+    convertidor_de_tiempo = ConvertidorDeTiempo.new('%Y-%m-%d', ':', '%-H:%M')
+    described_class.new(repositorio_pacientes,
+                        repositorio_especialidades,
+                        repositorio_medicos,
+                        repositorio_turnos,
+                        proveedor_de_fecha,
+                        proveedor_de_hora,
+                        convertidor_de_tiempo)
+  end
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
 
   describe '- Capacidades de Medicos - ' do

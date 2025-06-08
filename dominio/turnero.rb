@@ -5,7 +5,13 @@ class Turnero
   HORA_DE_COMIENZO_DE_JORNADA = Hora.new(8, 0)
   HORA_DE_FIN_DE_JORNADA = Hora.new(18, 0)
 
-  def initialize(repositorio_pacientes, repositorio_especialidades, repositorio_medicos, repositorio_turnos, proveedor_de_fecha, proveedor_de_hora)
+  def initialize(repositorio_pacientes,
+                 repositorio_especialidades,
+                 repositorio_medicos,
+                 repositorio_turnos,
+                 proveedor_de_fecha,
+                 proveedor_de_hora,
+                 convertidor_de_tiempo)
     @repositorio_pacientes = repositorio_pacientes
     @repositorio_especialidades = repositorio_especialidades
     @repositorio_medicos = repositorio_medicos
@@ -16,6 +22,7 @@ class Turnero
                                                                 HORA_DE_FIN_DE_JORNADA,
                                                                 @proveedor_de_fecha,
                                                                 @proveedor_de_hora)
+    @convertidor_de_tiempo = convertidor_de_tiempo
   end
 
   def crear_paciente(email, dni, username)
@@ -53,8 +60,8 @@ class Turnero
     paciente = @repositorio_pacientes.find_by_dni(dni)
     raise PacienteInexistenteException, 'Para reservar un turno se debe estar registrado' if paciente.nil?
 
-    fecha = Date.parse(fecha)
-    hora = Hora.new(*hora.split(':').map(&:to_i))
+    fecha = @convertidor_de_tiempo.estandarizar_fecha(fecha)
+    hora = @convertidor_de_tiempo.estandarizar_hora(hora)
     horario = Horario.new(fecha, hora)
 
     raise TurnoNoDisponibleException if @calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, fecha, hora)
