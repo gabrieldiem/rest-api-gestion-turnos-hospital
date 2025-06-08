@@ -23,4 +23,8 @@ class ConvertidorDeTiempo
   def presentar_hora(hora)
     hora.strftime(@formato_hora_output)
   end
+
+  def presentar_fecha(fecha)
+    fecha.strftime(@formato_fecha)
+  end
 end

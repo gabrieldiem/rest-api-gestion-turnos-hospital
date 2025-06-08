@@ -41,4 +41,9 @@ describe ConvertidorDeTiempo do
     hora = Time.new(2025, 6, 6, 8, 30)
     expect(convertidor.presentar_hora(hora)).to eq('8:30')
   end
+
+  it 'fecha se presenta correctamente acorde al formato' do
+    fecha = Date.new(2025, 6, 15)
+    expect(convertidor.presentar_fecha(fecha)).to eq('2025-06-15')
+  end
 end
