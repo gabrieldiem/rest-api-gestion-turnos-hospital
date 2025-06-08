@@ -1,6 +1,7 @@
 class TurnosReservadosPorPacienteResponse
-  def initialize(turnos)
+  def initialize(turnos, convertidor_de_tiempo)
     @turnos = turnos
+    @convertidor_de_tiempo = convertidor_de_tiempo
   end
 
   def to_json(*_args)
@@ -8,8 +9,8 @@ class TurnosReservadosPorPacienteResponse
       cantidad_de_turnos: @turnos.size,
       turnos: @turnos.map do |turno|
         {
-          fecha: turno.horario.fecha.to_s,
-          hora: convertir_hora(turno.horario.hora),
+          fecha: @convertidor_de_tiempo.presentar_fecha(turno.horario.fecha),
+          hora: @convertidor_de_tiempo.presentar_hora(turno.horario.hora),
           medico: convertir_medico(turno.medico)
         }
       end
@@ -25,9 +26,5 @@ class TurnosReservadosPorPacienteResponse
       matricula: medico.matricula.to_s,
       especialidad: medico.especialidad.codigo.to_s
     }
-  end
-
-  def convertir_hora(hora)
-    "#{hora.hora}:#{hora.minutos.to_s.rjust(2, '0')}"
   end
 end

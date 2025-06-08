@@ -45,7 +45,7 @@ module RoutesPacientes
       turnos = turnero.obtener_turnos_reservados_del_paciente_por_dni(params[:dni])
 
       status 200
-      TurnosReservadosPorPacienteResponse.new(turnos).to_json
+      TurnosReservadosPorPacienteResponse.new(turnos, convertidor_de_tiempo).to_json
     rescue PacienteInexistenteException => e
       logger.error("Error al buscar paciente: #{e.message}")
       status 404
