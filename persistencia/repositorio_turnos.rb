@@ -29,6 +29,14 @@ class RepositorioTurnos < AbstractRepository
     load_collection(records)
   end
 
+  def find_by_id(turno_id)
+    @logger.info("Buscando turno con ID: #{turno_id}")
+    record = dataset.where(id: turno_id).first
+    return nil if record.nil?
+
+    load_object(record)
+  end
+
   protected
 
   def crear_objeto_horario(a_hash)
