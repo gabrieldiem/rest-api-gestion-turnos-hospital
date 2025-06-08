@@ -13,4 +13,10 @@ class ConvertidorDeTiempo
   rescue ArgumentError
     raise FechaInvalidaException
   end
+
+  def estandarizar_hora(fecha_string, hora_string)
+    Time.strptime("#{fecha_string} #{hora_string}", "#{@formato_fecha} #{@formato_hora_input}")
+  rescue ArgumentError
+    raise HoraInvalidaException
+  end
 end

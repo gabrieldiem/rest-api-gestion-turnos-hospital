@@ -1,6 +1,7 @@
 require 'spec_helper'
 require_relative '../lib/convertidor_de_tiempo'
 require_relative '../lib/exceptions/fecha_invalida_exception'
+require_relative '../lib/exceptions/hora_invalida_exception'
 
 describe ConvertidorDeTiempo do
   let(:formato_fecha) { '%Y-%m-%d'.freeze }
@@ -17,5 +18,11 @@ describe ConvertidorDeTiempo do
     expect do
       convertidor.estandarizar_fecha('06/06/2025')
     end.to raise_error(FechaInvalidaException)
+  end
+
+  it 'al convertir hora cuando la fecha es inválida lanza FechaInvalidaException' do
+    expect do
+      convertidor.estandarizar_hora('06-06-2025', '8:30')
+    end.to raise_error(HoraInvalidaException)
   end
 end
