@@ -19,4 +19,8 @@ class ConvertidorDeTiempo
   rescue ArgumentError
     raise HoraInvalidaException
   end
+  
+  def presentar_hora(hora)
+    hora.strftime(@formato_hora_output)
+  end
 end

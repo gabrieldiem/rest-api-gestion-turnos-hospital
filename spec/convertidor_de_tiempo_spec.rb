@@ -36,4 +36,9 @@ describe ConvertidorDeTiempo do
     resultado = convertidor.estandarizar_hora('2025-06-06', '8:30')
     expect(resultado).to eq(Time.new(2025, 6, 6, 8, 30))
   end
+
+  it 'hora se presenta correctamente acorde al formato' do
+    hora = Time.new(2025, 6, 6, 8, 30)
+    expect(convertidor.presentar_hora(hora)).to eq('8:30')
+  end
 end
