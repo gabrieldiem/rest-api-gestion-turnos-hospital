@@ -22,8 +22,12 @@ class Turno
       @horario == other.horario
   end
 
-  def cambiar_asistencia(_asistio)
-    @estado = EstadoTurnoPresente.new
+  def cambiar_asistencia(asistio)
+    @estado = if asistio
+                EstadoTurnoPresente.new
+              else
+                EstadoTurnoAusente.new
+              end
   end
 
   private
