@@ -38,7 +38,7 @@ module RoutesResourceTurnosReservados
                                     @params[:dni].to_s)
       status 201
 
-      NuevoTurnoReservadoResponse.new(turno).to_json
+      NuevoTurnoReservadoResponse.new(turno, convertidor_de_tiempo).to_json
     rescue StandardError => e
       logger.error("Error al reservar con medico: #{e.message}")
       status 400

@@ -1,6 +1,7 @@
 class NuevoTurnoReservadoResponse
-  def initialize(turno)
+  def initialize(turno, convertidor_de_tiempo)
     @turno = turno
+    @convertidor_de_tiempo = convertidor_de_tiempo
   end
 
   def to_json(*_args)
@@ -10,16 +11,10 @@ class NuevoTurnoReservadoResponse
       matricula: @turno.medico.matricula,
       dni: @turno.paciente.dni,
       turno: {
-        fecha: horario.fecha.to_s,
-        hora: convertir_hora(horario.hora)
+        fecha: @convertidor_de_tiempo.presentar_fecha(horario.fecha),
+        hora: @convertidor_de_tiempo.presentar_hora(horario.hora)
       },
       created_at: @turno.created_on.to_s
     }.to_json
-  end
-
-  private
-
-  def convertir_hora(hora)
-    "#{hora.hora}:#{hora.minutos.to_s.rjust(2, '0')}"
   end
 end

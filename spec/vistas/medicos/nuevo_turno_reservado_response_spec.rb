@@ -2,9 +2,7 @@ require 'integration_helper'
 require_relative '../../../vistas/medicos/nuevo_turno_reservado_response'
 
 describe NuevoTurnoReservadoResponse do
-  def convertir_hora(hora)
-    "#{hora.hora}:#{hora.minutos.to_s.rjust(2, '0')}"
-  end
+  let(:convertidor_de_tiempo) { ConvertidorDeTiempo.new('%Y-%m-%d', ':', '%-H:%M') }
 
   def respuesta_esperada(turno)
     {
@@ -12,8 +10,8 @@ describe NuevoTurnoReservadoResponse do
       matricula: turno.medico.matricula,
       dni: turno.paciente.dni,
       turno: {
-        fecha: turno.horario.fecha.to_s,
-        hora: convertir_hora(turno.horario.hora)
+        fecha: convertidor_de_tiempo.presentar_fecha(turno.horario.fecha),
+        hora: convertidor_de_tiempo.presentar_hora(turno.horario.hora)
       },
       created_at: turno.created_on.to_s
     }.to_json
@@ -28,7 +26,7 @@ describe NuevoTurnoReservadoResponse do
     horario = Horario.new(DateTime.new(2025, 6, 10), Hora.new(8, 30))
     turno = Turno.new(paciente, medico, horario)
 
-    response = described_class.new(turno).to_json
+    response = described_class.new(turno, convertidor_de_tiempo).to_json
     expect(response).to eq(respuesta_esperada(turno))
   end
 end
