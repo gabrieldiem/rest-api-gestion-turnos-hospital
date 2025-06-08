@@ -13,17 +13,25 @@ describe ActualizacionDeTurnoResponse do
     }
   end
 
+  def presentar_fecha(fecha)
+    convertidor_de_tiempo.presentar_fecha(fecha)
+  end
+
+  def presentar_hora(hora)
+    convertidor_de_tiempo.presentar_hora(hora)
+  end
+
   def respuesta_esperada(turno)
     {
-      fecha: convertidor_de_tiempo.presentar_fecha(turno.horario.fecha),
-      hora: convertidor_de_tiempo.presentar_hora(turno.horario.hora),
-      duracion: turno.especialidad.duracion.to_i,
+      fecha: presentar_fecha(turno.horario.fecha),
+      hora: presentar_hora(turno.horario.hora),
+      duracion: turno.medico.especialidad.duracion.to_i,
       estado: turno.estado.descripcion.to_s,
       medico: convertir_medico(turno.medico)
     }.to_json
   end
 
-  xit 'transforma exitosamente a JSON' do
+  it 'transforma exitosamente a JSON' do
     especialidad = Especialidad.new('Cardiologia', 45, 1, 'card')
     especialidad.created_on = DateTime.new(2025, 6, 10, 12, 0, 0)
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
