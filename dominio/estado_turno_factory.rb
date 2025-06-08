@@ -9,4 +9,8 @@ class EstadoTurnoFactory
       raise ArgumentError, "Tipo de estado desconocido: #{tipo}"
     end
   end
+
+  def self.obtener_tipo(_estado)
+    '0'
+  end
 end
