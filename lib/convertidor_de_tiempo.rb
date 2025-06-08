@@ -24,7 +24,7 @@ class ConvertidorDeTiempo
   end
 
   def presentar_hora(hora)
-    hora.strftime(@formato_hora_output)
+    "#{hora.hora}:#{hora.minutos.to_s.rjust(2, '0')}"
   end
 
   def presentar_fecha(fecha)

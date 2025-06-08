@@ -31,8 +31,8 @@ describe ConvertidorDeTiempo do
     expect(resultado).to eq(Hora.new(8, 35))
   end
 
-  xit 'hora se presenta correctamente acorde al formato' do
-    hora = Time.new(2025, 6, 6, 8, 30)
+  it 'hora se presenta correctamente acorde al formato' do
+    hora = Hora.new(8, 30)
     expect(convertidor.presentar_hora(hora)).to eq('8:30')
   end
 
