@@ -236,5 +236,21 @@ describe Turnero do
       turno_actualizado = turnero.cambiar_asistencia_turno(turno.id, paciente.dni, true)
       expect(turno_actualizado.estado.descripcion).to eq('presente')
     end
+
+    it 'obtener un turno por id' do
+      fecha_de_maniana = fecha_de_hoy + 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+      turno = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+      turno_obtenido = turnero.buscar_turno(turno.id)
+      expect(turno_obtenido.id).to eq(turno.id)
+    end
+
+    xit 'cuando obtengo un turno por id que no existe produce un error TurnoInexistenteException' do
+      expect do
+        turnero.buscar_turno(9999)
+      end
+        .to raise_error(TurnoInexistenteException)
+    end
   end
 end

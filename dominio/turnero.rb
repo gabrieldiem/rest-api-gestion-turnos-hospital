@@ -55,6 +55,10 @@ class Turnero
     medico
   end
 
+  def buscar_turno(id_turno)
+    @repositorio_turnos.find(id_turno)
+  end
+
   def asignar_turno(matricula, fecha, hora, dni)
     medico = buscar_medico(matricula)
     paciente = @repositorio_pacientes.find_by_dni(dni)
