@@ -32,7 +32,7 @@ class Paciente
   end
 
   def actualizar_reputacion
-    @reputacion = 1.0 if @turnos_reservados.empty?
+    @reputacion = 1.0 if @turnos_reservados.empty? || @turnos_reservados.all? { |turno| turno.estado.is_a?(EstadoTurnoReservado) }
   end
 
   def ==(other)

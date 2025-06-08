@@ -123,5 +123,17 @@ describe Paciente do
       paciente.actualizar_reputacion
       expect(paciente.reputacion).to eq(1.0)
     end
+
+    it 'la reputación mantiene igual cuando tiene turnos solo reservados' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      expect(paciente.reputacion).to eq(1.0)
+      cantidad_turnos_reservados = 10
+      (1..cantidad_turnos_reservados).each do |_i|
+        turno = Turno.new(paciente, nil, Horario.new(Date.today, Hora.new(10, 0)))
+        paciente.turnos_reservados << turno
+        paciente.actualizar_reputacion
+        expect(paciente.reputacion).to eq(1.0)
+      end
+    end
   end
 end
