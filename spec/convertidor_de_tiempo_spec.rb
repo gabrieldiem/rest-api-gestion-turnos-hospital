@@ -25,4 +25,10 @@ describe ConvertidorDeTiempo do
       convertidor.estandarizar_hora('06-06-2025', '8:30')
     end.to raise_error(HoraInvalidaException)
   end
+
+  it 'al convertir hora cuando la hora es inválida lanza FechaInvalidaException' do
+    expect do
+      convertidor.estandarizar_hora('2025-06-06', '25:00')
+    end.to raise_error(HoraInvalidaException)
+  end
 end
