@@ -40,7 +40,7 @@ class RepositorioPacientes < AbstractRepository
 
   def load_object(a_hash)
     paciente = Paciente.new(a_hash[:email], a_hash[:dni], a_hash[:username], a_hash[:reputacion], a_hash[:id])
-    paciente.created_on = DateTime.parse(a_hash[:created_on].to_s) unless a_hash[:created_on].nil?
+    paciente.created_on = parse_datetime_from_row(a_hash[:created_on]) unless a_hash[:created_on].nil?
     paciente
   end
 

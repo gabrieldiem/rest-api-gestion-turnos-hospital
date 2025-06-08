@@ -103,4 +103,8 @@ class AbstractRepository
   def pk_column
     Sequel[self.class.table_name][:id]
   end
+
+  def parse_datetime_from_row(datetime_from_row)
+    DateTime.parse(datetime_from_row.to_s) unless datetime_from_row.nil?
+  end
 end

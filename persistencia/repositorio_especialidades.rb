@@ -21,7 +21,7 @@ class RepositorioEspecialidades < AbstractRepository
 
   def load_object(a_hash)
     especialidad = Especialidad.new(a_hash[:nombre], a_hash[:duracion], a_hash[:recurrencia_maxima], a_hash[:codigo], a_hash[:id])
-    especialidad.created_on = DateTime.parse(a_hash[:created_on].to_s) unless a_hash[:created_on].nil?
+    especialidad.created_on = parse_datetime_from_row(a_hash[:created_on]) unless a_hash[:created_on].nil?
     especialidad
   end
 
