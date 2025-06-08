@@ -7,6 +7,7 @@ require_relative '../../dominio/paciente'
 require_relative '../../lib/hora'
 require_relative '../../lib/horario'
 require_relative '../../dominio/exceptions/fuera_de_horario_exception'
+require_relative '../../dominio/estado_turno_reservado'
 
 describe Turno do
   let(:especialidad) { Especialidad.new('Cardiología', 30, 5, 'card') }
@@ -35,8 +36,8 @@ describe Turno do
     expect { described_class.new(paciente, medico, horario_tarde) }.not_to raise_error
   end
 
-  xit 'los turnos por defecto tiene estado reservado' do
+  it 'los turnos por defecto tiene estado reservado' do
     turno = described_class.new(paciente, medico, horario)
-    expect(turno.estado).to eq('reservado')
+    expect(turno.estado.class).to eq(EstadoTurnoReservado)
   end
 end

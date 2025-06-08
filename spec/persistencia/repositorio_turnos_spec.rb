@@ -3,6 +3,7 @@ require 'integration_helper'
 require_relative '../../dominio/medico'
 require_relative '../../dominio/especialidad'
 require_relative '../../dominio/paciente'
+require_relative '../../dominio/estado_turno_reservado'
 require_relative '../../lib/hora'
 require_relative '../../lib/horario'
 
@@ -60,6 +61,6 @@ describe RepositorioTurnos do
     described_class.new(logger).save(turno)
 
     turno = described_class.new(logger).find(turno.id)
-    expect(turno.estado).to eq('0')
+    expect(turno.estado.class).to eq(EstadoTurnoReservado)
   end
 end
