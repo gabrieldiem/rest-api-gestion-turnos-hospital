@@ -31,4 +31,9 @@ describe ConvertidorDeTiempo do
       convertidor.estandarizar_hora('2025-06-06', '25:00')
     end.to raise_error(HoraInvalidaException)
   end
+
+  it 'cuando la fecha y hora son válidas devuelve una hora correcta' do
+    resultado = convertidor.estandarizar_hora('2025-06-06', '8:30')
+    expect(resultado).to eq(Time.new(2025, 6, 6, 8, 30))
+  end
 end
