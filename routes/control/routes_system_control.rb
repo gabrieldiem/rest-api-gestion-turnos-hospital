@@ -1,6 +1,7 @@
 Dir[File.join(__dir__, '../../dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../../dominio/exceptions', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../../persistencia', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../../vistas/error', '*.rb')].each { |file| require file }
 
 module RoutesSystemControl
   def self.registered(app)
@@ -22,9 +23,7 @@ module RoutesSystemControl
       return
     rescue Sequel::DatabaseConnectionError
       status 503
-      {
-        "mensaje_error": 'Servicio no disponible'
-      }.to_json
+      MensajeErrorResponse.new('Servicio no disponible').to_json
     end
   end
 end
