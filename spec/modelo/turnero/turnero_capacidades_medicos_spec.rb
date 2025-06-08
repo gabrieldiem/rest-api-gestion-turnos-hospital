@@ -15,9 +15,14 @@ require_relative '../../../persistencia/repositorio_especialidades'
 require_relative '../../../persistencia/repositorio_medicos'
 require_relative '../../../lib/proveedor_de_fecha'
 require_relative '../../../lib/proveedor_de_hora'
+require_relative '../../../lib/proveedor_de_feriados'
 require_relative '../../../lib/hora'
 
 describe Turnero do
+  before(:each) do
+    ENV['API_FERIADOS_URL'] = 'http://feriados_url.com'
+  end
+
   let(:logger) do
     SemanticLogger.default_level = :fatal
     Configuration.logger
@@ -42,6 +47,7 @@ describe Turnero do
                         repositorio_especialidades,
                         repositorio_medicos,
                         repositorio_turnos,
+                        ProveedorDeFeriados.new(ENV['API_TURNERO_URL']),
                         proveedor_de_fecha,
                         proveedor_de_hora,
                         convertidor_de_tiempo)

@@ -1,4 +1,20 @@
-require_relative '../../spec/stubs'
+require 'webmock/cucumber'
+
+def cuando_pido_los_feriados(anio, feriados)
+  body = feriados.map do |feriado|
+    {
+      "motivo": 'Es un feriado',
+      "tipo": 'inamovible',
+      "info": '',
+      "dia": feriado.day,
+      "mes": feriado.month,
+      "id": 'un-feriado'
+    }
+  end
+
+  stub_request(:any, "#{ENV['API_FERIADOS_URL']}/#{anio}")
+    .to_return(body: body.to_json, status: 200)
+end
 
 Before do
   SemanticLogger.default_level = :fatal
@@ -12,18 +28,7 @@ end
 
 Dado('que el día {string} es feriado') do |fecha|
   @fecha_feriado = Date.parse(fecha)
-  response = [
-    {
-      "motivo": 'Es un feriado',
-      "tipo": 'inamovible',
-      "info": '',
-      "dia": @fecha_feriado.day,
-      "mes": @fecha_feriado.month,
-      "id": 'un-feriado'
-    }
-  ]
-
-  cuando_pido_los_feriados(@fecha_feriado.year, response)
+  cuando_pido_los_feriados(@fecha_feriado.year, [@fecha_feriado])
 end
 
 Dado('que el médico con matrícula {string} no tiene turnos reservados el {string}') do |_matricula, _fecha|

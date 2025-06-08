@@ -17,6 +17,7 @@ require_relative '../../../lib/proveedor_de_fecha'
 require_relative '../../../lib/proveedor_de_hora'
 require_relative '../../../lib/proveedor_de_feriados'
 require_relative '../../../lib/hora'
+require_relative '../../stubs'
 
 describe Turnero do
   before(:each) do
@@ -46,43 +47,28 @@ describe Turnero do
     described_class.new(repositorio_pacientes,
                         repositorio_especialidades,
                         repositorio_medicos,
-                        repositorio_turnos,
                         ProveedorDeFeriados.new(ENV['API_TURNERO_URL']),
+                        repositorio_turnos,
                         proveedor_de_fecha,
                         proveedor_de_hora,
                         convertidor_de_tiempo)
   end
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
 
-  describe '- Capacidades de Especialidades - ' do
-    it 'crea una especialidad nuevo' do
-      especialidad_nuevo = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      expect(especialidad_nuevo).to have_attributes(nombre: 'Cardiología', duracion: 30, recurrencia_maxima: 5, codigo: 'card')
-    end
+  describe '- Capacidades de Feriados - ' do
+    xit 'obtener turnos disponibles de un médico dado que mañana es feriado me da turnos de pasado mañana' do
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      fecha_de_maniana = fecha_de_hoy + 1
+      fecha_de_pasado_maniana = fecha_de_hoy + 2
+      cuando_pido_los_feriados(fecha_de_maniana.year, [fecha_de_maniana])
 
-    it 'crea una especialidad nuevo y lo guarda en el repositorio' do
-      especialidad_nuevo = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      especialidad_guardada = repositorio_especialidades.all.first
-      expect(repositorio_especialidades.all.size).to eq(1)
-      expect(especialidad_guardada).to have_attributes(nombre: especialidad_nuevo.nombre, duracion: especialidad_nuevo.duracion, recurrencia_maxima: especialidad_nuevo.recurrencia_maxima,
-                                                       codigo: especialidad_nuevo.codigo)
-    end
+      turnos = turnero.obtener_turnos_disponibles('NAC456')
 
-    it 'obtener todas las especialidades' do
-      especialidad_una = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
-      especialidad_dos = turnero.crear_especialidad('Pediatría', 20, 3, 'pedi')
-      especialidad_tres = turnero.crear_especialidad('Cirugía', 60, 2, 'ciru')
-
-      especialidades = turnero.obtener_especialidades
-      expect(especialidades.size).to eq(3)
-      expect(especialidades).to include(
-        have_attributes(nombre: especialidad_una.nombre, duracion: especialidad_una.duracion, recurrencia_maxima: especialidad_una.recurrencia_maxima,
-                        codigo: especialidad_una.codigo),
-        have_attributes(nombre: especialidad_dos.nombre, duracion: especialidad_dos.duracion, recurrencia_maxima: especialidad_dos.recurrencia_maxima,
-                        codigo: especialidad_dos.codigo),
-        have_attributes(nombre: especialidad_tres.nombre, duracion: especialidad_tres.duracion, recurrencia_maxima: especialidad_tres.recurrencia_maxima,
-                        codigo: especialidad_tres.codigo)
-      )
+      expect(turnos).to eq([Horario.new(fecha_de_pasado_maniana, Hora.new(8, 0)),
+                            Horario.new(fecha_de_pasado_maniana, Hora.new(8, 30)),
+                            Horario.new(fecha_de_pasado_maniana, Hora.new(9, 0)),
+                            Horario.new(fecha_de_pasado_maniana, Hora.new(9, 30)),
+                            Horario.new(fecha_de_pasado_maniana, Hora.new(10, 0))])
     end
   end
 end

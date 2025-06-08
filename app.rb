@@ -8,6 +8,7 @@ require_relative './config/configuration'
 require_relative './lib/version'
 require_relative './lib/proveedor_de_fecha'
 require_relative './lib/proveedor_de_hora'
+require_relative './lib/proveedor_de_feriados'
 require_relative './lib/convertidor_de_tiempo'
 
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
@@ -30,11 +31,13 @@ configure do
   set :default_content_type, :json
   set :environment, ENV['APP_MODE'].to_sym
   convertidor_de_tiempo_ = ConvertidorDeTiempo.new(FORMATO_FECHA, SEPARADOR_DE_HORA, FORMATO_HORA_OUTPUT)
+  api_feriados = ENV['API_FERIADOS_URL']
   set :convertidor_de_tiempo, convertidor_de_tiempo_
   set :turnero, Turnero.new(RepositorioPacientes.new(api_logger),
                             RepositorioEspecialidades.new(api_logger),
                             RepositorioMedicos.new(api_logger),
                             RepositorioTurnos.new(api_logger),
+                            ProveedorDeFeriados.new(api_feriados),
                             ProveedorDeFecha.new,
                             ProveedorDeHora.new,
                             convertidor_de_tiempo_)

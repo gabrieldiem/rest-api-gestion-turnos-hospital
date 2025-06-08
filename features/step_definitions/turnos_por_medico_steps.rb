@@ -1,4 +1,6 @@
 Before do
+  ENV['API_FERIADOS_URL'] = 'http://feriados_url.com'
+  @api_feriado_url = ENV['API_FERIADOS_URL']
   SemanticLogger.default_level = :fatal
   @logger = Configuration.logger
 
@@ -134,6 +136,7 @@ Dado('el médico con matrícula {string} no tiene turnos disponibles en los pró
                         RepositorioEspecialidades.new(@logger),
                         RepositorioMedicos.new(@logger),
                         RepositorioTurnos.new(@logger),
+                        ProveedorDeFeriados.new(@api_feriado_url),
                         ProveedorDeFecha.new,
                         ProveedorDeHora.new,
                         convertidor_de_tiempo)

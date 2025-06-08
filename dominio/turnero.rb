@@ -9,6 +9,7 @@ class Turnero
                  repositorio_especialidades,
                  repositorio_medicos,
                  repositorio_turnos,
+                 proveedor_de_feriados,
                  proveedor_de_fecha,
                  proveedor_de_hora,
                  convertidor_de_tiempo)
@@ -16,6 +17,7 @@ class Turnero
     @repositorio_especialidades = repositorio_especialidades
     @repositorio_medicos = repositorio_medicos
     @repositorio_turnos = repositorio_turnos
+    @proveedor_de_feriados = proveedor_de_feriados
     @proveedor_de_fecha = proveedor_de_fecha
     @proveedor_de_hora = proveedor_de_hora
     @calculador_de_turnos_libres = CalculadorDeTurnosLibres.new(HORA_DE_COMIENZO_DE_JORNADA,
