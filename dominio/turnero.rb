@@ -23,7 +23,8 @@ class Turnero
     @calculador_de_turnos_libres = CalculadorDeTurnosLibres.new(HORA_DE_COMIENZO_DE_JORNADA,
                                                                 HORA_DE_FIN_DE_JORNADA,
                                                                 @proveedor_de_fecha,
-                                                                @proveedor_de_hora)
+                                                                @proveedor_de_hora,
+                                                                @proveedor_de_feriados)
     @convertidor_de_tiempo = convertidor_de_tiempo
   end
 

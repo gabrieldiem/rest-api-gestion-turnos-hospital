@@ -6,12 +6,14 @@ class CalculadorDeTurnosLibres
   def initialize(hora_de_comienzo_de_jornada,
                  hora_de_fin_de_jornada,
                  proveedor_de_fecha,
-                 proveedor_de_hora)
+                 proveedor_de_hora,
+                 proveedor_de_feriados)
     @cantidad_maxima_de_turnos = CANTIDAD_DE_TURNOS_A_CALCULAR_MAXIMA
     @hora_de_comienzo_de_jornada = hora_de_comienzo_de_jornada
     @hora_de_fin_de_jornada = hora_de_fin_de_jornada
     @proveedor_de_fecha = proveedor_de_fecha
     @proveedor_de_hora = proveedor_de_hora
+    @proveedor_de_feriados = proveedor_de_feriados
   end
 
   def calcular_turnos_disponibles_por_medico(medico)

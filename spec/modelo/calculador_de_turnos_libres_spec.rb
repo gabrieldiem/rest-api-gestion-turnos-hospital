@@ -10,6 +10,12 @@ require_relative '../../persistencia/repositorio_medicos'
 require_relative '../../lib/proveedor_de_fecha'
 
 describe CalculadorDeTurnosLibres do
+  before(:each) do
+    ENV['API_FERIADOS_URL'] = 'http://feriados_url.com'
+  end
+
+  let(:api_feriados_url) { ENV['API_FERIADOS_URL'] }
+
   let(:logger) do
     SemanticLogger.default_level = :fatal
     Configuration.logger
@@ -28,6 +34,9 @@ describe CalculadorDeTurnosLibres do
     proveedor_double = class_double(Time, now: hora_actual)
     ProveedorDeHora.new(proveedor_double)
   end
+  let(:proveedor_de_feriados) do
+    ProveedorDeFeriados.new(api_feriados_url)
+  end
   let(:especialidad) do
     especialidad = Especialidad.new('Cardiología', 30, 5, 'card')
     repositorio_especialidades.save especialidad
@@ -42,10 +51,8 @@ describe CalculadorDeTurnosLibres do
 
   it 'obtener turnos disponibles de un médico' do
     fecha_de_maniana = fecha_de_hoy + 1
-    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
-                                                      Hora.new(18, 0),
-                                                      proveedor_de_fecha,
-                                                      proveedor_de_hora)
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                                      proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
 
     turnos = calculador_de_turnos_libres.calcular_turnos_disponibles_por_medico medico
 
@@ -60,10 +67,8 @@ describe CalculadorDeTurnosLibres do
     paciente = Paciente.new('j@perez.com', '999999999', 'juanperez', 1)
     repositorio_pacientes.save paciente
 
-    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
-                                                      Hora.new(18, 0),
-                                                      proveedor_de_fecha,
-                                                      proveedor_de_hora)
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                                      proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
     fecha_de_maniana = fecha_de_hoy + 1
 
     turno = medico.asignar_turno(Horario.new(fecha_de_maniana, Hora.new(8, 0)), paciente)
@@ -111,10 +116,8 @@ describe CalculadorDeTurnosLibres do
 
     llenar_turnos_de_un_dia(fecha_de_maniana, especialidad.duracion)
 
-    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
-                                                      Hora.new(18, 0),
-                                                      proveedor_de_fecha,
-                                                      proveedor_de_hora)
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                                      proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
 
     turnos = calculador_de_turnos_libres.calcular_turnos_disponibles_por_medico medico
     expect(turnos).to eq([Horario.new(fecha_de_pasado_maniana, Hora.new(8, 0)),
@@ -128,10 +131,8 @@ describe CalculadorDeTurnosLibres do
     fecha_de_maniana = fecha_de_hoy + 1
     hora_a_chequear = Hora.new(9, 0)
 
-    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
-                                                      Hora.new(18, 0),
-                                                      proveedor_de_fecha,
-                                                      proveedor_de_hora)
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                                      proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
     expect(calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, fecha_de_maniana, hora_a_chequear)).to be false
   end
 
@@ -141,10 +142,8 @@ describe CalculadorDeTurnosLibres do
 
     paciente = Paciente.new('j@a.com', '123456789', 'juancito', 1)
     asignar_un_turno(hora_a_chequear, fecha_de_maniana, paciente)
-    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0),
-                                                      Hora.new(18, 0),
-                                                      proveedor_de_fecha,
-                                                      proveedor_de_hora)
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                                      proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
     expect(calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, fecha_de_maniana, hora_a_chequear)).to be true
   end
 end
