@@ -13,4 +13,11 @@ class EstadoTurnoFactory
   def self.obtener_tipo(_estado)
     '0'
   end
+
+  def self.crear_estado_por_descripcion(descripcion)
+    case descripcion
+    when 'reservado'
+      EstadoTurnoReservado.new
+    end
+  end
 end
