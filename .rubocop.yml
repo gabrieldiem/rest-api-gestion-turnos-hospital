@@ -10,6 +10,11 @@ Metrics/AbcSize:
   Exclude:
     - 'routes/**/*'
 
+Metrics/BlockLength:
+  Exclude:
+    - 'db/**/*'
+  AllowedMethods: [ 'controllers', 'describe', 'context']
+
 # Avoid methods longer than 30 lines of code
 Metrics/MethodLength:
   Max: 30
@@ -17,8 +22,6 @@ Metrics/ParameterLists:
   Max: 6
 Metrics/ClassLength:
   Max: 150
-Metrics/BlockLength:
-  AllowedMethods: ['controllers', 'describe', 'context']
 Layout/LineLength:
   Max: 250
   AllowedPatterns: ['(When|Given|Then)', '(get|post|put)']

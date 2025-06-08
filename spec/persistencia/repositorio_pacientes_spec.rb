@@ -79,4 +79,16 @@ describe RepositorioPacientes do
     paciente = repositorio_pacientes.find_without_loading_turnos(paciente.id)
     expect(paciente.turnos_reservados).to eq []
   end
+
+  it 'cuando se crea un paciente la fecha de creacion tiene fecha y hora' do
+    hora_actual = Time.new(2025, 6, 11, 12, 39)
+    allow(Time).to receive(:now).and_return(hora_actual)
+
+    repositorio = described_class.new(logger)
+    juan = Paciente.new('juan@test.com', '12345678', '@juanperez', 1)
+    repositorio.save(juan)
+    juan_encontrado = repositorio.find_by_dni('12345678')
+    expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)
+    expect(juan_encontrado.created_on).to eq(hora_actual)
+  end
 end
