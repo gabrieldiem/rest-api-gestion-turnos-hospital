@@ -70,35 +70,49 @@ describe Paciente do
         described_class.new('juan.perez@example.com', '12345678', '', 1)
       end.to raise_error(ActiveModel::ValidationError)
     end
+
+    it 'no se crea si la reputación es menor a 0' do
+      expect do
+        described_class.new('juan.perez@example.com', '12345678', '', -1)
+      end.to raise_error(ActiveModel::ValidationError)
+    end
+
+    it 'no se crea si la reputación es mayor a 1' do
+      expect do
+        described_class.new('juan.perez@example.com', '12345678', '', 2)
+      end.to raise_error(ActiveModel::ValidationError)
+    end
   end
 
-  it 'tiene disponibilidad cuando no tiene ningun turno reservado' do
-    paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+  describe '- disponibilidad de paciente -' do
+    it 'tiene disponibilidad cuando no tiene ningun turno reservado' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
 
-    hora = Hora.new(10, 31)
-    fecha = Date.parse('25/10/1999')
-    horario = Horario.new(fecha, hora)
+      hora = Hora.new(10, 31)
+      fecha = Date.parse('25/10/1999')
+      horario = Horario.new(fecha, hora)
 
-    expect(paciente.tiene_disponibilidad?(horario, Hora.new(0, especialidad.duracion))).to be true
-  end
+      expect(paciente.tiene_disponibilidad?(horario, Hora.new(0, especialidad.duracion))).to be true
+    end
 
-  it 'no tiene disponibilidad cuando tiene un turno reservado con superposicion' do
-    paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
-    repositorio_pacientes.save(paciente)
+    it 'no tiene disponibilidad cuando tiene un turno reservado con superposicion' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      repositorio_pacientes.save(paciente)
 
-    medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
-    repositorio_especialidades.save especialidad
-    repositorio_medico.save medico
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      repositorio_especialidades.save especialidad
+      repositorio_medico.save medico
 
-    horario_turno_reservado = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
-    turno = medico.asignar_turno(horario_turno_reservado, paciente)
-    repositorio_turnos.save turno
+      horario_turno_reservado = Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0))
+      turno = medico.asignar_turno(horario_turno_reservado, paciente)
+      repositorio_turnos.save turno
 
-    duracion = Hora.new(0, especialidad.duracion)
+      duracion = Hora.new(0, especialidad.duracion)
 
-    paciente = repositorio_pacientes.find_by_dni('12345678')
-    expect(
-      paciente.tiene_disponibilidad?(horario_que_quiero_reservar, duracion)
-    ).to be false
+      paciente = repositorio_pacientes.find_by_dni('12345678')
+      expect(
+        paciente.tiene_disponibilidad?(horario_que_quiero_reservar, duracion)
+      ).to be false
+    end
   end
 end
