@@ -59,7 +59,10 @@ class Turnero
   end
 
   def buscar_turno(id_turno)
-    @repositorio_turnos.find(id_turno)
+    turno = @repositorio_turnos.find_by_id(id_turno)
+    raise TurnoInexistenteException, "No existe un turno con el ID #{id_turno}" if turno.nil?
+
+    turno
   end
 
   def asignar_turno(matricula, fecha, hora, dni)
