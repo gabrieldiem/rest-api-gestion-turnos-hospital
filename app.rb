@@ -37,7 +37,7 @@ configure do
                             RepositorioEspecialidades.new(api_logger),
                             RepositorioMedicos.new(api_logger),
                             RepositorioTurnos.new(api_logger),
-                            ProveedorDeFeriados.new(api_feriados),
+                            ProveedorDeFeriados.new(api_feriados, api_logger),
                             ProveedorDeFecha.new,
                             ProveedorDeHora.new,
                             convertidor_de_tiempo_)

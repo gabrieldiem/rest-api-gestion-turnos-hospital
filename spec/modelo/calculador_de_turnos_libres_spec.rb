@@ -35,7 +35,7 @@ describe CalculadorDeTurnosLibres do
     ProveedorDeHora.new(proveedor_double)
   end
   let(:proveedor_de_feriados) do
-    ProveedorDeFeriados.new(api_feriados_url)
+    ProveedorDeFeriados.new(api_feriados_url, logger)
   end
   let(:especialidad) do
     especialidad = Especialidad.new('Cardiología', 30, 5, 'card')

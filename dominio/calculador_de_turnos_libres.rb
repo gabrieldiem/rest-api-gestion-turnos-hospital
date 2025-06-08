@@ -61,9 +61,10 @@ class CalculadorDeTurnosLibres
 
   def calcular_siguiente_horario_disponible(fecha_actual, duracion_turno, turnos_ya_asignados)
     horario = calcular_siguiente_horario(fecha_actual, @indice_horario_candidato, duracion_turno)
+    feriados = @proveedor_de_feriados.obtener_feriados(horario.fecha.year)
 
     while horario.hora.hora < @hora_de_fin_de_jornada.hora
-      if existe_turno_asignado?(horario, turnos_ya_asignados)
+      if existe_turno_asignado?(horario, turnos_ya_asignados) || es_dia_feriado?(horario, feriados)
         @indice_horario_candidato += 1 # Saltear indice evaluar el siguiente
       else
         return horario
@@ -82,6 +83,10 @@ class CalculadorDeTurnosLibres
     turnos_ya_asignados.each do |turno|
       return true if turno.horario == horario_a_verificar
     end
+    false
+  end
+
+  def es_dia_feriado?(_horario_a_verificar, _feriados)
     false
   end
 end
