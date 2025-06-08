@@ -18,7 +18,7 @@ describe EstadoTurnoFactory do
     expect(estado.class).to eq(EstadoTurnoReservado)
   end
 
-  xit 'podemos obtener el estado presente a partir de su tipo' do
+  it 'podemos obtener el estado presente a partir de su tipo' do
     estado = described_class.crear_estado('1')
     expect(estado.class).to eq(EstadoTurnoPresente)
   end

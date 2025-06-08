@@ -1,12 +1,13 @@
 require_relative './estado_turno_reservado'
+require_relative './estado_turno_presente'
 
 class EstadoTurnoFactory
   def self.crear_estado(tipo)
     case tipo
     when '0'
       EstadoTurnoReservado.new
-    else
-      raise ArgumentError, "Tipo de estado desconocido: #{tipo}"
+    when '1'
+      EstadoTurnoPresente.new
     end
   end
 
