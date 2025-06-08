@@ -31,7 +31,7 @@ describe ObtenerTurnoResponse do
     }.to_json
   end
 
-  xit 'transforma exitosamente a JSON' do
+  it 'transforma exitosamente a JSON' do
     especialidad = Especialidad.new('Cardiologia', 45, 1, 'card')
     especialidad.created_on = DateTime.new(2025, 6, 10, 12, 0, 0)
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
