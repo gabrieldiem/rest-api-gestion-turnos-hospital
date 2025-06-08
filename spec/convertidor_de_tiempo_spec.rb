@@ -26,15 +26,9 @@ describe ConvertidorDeTiempo do
     end.to raise_error(HoraInvalidaException)
   end
 
-  xit 'al convertir hora cuando la hora es inválida lanza FechaInvalidaException' do
-    expect do
-      convertidor.estandarizar_hora('2025-06-06', Hora.new(25, 0))
-    end.to raise_error(HoraInvalidaException)
-  end
-
-  xit 'cuando la fecha y hora son válidas devuelve una hora correcta' do
-    resultado = convertidor.estandarizar_hora('2025-06-06', Hora.new(25, 0))
-    expect(resultado).to eq(Time.new(2025, 6, 6, 8, 30))
+  it 'cuando la hora es valida devuelve una hora correcta' do
+    resultado = convertidor.estandarizar_hora('8:35')
+    expect(resultado).to eq(Hora.new(8, 35))
   end
 
   xit 'hora se presenta correctamente acorde al formato' do
