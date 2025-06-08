@@ -23,7 +23,7 @@ describe EstadoTurnoFactory do
     expect(estado.class).to eq(EstadoTurnoPresente)
   end
 
-  xit 'podemos obtener el tipo de un estado presente' do
+  it 'podemos obtener el tipo de un estado presente' do
     estado = EstadoTurnoPresente.new
     tipo = described_class.obtener_tipo(estado)
     expect(tipo).to eq('1')
