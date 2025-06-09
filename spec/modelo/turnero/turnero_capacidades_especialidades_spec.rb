@@ -10,6 +10,7 @@ require_relative '../../../dominio/exceptions/paciente_inexistente_exception'
 require_relative '../../../dominio/exceptions/fuera_de_horario_exception'
 require_relative '../../../dominio/exceptions/turno_no_disponible_exception'
 require_relative '../../../dominio/exceptions/sin_turnos_exception'
+require_relative '../../../dominio/exceptions/especialidad_duplicada_exception'
 require_relative '../../../persistencia/repositorio_pacientes'
 require_relative '../../../persistencia/repositorio_especialidades'
 require_relative '../../../persistencia/repositorio_medicos'
@@ -83,6 +84,14 @@ describe Turnero do
         have_attributes(nombre: especialidad_tres.nombre, duracion: especialidad_tres.duracion, recurrencia_maxima: especialidad_tres.recurrencia_maxima,
                         codigo: especialidad_tres.codigo)
       )
+    end
+
+    it 'no se pueden crear dos especialidades con el mismo código' do
+      turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+
+      expect do
+        turnero.crear_especialidad('Cardiología2', 45, 2, 'card')
+      end.to raise_error(EspecialidadDuplicadaException)
     end
   end
 end

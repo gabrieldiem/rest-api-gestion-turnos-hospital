@@ -30,7 +30,7 @@ class Turnero
 
   def crear_paciente(email, dni, username)
     paciente = Paciente.new(email, dni, username, 1)
-    if paciente_ya_existente?(dni)
+    if !paciente_ya_existente?(dni)
       @repositorio_pacientes.save(paciente)
       paciente
     else
@@ -41,7 +41,11 @@ class Turnero
 
   def crear_especialidad(nombre, duracion, recurrencia_maxima, codigo)
     especialidad = Especialidad.new(nombre, duracion, recurrencia_maxima, codigo)
-    @repositorio_especialidades.save(especialidad)
+    if !especialidad_ya_existente?(codigo)
+      @repositorio_especialidades.save(especialidad)
+    else
+      raise EspecialidadDuplicadaException
+    end
   end
 
   def crear_medico(nombre, apellido, matricula, codigo_especialidad)
@@ -130,7 +134,17 @@ class Turnero
   end
 
   def paciente_ya_existente?(dni)
-    if @repositorio_pacientes.find_by_dni(dni)
+    paciente = @repositorio_pacientes.find_by_dni(dni)
+    if paciente.nil?
+      false
+    else
+      true
+    end
+  end
+
+  def especialidad_ya_existente?(codigo)
+    especialidad = @repositorio_especialidades.find_by_codigo(codigo)
+    if especialidad.nil?
       false
     else
       true

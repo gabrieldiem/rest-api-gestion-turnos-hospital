@@ -2,6 +2,7 @@ Dir[File.join(__dir__, '../dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../dominio/exceptions', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../persistencia', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../../vistas/especialidades', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../../vistas/error', '*.rb')].each { |file| require file }
 
 module RoutesEspecialidades
   def self.registered(app)
@@ -29,6 +30,10 @@ module RoutesEspecialidades
 
       status 201
       NuevaEspecialidadCreadaResponse.new(especialidad).to_json
+    rescue EspecialidadDuplicadaException => e
+      logger.error("Error La especialidad ya existe con el código proveído: #{@params[:codigo]}")
+      status 400
+      MensajeErrorResponse.new(e.message).to_json
     end
   end
 end
