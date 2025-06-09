@@ -26,8 +26,8 @@ Dado('que el paciente con DNI {string} esta registrado en el sistema') do |dni_p
   expect(@response_paciente.status).to eq(201)
 end
 
-Dado('la especialidad tiene una recurrencia máxima de turnos configurada como {string}') do |recurrencia|
-  especialidad_body = { nombre: 'Cardiologia', duracion: 20, recurrencia_maxima: recurrencia.to_i, codigo: 'card' }.to_json
+Dado('la especialidad {string} tiene una recurrencia máxima de turnos configurada como {string}') do |especialidad, recurrencia|
+  especialidad_body = { nombre: especialidad, duracion: 20, recurrencia_maxima: recurrencia.to_i, codigo: especialidad.downcase[0..3] }.to_json
   response = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
   expect(response.status).to eq(201)
 end
@@ -55,39 +55,50 @@ Cuando('el paciente solicita un turno para la especialidad {string}') do |especi
 end
 
 Entonces('el sistema asigna el turno exitosamente') do
-  puts "Response: #{@response_reserva_turno.inspect}"
   expect(@response_reserva_turno.status).to eq(201)
 end
 
-Dado('el paciente con DNI {string} tiene un turno asignado para la especialidad {string}') do |dni, especialidad|
-  especialidad_body = { nombre: especialidad, duracion: 20, recurrencia_maxima: 10, codigo: especialidad.downcase[0..3] }.to_json
-  response_crear_especialidad = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
-  expect(response_crear_especialidad.status).to eq(201)
-
+Dado('el paciente con DNI {string} tiene {int} turnos asignados para la especialidad {string}') do |dni, cantidad_turnos, especialidad|
   matricula = crear_medico(especialidad, '222222')
 
+  hora_base = Hora.new(10, 0)
+
+  cantidad_turnos.times do |i|
+    @hora_actual = hora_base + Hora.new(i, 0)
+
+    body = {
+      dni:, # Usar el valor de dni pasado como argumento
+      turno: {
+        fecha: @convertidor_de_tiempo.presentar_fecha(Date.parse(Date.today.to_s)),
+        hora: @convertidor_de_tiempo.presentar_hora(@hora_actual)
+      }
+    }
+    cuando_pido_los_feriados(@fecha_de_hoy.year, [Date.parse(@fecha_de_maniana.to_s)])
+    @response_reserva_turno = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
+    allow(Date).to receive(:today).and_return(@fecha_de_hoy)
+  end
+end
+
+Dado('que {string} tiene una recurrencia máxima de {int} turnos') do |especialidad, recurrencia|
+  especialidad = RepositorioEspecialidades.new(Configuration.logger).find_by_codigo(especialidad.downcase[0..3])
+  expect(especialidad).not_to be_nil
+  expect(especialidad.recurrencia_maxima).to eq(recurrencia)
+end
+
+Cuando('el paciente solicita un turno adicional para la especialidad {string}') do |especialidad|
+  hora_a_pedir = @hora_actual + Hora.new(1, 0)
+  matricula = crear_medico(especialidad, '33333333')
+
   body = {
-    dni:,
+    dni: @dni,
     turno: {
       fecha: @convertidor_de_tiempo.presentar_fecha(Date.parse(Date.today.to_s)),
-      hora: '08:00'
+      hora: @convertidor_de_tiempo.presentar_hora(hora_a_pedir)
     }
   }
   cuando_pido_los_feriados(@fecha_de_hoy.year, [Date.parse(@fecha_de_maniana.to_s)])
   @response_reserva_turno = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
   allow(Date).to receive(:today).and_return(@fecha_de_hoy)
-end
-
-Dado('el paciente con DNI {string} tiene {int} turnos asignados para la especialidad {string}') do |_string, _int, _string2|
-  pending # Write code here that turns the phrase above into concrete actions
-end
-
-Dado('que {string} tiene una recurrencia máxima de {int} turnos') do |_string, _int|
-  pending # Write code here that turns the phrase above into concrete actions
-end
-
-Cuando('el paciente solicita un turno adicional para la especialidad {string}') do |_string|
-  pending # Write code here that turns the phrase above into concrete actions
 end
 
 Entonces('el sistema rechaza el pedido con el mensaje {string}') do |_string|

@@ -3,7 +3,8 @@ Característica: Limitar la asignación de turnos según la recurrencia máxima
     Como turnero, no quiero otorgar turnos más allá de la recurrencia máxima establecida.
 
   Antecedentes:
-    Dado la especialidad tiene una recurrencia máxima de turnos configurada como "3"
+    Dado la especialidad "Cardiología" tiene una recurrencia máxima de turnos configurada como "3"
+    Y la especialidad "Dermatología" tiene una recurrencia máxima de turnos configurada como "2"
     Y que la fecha de hoy es "2025-10-01"
     Y que el paciente con DNI "23555102" esta registrado en el sistema
   
@@ -14,10 +15,10 @@ Característica: Limitar la asignación de turnos según la recurrencia máxima
     Entonces el sistema asigna el turno exitosamente
 
   Escenario: 19.2 Asignar un turno cuando el paciente no tiene turnos de una especialidad específica
-    Dado el paciente con DNI "23555102" tiene un turno asignado para la especialidad "Dermatología"
+    Dado el paciente con DNI "23555102" tiene 1 turno asignado para la especialidad "Dermatología"
     Cuando el paciente solicita un turno para la especialidad "Cardiología"
     Entonces el sistema asigna el turno exitosamente
-  @wip
+  
   Escenario: 19.3 Asignar un turno cuando el paciente tiene turnos previos de la especialidad, pero no excede la recurrencia máxima
     Dado el paciente con DNI "23555102" tiene 2 turnos asignados para la especialidad "Cardiología"
     Y que "Cardiología" tiene una recurrencia máxima de 3 turnos
