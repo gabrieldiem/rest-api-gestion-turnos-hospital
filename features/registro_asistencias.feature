@@ -37,7 +37,6 @@ Característica: Registrar asistencia de paciente al turno
     Cuando envío los datos de asistencia con DNI "12345678", ID de turno "999" y asistencia "presente"
     Entonces recibo un mensaje de error indicando que el turno no existe
 
-  @wip
   Escenario: 18.0.6 - Registrar asistencia con turno que no pertenece al paciente
     Dado que existe un paciente con DNI "11111111"
     Y que existe un paciente con DNI "22222222"
