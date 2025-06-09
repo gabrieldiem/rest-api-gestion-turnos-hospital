@@ -295,5 +295,19 @@ describe Turnero do
       end
         .to raise_error(PacienteInvalidoException)
     end
+
+    xit 'cuando actualizo la asistencia de un turno a presente mejora la reputacion del paciente' do
+      fecha_de_ayer = fecha_de_hoy - 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+
+      turno_a_asistir = turnero.asignar_turno(medico.matricula, fecha_de_ayer.to_s, '8:00', paciente.dni)
+      turnero.asignar_turno(medico.matricula, fecha_de_ayer.to_s, '8:30', paciente.dni)
+
+      turnero.cambiar_asistencia_turno(turno_a_asistir.id, paciente.dni, true)
+      paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+
+      expect(paciente_actualizado.reputacion).to be > paciente.reputacion
+    end
   end
 end
