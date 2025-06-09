@@ -14,7 +14,7 @@ Característica: Actualización de la reputación
   Escenario: 10.1.1 Paciente mejora su reputación
     Cuando asisto a "2" turnos reservados
     Entonces el paciente mejora su reputacion
-    
+
   @wip
   Escenario: 10.1.2 Paciente empeora su reputación
     Cuando no asisto a "2" turnos reservados
