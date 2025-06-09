@@ -135,5 +135,20 @@ describe Paciente do
         expect(paciente.reputacion).to eq(1.0)
       end
     end
+
+    xit 'si tengo 2 turnos reservados de ayer, asisito a 1 y falte al otro. La reputacion es 0.5' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+
+      (1..2).each do |_i|
+        turno = Turno.new(paciente, nil, Horario.new(Date.today + 1, Hora.new(10, 0)))
+        paciente.turnos_reservados << turno
+      end
+
+      paciente.turnos_reservados.first.cambiar_asistencia(true)
+      paciente.turnos_reservados.last.cambiar_asistencia(false)
+      paciente.actualizar_reputacion
+
+      expect(paciente.reputacion).to eq(0.5)
+    end
   end
 end
