@@ -5,13 +5,14 @@ Característica: Limitar la asignación de turnos según la recurrencia máxima
   Antecedentes:
     Dado la especialidad tiene una recurrencia máxima de turnos configurada como "3"
     Y que la fecha de hoy es "2025-10-01"
+    Y que el paciente con DNI "23555102" esta registrado en el sistema
   
 
   Escenario: 19.1 Asignar un turno cuando el paciente no tiene turnos previos
     Dado el paciente con DNI "23555102" no tiene turnos asignados
     Cuando el paciente solicita un turno para la especialidad "Cardiología"
     Entonces el sistema asigna el turno exitosamente
-  @wip
+
   Escenario: 19.2 Asignar un turno cuando el paciente no tiene turnos de una especialidad específica
     Dado el paciente con DNI "23555102" tiene un turno asignado para la especialidad "Dermatología"
     Cuando el paciente solicita un turno para la especialidad "Cardiología"
