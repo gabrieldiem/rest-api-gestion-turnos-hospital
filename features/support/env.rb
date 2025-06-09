@@ -3,6 +3,11 @@ ENV['APP_MODE'] = 'test'
 require 'rack/test'
 require 'rspec/expectations'
 ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
+
+if ENV['STAGE'].nil?
+  ENV['STAGE'] = 'test'
+end
+
 require_relative '../../app.rb'
 require 'faraday'
 

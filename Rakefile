@@ -36,8 +36,17 @@ RuboCop::RakeTask.new(:rubocop_report) do |task|
 end
 
 require 'cucumber/rake/task'
-Cucumber::Rake::Task.new(:cucumber) do |task|
-  task.cucumber_opts = ['features', '--publish-quiet', '--tags \'not @wip\'']
+Cucumber::Rake::Task.new(:cucumber_test) do |task|
+  task.cucumber_opts = ['features', '--publish-quiet', '--tags \'not @wip and not @emulate_prod\'']
+end
+
+task :cucumber_prod do
+  puts 'Running production scenarios with STAGE=prod...'
+  system({ 'STAGE' => 'prod' }, 'bundle', 'exec', 'cucumber', 'features', '--publish-quiet', '--tags', 'not @wip and @emulate_prod')
+end
+
+task cucumber: %i[cucumber_test cucumber_prod] do
+  puts 'Completed running both test and prod scenarios'
 end
 
 Cucumber::Rake::Task.new(:acceptance_report) do |task|
