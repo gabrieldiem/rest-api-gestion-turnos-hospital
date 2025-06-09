@@ -134,6 +134,17 @@ class Turnero
     @repositorio_medicos.all
   end
 
+  def borrar_todos_los_datos(habilitado)
+    raise AccionProhibidaException unless habilitado
+
+    @repositorio_turnos.delete_all
+    @repositorio_medicos.delete_all
+    @repositorio_pacientes.delete_all
+    @repositorio_especialidades.delete_all
+  end
+
+  private
+
   def paciente_ya_existente?(dni)
     paciente = @repositorio_pacientes.find_by_dni(dni)
     if paciente.nil?

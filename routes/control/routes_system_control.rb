@@ -4,6 +4,9 @@ Dir[File.join(__dir__, '../../persistencia', '*.rb')].each { |file| require file
 Dir[File.join(__dir__, '../../vistas/error', '*.rb')].each { |file| require file }
 
 module RoutesSystemControl
+  TEST_STAGE = 'test'.freeze
+  PROD_STAGE = 'prod'.freeze
+
   def self.registered(app)
     app.get '/version' do
       logger.debug('GET /version')
@@ -11,7 +14,12 @@ module RoutesSystemControl
     end
 
     app.post '/reset' do
+      habilitado = stage == TEST_STAGE
+      turnero.borrar_todos_los_datos(habilitado)
       status 200
+    rescue AccionProhibidaException => e
+      status 403
+      MensajeErrorResponse.new(e.message).to_json
     end
 
     app.get '/health-check' do
