@@ -124,7 +124,7 @@ describe Paciente do
       expect(paciente.reputacion).to eq(1.0)
     end
 
-    xit 'la reputación mantiene igual cuando tiene turnos solo reservados' do
+    it 'la reputación mantiene igual cuando tiene turnos solo reservados' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
       expect(paciente.reputacion).to eq(1.0)
       cantidad_turnos_reservados = 10
