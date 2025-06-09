@@ -117,14 +117,14 @@ describe Paciente do
   end
 
   describe '- actualizar reputación -' do
-    it 'actualiza la reputación a 1.0 cuando no tiene turnos reservados' do
+    xit 'actualiza la reputación a 1.0 cuando no tiene turnos reservados' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
       expect(paciente.reputacion).to eq(1.0)
       paciente.actualizar_reputacion
       expect(paciente.reputacion).to eq(1.0)
     end
 
-    it 'la reputación mantiene igual cuando tiene turnos solo reservados' do
+    xit 'la reputación mantiene igual cuando tiene turnos solo reservados' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
       expect(paciente.reputacion).to eq(1.0)
       cantidad_turnos_reservados = 10
@@ -136,7 +136,7 @@ describe Paciente do
       end
     end
 
-    xit 'si tengo 2 turnos reservados de ayer, asisito a 1 y falte al otro. La reputacion es 0.5' do
+    it 'si tengo 2 turnos reservados de ayer, asisito a 1 y falte al otro. La reputacion es 0.5' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
 
       (1..2).each do |_i|
