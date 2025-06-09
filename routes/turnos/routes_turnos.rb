@@ -25,6 +25,10 @@ module RoutesTurnos
       turno = turnero.cambiar_asistencia_turno(params['id'].to_i, params[:dni_paciente].to_s, params[:asistio])
       status 200
       ActualizacionDeTurnoResponse.new(turno, convertidor_de_tiempo).to_json
+    rescue PacienteInexistenteException => e
+      logger.error("Error al cambiar asistencia del turno: #{e.message}")
+      status 404
+      MensajeErrorResponse.new('Paciente inexistente').to_json
     end
   end
 end
