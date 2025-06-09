@@ -29,3 +29,10 @@ Entonces('la especialidad se crea exitosamente') do
   expect(parsed_response['id']).not_to be_nil
   expect(parsed_response['created_on']).not_to be_nil
 end
+
+Entonces('recibo un mensaje de error y no se crea la especialidad') do
+  parsed_response = JSON.parse(@response.body)
+
+  expect(@response.status).to eq(400)
+  expect(parsed_response['mensaje_error']).to eq('La especialidad ya existe con el código proveído')
+end

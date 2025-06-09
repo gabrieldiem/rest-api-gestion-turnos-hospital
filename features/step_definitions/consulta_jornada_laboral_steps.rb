@@ -1,8 +1,15 @@
+def crear_especialidad
+  unless @especialidad_creada
+    especialidad_body = { nombre: 'Cardiologia', duracion: 20, recurrencia_maxima: 5, codigo: 'card' }.to_json
+    response = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
+    expect(response.status).to eq(201)
+  end
+  @especialidad_creada = true
+end
+
 Dado('que existe un medico registrado con nombre {string} y apellido {string} con matricula {string}') do |nombre, apellido, matricula|
   @matricula = matricula
-  especialidad_body = { nombre: 'Cardiologia', duracion: 20, recurrencia_maxima: 5, codigo: 'card' }.to_json
-  response = Faraday.post('/especialidades', especialidad_body, { 'Content-Type' => 'application/json' })
-  expect(response.status).to eq(201)
+  crear_especialidad
 
   medicos_body = { nombre:, apellido:, matricula:, especialidad: 'card' }.to_json
   response = Faraday.post('/medicos', medicos_body, { 'Content-Type' => 'application/json' })
