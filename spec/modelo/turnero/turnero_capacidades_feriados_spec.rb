@@ -10,6 +10,7 @@ require_relative '../../../dominio/exceptions/paciente_inexistente_exception'
 require_relative '../../../dominio/exceptions/fuera_de_horario_exception'
 require_relative '../../../dominio/exceptions/turno_no_disponible_exception'
 require_relative '../../../dominio/exceptions/sin_turnos_exception'
+require_relative '../../../dominio/exceptions/turno_feriado_no_es_reservable_exception'
 require_relative '../../../persistencia/repositorio_pacientes'
 require_relative '../../../persistencia/repositorio_especialidades'
 require_relative '../../../persistencia/repositorio_medicos'
@@ -100,6 +101,17 @@ describe Turnero do
                             Horario.new(fecha_dentro_de_3_dias, Hora.new(9, 0)),
                             Horario.new(fecha_dentro_de_3_dias, Hora.new(9, 30)),
                             Horario.new(fecha_dentro_de_3_dias, Hora.new(10, 0))])
+    end
+
+    it 'no se puede reservar un turno mañana si es feriado' do
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      turnero.crear_paciente('robertito@mail.com', '123000', 'NAC456')
+      fecha_de_maniana = fecha_de_hoy + 1
+      cuando_pido_los_feriados(fecha_de_hoy.year, [fecha_de_maniana])
+
+      expect do
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '8:00', '123000')
+      end.to raise_error(TurnoFeriadoNoEsReservableException)
     end
   end
 end

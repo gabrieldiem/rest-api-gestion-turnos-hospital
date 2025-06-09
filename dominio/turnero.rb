@@ -79,6 +79,7 @@ class Turnero
     horario = Horario.new(fecha, hora)
 
     raise TurnoNoDisponibleException if @calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, fecha, hora)
+    raise TurnoFeriadoNoEsReservableException if coincide_con_feriado(fecha)
 
     turno = medico.asignar_turno(horario, paciente)
     @repositorio_turnos.save(turno)
@@ -166,5 +167,13 @@ class Turnero
     else
       true
     end
+  end
+
+  def coincide_con_feriado(fecha)
+    feriados = @proveedor_de_feriados.obtener_feriados(fecha.year)
+    feriados.each do |feriado|
+      return true if feriado.fecha == fecha
+    end
+    false
   end
 end

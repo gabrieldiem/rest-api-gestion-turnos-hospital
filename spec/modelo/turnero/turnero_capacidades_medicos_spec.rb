@@ -17,8 +17,10 @@ require_relative '../../../lib/proveedor_de_fecha'
 require_relative '../../../lib/proveedor_de_hora'
 require_relative '../../../lib/proveedor_de_feriados'
 require_relative '../../../lib/hora'
+require_relative '../../stubs'
 
 describe Turnero do
+  include FeriadosStubs
   before(:each) do
     ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
   end
@@ -91,6 +93,7 @@ describe Turnero do
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
 
       fecha_de_maniana = fecha_de_hoy + 1
+      cuando_pido_los_feriados(fecha_de_hoy.year, [])
       hora_inicio_jornada = Hora.new(8, 0)
       hora_fin_jornada = Hora.new(18, 0)
 
@@ -98,8 +101,7 @@ describe Turnero do
       turnos_asignados = []
       cantidad_turnos.times do |i|
         hora_a_asignar = hora_inicio_jornada + Hora.new(0, i * 30)
-        turno_asignado = turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}", paciente.dni)
-        turnos_asignados.push turno_asignado
+        turnos_asignados.push turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}", paciente.dni)
       end
 
       turnos_reservados = turnero.obtener_turnos_reservados_por_medico('NAC456')
