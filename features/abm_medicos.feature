@@ -13,7 +13,6 @@ Característica: Alta de un médico en el sistema HMS
     Cuando doy de alta al medico
     Entonces el médico se registra exitosamente
 
-  @wip
   Escenario: 2.0.2 - No se puede crear un médico con una especialidad que no existe
     Dado que ingreso el nombre "Juan", apellido "Pérez", matrícula "NAC123" y especialidad inexistente "onco" para el médico
     Cuando doy de alta al medico

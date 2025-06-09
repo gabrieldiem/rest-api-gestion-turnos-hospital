@@ -46,5 +46,8 @@ Dado('que ingreso el nombre {string}, apellido {string}, matrícula {string} y e
 end
 
 Entonces('recibo una respuesta de error de creación de médico') do
-  pending # Write code here that turns the phrase above into concrete actions
+  parsed_response = JSON.parse(@response.body)
+
+  expect(@response.status).to eq 400
+  expect(parsed_response['mensaje_error']).to eq('Para crear un médico se requiere una especialidad existente')
 end

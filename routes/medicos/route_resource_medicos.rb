@@ -30,6 +30,10 @@ module RoutesResourceMedicos
                                     @params[:especialidad].to_s)
       status 201
       NuevoMedicoCreadoResponse.new(medico).to_json
+    rescue ActiveModel::ValidationError => e
+      logger.error("Error al crear médico: #{e.message}")
+      status 400
+      MensajeErrorResponse.new(e.model.errors.first.message).to_json
     end
   end
 end
