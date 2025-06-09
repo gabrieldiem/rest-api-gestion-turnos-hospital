@@ -69,7 +69,7 @@ end
 Cuando('envío los datos de asistencia con DNI {string}, ID de turno {string} y asistencia {string}') do |dni, _id_turno, asistencia|
   body = {
     dni_paciente: dni,
-    asistio: asistencia
+    asistio: asistencia != 'ausente'
   }
   @response = Faraday.put("/turnos/#{@id_turno}", body.to_json, { 'Content-Type' => 'application/json' })
   @parsed_response = JSON.parse(@response.body, symbolize_names: true)
