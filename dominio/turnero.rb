@@ -91,7 +91,10 @@ class Turnero
 
   def cambiar_asistencia_turno(id_turno, dni, asistio)
     buscar_paciente_por_dni(dni)
-    turno = @repositorio_turnos.find(id_turno)
+    turno = @repositorio_turnos.find_by_id(id_turno)
+
+    raise TurnoInexistenteException, "No existe un turno con el ID #{id_turno}" if turno.nil?
+
     turno.cambiar_asistencia(asistio)
     @repositorio_turnos.save(turno)
   end

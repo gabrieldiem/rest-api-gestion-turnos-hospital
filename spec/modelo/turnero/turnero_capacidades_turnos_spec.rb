@@ -271,7 +271,7 @@ describe Turnero do
         .to raise_error(PacienteInexistenteException)
     end
 
-    xit 'cuando cambio la asistencia de un turno que no existe, produce un error' do
+    it 'cuando cambio la asistencia de un turno que no existe, produce un error' do
       turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
 
       expect do
