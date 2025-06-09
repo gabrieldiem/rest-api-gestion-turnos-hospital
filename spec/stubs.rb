@@ -17,9 +17,15 @@ module FeriadosStubs
 
     response = OpenStruct.new(status: 200, body: body.to_json)
 
-    allow(Faraday).to receive(:get).and_call_original
+    permitir_todas_las_requests_con_parametros_originales
     allow(Faraday).to receive(:get)
       .with("#{ENV['API_FERIADOS_URL']}/#{anio}")
       .and_return(response)
+  end
+
+  private
+
+  def permitir_todas_las_requests_con_parametros_originales
+    allow(Faraday).to receive(:get).and_call_original
   end
 end

@@ -15,7 +15,7 @@ class ProveedorDeFeriados
     when 200
       response_body = obtener_response_body(response)
       @logger.info("Response 2XX OK de #{final_url} es: #{response_body}")
-      crear_feriados(response_body)
+      crear_feriados(anio, response_body)
     else
       @logger.error("Response errónea de #{final_url} es: #{response.inspect}")
       raise NoSePuedenObtenerFeriadosException
@@ -24,8 +24,11 @@ class ProveedorDeFeriados
 
   private
 
-  def crear_feriados(_response_body)
-    []
+  def crear_feriados(anio, response_body)
+    response_body.map do |feriado|
+      fecha = Date.new(anio.to_i, feriado['mes'].to_i, feriado['dia'].to_i)
+      Feriado.new(fecha, feriado['motivo'], feriado['tipo'])
+    end
   end
 
   def ejecutar_request_para_obtener_feriados(final_url)

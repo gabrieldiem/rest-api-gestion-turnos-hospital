@@ -18,4 +18,13 @@ describe ProveedorDeFeriados do
   it 'se construye correctamente' do
     expect(described_class.new(api_feriados_url, logger)).to be_a(described_class)
   end
+
+  it 'devuelve un feriado correcto cuando la API devuelve solo un feriado' do
+    proveedor_de_feriados = described_class.new(api_feriados_url, logger)
+    fecha_feriado = Date.new(2025, 0o6, 20)
+    cuando_pido_los_feriados(fecha_feriado.year, [fecha_feriado])
+
+    feriado_esperado = Feriado.new(fecha_feriado, 'Es un feriado', 'inamovible')
+    expect(proveedor_de_feriados.obtener_feriados(2025)).to eq([feriado_esperado])
+  end
 end
