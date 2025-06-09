@@ -20,6 +20,7 @@ require_relative '../../../lib/hora'
 require_relative '../../stubs'
 
 describe Turnero do
+  include FeriadosStubs
   before(:each) do
     ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
   end
@@ -47,8 +48,8 @@ describe Turnero do
     described_class.new(repositorio_pacientes,
                         repositorio_especialidades,
                         repositorio_medicos,
-                        ProveedorDeFeriados.new(ENV['API_FERIADOS_URL'], logger),
                         repositorio_turnos,
+                        ProveedorDeFeriados.new(ENV['API_FERIADOS_URL'], logger),
                         proveedor_de_fecha,
                         proveedor_de_hora,
                         convertidor_de_tiempo)
@@ -56,7 +57,7 @@ describe Turnero do
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
 
   describe '- Capacidades de Feriados - ' do
-    xit 'obtener turnos disponibles de un médico dado que mañana es feriado me da turnos de pasado mañana' do
+    it 'obtener turnos disponibles de un médico dado que mañana es feriado me da turnos de pasado mañana' do
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
       fecha_de_maniana = fecha_de_hoy + 1
       fecha_de_pasado_maniana = fecha_de_hoy + 2
