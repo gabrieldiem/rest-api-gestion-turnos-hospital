@@ -95,6 +95,8 @@ class Turnero
 
     raise TurnoInexistenteException, "No existe un turno con el ID #{id_turno}" if turno.nil?
 
+    raise PacienteInvalidoException, "El paciente con DNI #{dni} no está asociado a este turno" unless turno.paciente.dni == dni
+
     turno.cambiar_asistencia(asistio)
     @repositorio_turnos.save(turno)
   end
