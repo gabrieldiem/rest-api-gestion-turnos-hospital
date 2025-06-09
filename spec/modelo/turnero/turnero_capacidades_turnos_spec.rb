@@ -246,8 +246,32 @@ describe Turnero do
       paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
       turno = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
       turno_actualizado = turnero.cambiar_asistencia_turno(turno.id, paciente.dni, true)
+
+      paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+      expect(paciente_actualizado.reputacion).to eq(1.0)
+
       expect(turno_actualizado.estado.descripcion).to eq('presente')
     end
+
+    xit 'cuando asisto a un turno y falto a otro turno, la reputacion del paciente baja a 0.5' do
+      fecha_de_maniana = fecha_de_hoy + 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+      turno = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+      turno_actualizado = turnero.cambiar_asistencia_turno(turno.id, paciente.dni, true)
+
+      paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+      expect(paciente_actualizado.reputacion).to eq(1.0)
+      expect(turno_actualizado.estado.descripcion).to eq('presente')
+
+      turno_nuevo = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:30', paciente.dni)
+      turno_actualizado = turnero.cambiar_asistencia_turno(turno_nuevo.id, paciente.dni, false)
+      paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+      expect(paciente_actualizado.reputacion).to eq(0.5)
+      expect(turno_actualizado.estado.descripcion).to eq('ausente')
+    end
+
+
 
     it 'obtener un turno por id' do
       fecha_de_maniana = fecha_de_hoy + 1
@@ -295,6 +319,8 @@ describe Turnero do
       end
         .to raise_error(PacienteInvalidoException)
     end
+
+
 
     xit 'cuando actualizo la asistencia de un turno a presente mejora la reputacion del paciente' do
       fecha_de_ayer = fecha_de_hoy - 1
