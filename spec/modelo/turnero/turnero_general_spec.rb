@@ -11,6 +11,7 @@ require_relative '../../../dominio/exceptions/fuera_de_horario_exception'
 require_relative '../../../dominio/exceptions/turno_no_disponible_exception'
 require_relative '../../../dominio/exceptions/sin_turnos_exception'
 require_relative '../../../dominio/exceptions/turno_inexistente_exception'
+require_relative '../../../dominio/exceptions/accion_prohibida_exception'
 require_relative '../../../persistencia/repositorio_pacientes'
 require_relative '../../../persistencia/repositorio_especialidades'
 require_relative '../../../persistencia/repositorio_medicos'
@@ -63,6 +64,7 @@ describe Turnero do
     it 'con habilitación se eliminan todos los datos de turnos' do
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
       turnero.crear_paciente('juan@mail.com', '123456', 'juanjuan')
+      turnero.asignar_turno('NAC456', '2025-05-20', '8:00', '123456')
       habilitado = true
       turnero.borrar_todos_los_datos(habilitado)
 
@@ -72,12 +74,27 @@ describe Turnero do
     it 'con habilitación se eliminan todos los datos de especialidades, medicos y pacientes' do
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
       turnero.crear_paciente('juan@mail.com', '123456', 'juanjuan')
+      turnero.asignar_turno('NAC456', '2025-05-20', '8:00', '123456')
       habilitado = true
       turnero.borrar_todos_los_datos(habilitado)
 
       expect(repositorio_medicos.all.size).to eq(0)
       expect(repositorio_pacientes.all.size).to eq(0)
       expect(repositorio_especialidades.all.size).to eq(0)
+    end
+
+    it 'sin habilitacion no se eliminan los datos de turnos ni medicos' do
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      turnero.crear_paciente('juan@mail.com', '123456', 'juanjuan')
+      turnero.asignar_turno('NAC456', '2025-05-20', '8:00', '123456')
+      habilitado = false
+
+      expect do
+        turnero.borrar_todos_los_datos(habilitado)
+      end.to raise_error(AccionProhibidaException)
+
+      expect(repositorio_turnos.all.size).to eq(1)
+      expect(repositorio_medicos.all.size).to eq(1)
     end
   end
 end
