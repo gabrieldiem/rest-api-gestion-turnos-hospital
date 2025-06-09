@@ -23,7 +23,7 @@ Característica: No se puede hacer reserva de turnos en días feriados
     Cuando consulto los turnos disponibles para el médico con matrícula "NAC123"
     Entonces recibo los próximos 5 turnos disponibles
     Y son del "03/04/2025" a las "8:00" en adelante
-  @wip @indev
+
   Escenario: 5.2.3 - No se muestran turnos disponibles dos días feriados seguidos
     Dado que hoy es "01/04/2025" y no es feriado
     Y que el día "03/04/2025" también es feriado
