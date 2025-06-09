@@ -29,6 +29,10 @@ module RoutesTurnos
       logger.error("Error al cambiar asistencia del turno: #{e.message}")
       status 404
       MensajeErrorResponse.new('Paciente inexistente').to_json
+    rescue TurnoInexistenteException => e
+      logger.error("Error al cambiar asistencia del turno: #{e.message}")
+      status 404
+      MensajeErrorResponse.new('Turno inexistente').to_json
     end
   end
 end
