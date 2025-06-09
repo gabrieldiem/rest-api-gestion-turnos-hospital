@@ -101,7 +101,7 @@ describe Turnero do
       turnos_asignados = []
       cantidad_turnos.times do |i|
         hora_a_asignar = hora_inicio_jornada + Hora.new(0, i * 30)
-        turnos_asignados.push turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}", paciente.dni)
+        turnos_asignados.push(turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}", paciente.dni))
       end
 
       turnos_reservados = turnero.obtener_turnos_reservados_por_medico('NAC456')
