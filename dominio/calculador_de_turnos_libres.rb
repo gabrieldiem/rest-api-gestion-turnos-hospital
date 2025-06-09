@@ -86,7 +86,10 @@ class CalculadorDeTurnosLibres
     false
   end
 
-  def es_dia_feriado?(_horario_a_verificar, _feriados)
+  def es_dia_feriado?(horario_a_verificar, feriados)
+    feriados.each do |feriado|
+      return true if feriado.fecha == horario_a_verificar.fecha
+    end
     false
   end
 end
