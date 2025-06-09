@@ -85,7 +85,8 @@ class Turnero
     @calculador_de_turnos_libres.calcular_turnos_disponibles_por_medico(medico)
   end
 
-  def cambiar_asistencia_turno(id_turno, _dni, asistio)
+  def cambiar_asistencia_turno(id_turno, dni, asistio)
+    buscar_paciente_por_dni(dni)
     turno = @repositorio_turnos.find(id_turno)
     turno.cambiar_asistencia(asistio)
     @repositorio_turnos.save(turno)
