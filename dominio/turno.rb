@@ -30,6 +30,10 @@ class Turno
               end
   end
 
+  def reservado?
+    @estado.is_a?(EstadoTurnoReservado)
+  end
+
   def asistio?
     @estado.is_a?(EstadoTurnoPresente)
   end

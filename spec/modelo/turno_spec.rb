@@ -55,9 +55,26 @@ describe Turno do
     expect(turno.estado.descripcion).to eq('ausente')
   end
 
-  it 'puedo preguntar por la asistencia del turno' do
+  it 'puedo preguntar por la asistencia del turno presente' do
     turno = described_class.new(paciente, medico, horario)
     turno.cambiar_asistencia(true)
     expect(turno.asistio?).to be true
+  end
+
+  it 'puedo preguntar por la asistencia del turno ausente' do
+    turno = described_class.new(paciente, medico, horario)
+    turno.cambiar_asistencia(false)
+    expect(turno.asistio?).to be false
+  end
+
+  it 'puedo preguntar si el turno está reservado' do
+    turno = described_class.new(paciente, medico, horario)
+    expect(turno.reservado?).to be true
+  end
+
+  it 'puedo preguntar si el turno no está más reservado' do
+    turno = described_class.new(paciente, medico, horario)
+    turno.cambiar_asistencia(true)
+    expect(turno.reservado?).to be false
   end
 end
