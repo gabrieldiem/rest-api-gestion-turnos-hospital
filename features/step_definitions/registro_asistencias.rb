@@ -66,11 +66,12 @@ Dado('existe un turno con ID {string} para ese paciente') do |id_turno|
   expect(@response.status).to eq(201)
 end
 
-Cuando('envío los datos de asistencia con DNI {string}, ID de turno {string} y asistencia {string}') do |dni, _id_turno, asistencia|
+Cuando('envío los datos de asistencia con DNI {string}, ID de turno {string} y asistencia {string}') do |dni, id_turno, asistencia|
   body = {
     dni_paciente: dni,
     asistio: asistencia != 'ausente'
   }
+  @id_turno = id_turno if @id_turno.nil?
   @response = Faraday.put("/turnos/#{@id_turno}", body.to_json, { 'Content-Type' => 'application/json' })
   @parsed_response = JSON.parse(@response.body, symbolize_names: true)
 end
@@ -114,8 +115,8 @@ Dado('que no existe un paciente con DNI {string}') do |_string|
 end
 
 Entonces('recibo un mensaje de error indicando que el paciente no existe') do
-  expect(@response.status).to eq(400)
-  expect(@response.body).to include('Paciente inexsitente')
+  expect(@response.status).to eq(404)
+  expect(@parsed_response[:mensaje_error]).to include('Paciente inexistente')
 end
 
 Dado('no existe un turno con ID {string}') do |_string|
@@ -124,10 +125,10 @@ end
 
 Entonces('recibo un mensaje de error indicando que el turno no existe') do
   expect(@response.status).to eq(404)
-  expect(@response.body).to include('Paciente inexsitente')
+  expect(@parsed_response[:mensaje_error]).to include('Turno inexistente')
 end
 
 Entonces('recibo un mensaje de error indicando que el turno no pertenece a ese paciente') do
   expect(@response.status).to eq(400)
-  expect(@response.body).to include('El turno no pertenece a ese paciente')
+  expect(@parsed_response[:mensaje_error]).to include('El turno no pertenece a ese paciente')
 end
