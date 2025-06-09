@@ -29,6 +29,7 @@ Cuando('consulto los turnos disponibles para el médico con matrícula {string}'
 end
 
 Entonces('recibo el mensaje de error {string}') do |error_msg|
+  @parsed_response = JSON.parse(@response.body)
   expect(@parsed_response['mensaje_error']).to eq(error_msg)
 end
 

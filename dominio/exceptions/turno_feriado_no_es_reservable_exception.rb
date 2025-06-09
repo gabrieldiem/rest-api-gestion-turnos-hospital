@@ -1,5 +1,5 @@
 class TurnoFeriadoNoEsReservableException < StandardError
-  def initialize(msg = 'La reserva de turno no puede realizarse porque es un día feriado')
+  def initialize(msg = 'No se puede reservar un turno para un día feriado')
     super
   end
 end

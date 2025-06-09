@@ -31,7 +31,7 @@ Característica: No se puede hacer reserva de turnos en días feriados
     Cuando consulto los turnos disponibles para el médico con matrícula "NAC123"
     Entonces recibo los próximos 5 turnos disponibles
     Y son del "04/04/2025" a las "8:00" en adelante
-  @wip @indev
+
   Escenario: 5.2.4 - No se puede hacer una reserva de turno para un día feriado
     Cuando reservo el turno con el medico de matrícula "NAC123" en la fecha "02/04/2025" y la hora "9.30"
     Entonces recibo el mensaje de error "No se puede reservar un turno para un día feriado"
