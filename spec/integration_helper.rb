@@ -1,4 +1,5 @@
 # rubocop:disable all
+require 'rspec/mocks'
 require 'spec_helper'
 require_relative '../config/configuration'
 require_relative '../persistencia/repositorio_turnos'

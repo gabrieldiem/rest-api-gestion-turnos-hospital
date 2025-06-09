@@ -18,10 +18,14 @@ require_relative '../../../lib/proveedor_de_fecha'
 require_relative '../../../lib/proveedor_de_hora'
 require_relative '../../../lib/proveedor_de_feriados'
 require_relative '../../../lib/hora'
+require_relative '../../stubs'
 
 describe Turnero do
+  include FeriadosStubs
+
   before(:each) do
-    ENV['API_FERIADOS_URL'] = 'http://feriados_url.com'
+    ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
+    cuando_pido_los_feriados(2025, [])
   end
 
   let(:logger) do
@@ -48,7 +52,7 @@ describe Turnero do
                         repositorio_especialidades,
                         repositorio_medicos,
                         repositorio_turnos,
-                        ProveedorDeFeriados.new(ENV['API_TURNERO_URL'], logger),
+                        ProveedorDeFeriados.new(ENV['API_FERIADOS_URL'], logger),
                         proveedor_de_fecha,
                         proveedor_de_hora,
                         convertidor_de_tiempo)

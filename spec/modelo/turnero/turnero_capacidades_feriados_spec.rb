@@ -21,7 +21,7 @@ require_relative '../../stubs'
 
 describe Turnero do
   before(:each) do
-    ENV['API_FERIADOS_URL'] = 'http://feriados_url.com'
+    ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
   end
 
   let(:logger) do
@@ -47,7 +47,7 @@ describe Turnero do
     described_class.new(repositorio_pacientes,
                         repositorio_especialidades,
                         repositorio_medicos,
-                        ProveedorDeFeriados.new(ENV['API_TURNERO_URL'], logger),
+                        ProveedorDeFeriados.new(ENV['API_FERIADOS_URL'], logger),
                         repositorio_turnos,
                         proveedor_de_fecha,
                         proveedor_de_hora,

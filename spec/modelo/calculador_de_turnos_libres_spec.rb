@@ -8,10 +8,14 @@ require_relative '../../dominio/calculador_de_turnos_libres'
 require_relative '../../persistencia/repositorio_especialidades'
 require_relative '../../persistencia/repositorio_medicos'
 require_relative '../../lib/proveedor_de_fecha'
+require_relative '../stubs'
 
 describe CalculadorDeTurnosLibres do
+  include FeriadosStubs
+
   before(:each) do
-    ENV['API_FERIADOS_URL'] = 'http://feriados_url.com'
+    ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
+    cuando_pido_los_feriados(2025, [])
   end
 
   let(:api_feriados_url) { ENV['API_FERIADOS_URL'] }

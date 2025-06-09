@@ -1,9 +1,12 @@
 require 'integration_helper'
 require_relative '../../lib/proveedor_de_feriados'
+require_relative '../stubs'
 
 describe ProveedorDeFeriados do
+  include FeriadosStubs
+
   before(:each) do
-    ENV['API_FERIADOS_URL'] = 'http://feriados_url.com'
+    ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
   end
 
   let(:api_feriados_url) { ENV['API_FERIADOS_URL'] }
