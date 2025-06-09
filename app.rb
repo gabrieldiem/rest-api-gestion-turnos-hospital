@@ -31,6 +31,7 @@ configure do
   set :logger, api_logger
   set :default_content_type, :json
   set :environment, ENV['APP_MODE'].to_sym
+  set :stage, ENV['STAGE']
   convertidor_de_tiempo_ = ConvertidorDeTiempo.new(FORMATO_FECHA, SEPARADOR_DE_HORA, FORMATO_HORA_OUTPUT)
   api_feriados = ENV['API_FERIADOS_URL']
   set :convertidor_de_tiempo, convertidor_de_tiempo_
@@ -58,6 +59,10 @@ end
 
 def convertidor_de_tiempo
   settings.send(:convertidor_de_tiempo)
+end
+
+def stage
+  settings.send(:stage)
 end
 
 register RoutesSystemControl
