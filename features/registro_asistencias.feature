@@ -19,11 +19,10 @@ Característica: Registrar asistencia de paciente al turno
     Cuando envío los datos de asistencia con DNI "12345678", ID de turno "100" y asistencia "ausente"
     Entonces el estado del turno queda como "ausente"
 
-  @wip
   Escenario: 18.0.3 - Actualizar asistencia existente
     Dado que existe un paciente con DNI "12345678"
-    Y que existe un turno con ID "100" para ese paciente
-    Y ya está registrada la asistencia para este turno como "Presente"
+    Y existe un turno con ID "100" para ese paciente
+    Y ya está registrada la asistencia para este turno como "presente"
     Cuando envío los datos actualizados con DNI "12345678", ID de turno "100" y asistencia "ausente"
     Entonces el estado del turno queda actualizado como "ausente"
   
