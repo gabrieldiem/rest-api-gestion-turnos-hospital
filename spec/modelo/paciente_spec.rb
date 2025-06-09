@@ -136,7 +136,7 @@ describe Paciente do
       end
     end
 
-    xit 'si tengo 2 turnos reservados de ayer, asisito a 1 y falte al otro. La reputacion es 0.5' do
+    it 'si tengo 2 turnos reservados de ayer, asisito a 1 y falte al otro. La reputacion es 0.5' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
 
       (1..2).each do |_i|
