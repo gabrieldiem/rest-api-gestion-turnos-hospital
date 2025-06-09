@@ -2,8 +2,13 @@
 ENV['APP_MODE'] = 'test'
 require 'rack/test'
 require 'rspec/expectations'
+ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
 require_relative '../../app.rb'
 require 'faraday'
+
+require_relative '../../spec/stubs'
+include FeriadosStubs
+World(FeriadosStubs)
 
 DB = Configuration.db
 Sequel.extension :migration
@@ -23,12 +28,10 @@ After do
   RSpec::Mocks.teardown
 end
 
-
 include Rack::Test::Methods
 def app
   Sinatra::Application
 end
-
 
 After do |_scenario|
   Faraday.post('/reset')

@@ -1,5 +1,4 @@
 Before do
-  ENV['API_FERIADOS_URL'] = 'http://feriados_url.com'
   @api_feriado_url = ENV['API_FERIADOS_URL']
   SemanticLogger.default_level = :fatal
   @logger = Configuration.logger
@@ -101,6 +100,7 @@ end
 Dado('que hoy es {string}') do |fecha|
   @fecha_de_hoy = Date.parse(fecha)
   allow(Date).to receive(:today).and_return(@fecha_de_hoy)
+  cuando_pido_los_feriados(2025, [])
 end
 
 def cantidad_turnos_en_un_dia(hora_inicio_jornada, hora_fin_jornada, duracion_turno)
