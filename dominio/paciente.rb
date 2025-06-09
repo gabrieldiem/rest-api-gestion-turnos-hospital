@@ -34,10 +34,10 @@ class Paciente
   def actualizar_reputacion
     @reputacion = 1.0 if @turnos_reservados.empty?
 
-    cantidad_turnos_reservados = @turnos_reservados.count
+    cantidad_turnos_pasados = @turnos_reservados.count { |turno| !turno.reservado? }
     cantidad_turnos_asistidos = @turnos_reservados.count(&:asistio?)
 
-    @reputacion = cantidad_turnos_asistidos.to_f / cantidad_turnos_reservados
+    @reputacion = cantidad_turnos_pasados.zero? ? 1.0 : cantidad_turnos_asistidos.to_f / cantidad_turnos_pasados
   end
 
   def ==(other)
