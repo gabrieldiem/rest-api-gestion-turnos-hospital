@@ -1,3 +1,4 @@
+require 'active_model'
 require_relative '../dominio/turnero'
 require_relative '../dominio/turno'
 require_relative '../dominio/exceptions/turno_no_disponible_exception'
@@ -5,8 +6,11 @@ require_relative '../dominio/exceptions/horario_superpuesto_exception'
 require_relative '../dominio/calculador_de_turnos_libres'
 
 class Medico
+  include ActiveModel::Validations
   attr_reader :nombre, :apellido, :matricula, :especialidad
   attr_accessor :id, :created_on, :updated_on, :turnos_asignados
+
+  validates :especialidad, presence: { message: 'Para crear un médico se requiere una especialidad existente' }
 
   def initialize(nombre, apellido, matricula, especialidad, id = nil)
     @nombre = nombre
@@ -15,6 +19,7 @@ class Medico
     @especialidad = especialidad
     @turnos_asignados = []
     @id = id
+    validate!
   end
 
   def asignar_turno(horario, paciente)

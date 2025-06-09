@@ -15,4 +15,10 @@ describe Medico do
     medico2 = described_class.new('Juan', 'Pérez', 'NAC123', especialidad)
     expect(medico1).to eq(medico2)
   end
+
+  it 'no se puede crear si la especialidad no es válida' do
+    expect  do
+      described_class.new('Juan', 'Pérez', 'NAC123', nil)
+    end.to raise_error(ActiveModel::ValidationError)
+  end
 end
