@@ -30,6 +30,10 @@ class Turno
               end
   end
 
+  def asistio?
+    @estado.is_a?(EstadoTurnoPresente)
+  end
+
   private
 
   def es_fuera_de_horario_de_atencion?(horario)
