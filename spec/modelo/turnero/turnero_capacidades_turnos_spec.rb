@@ -279,5 +279,20 @@ describe Turnero do
       end
         .to raise_error(TurnoInexistenteException)
     end
+
+    xit 'cuando cambio la asistencia que no es del mismo paciente, produce un error' do
+      fecha_de_maniana = fecha_de_hoy + 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+      turno = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+      turno_obtenido = turnero.buscar_turno(turno.id)
+
+      otro_paciente = turnero.crear_paciente('paciente2@test.com', '88888888', 'paciente2_test')
+
+      expect do
+        turnero.cambiar_asistencia_turno(turno_obtenido.id, otro_paciente.dni, true)
+      end
+        .to raise_error(PacienteInvalidoException)
+    end
   end
 end
