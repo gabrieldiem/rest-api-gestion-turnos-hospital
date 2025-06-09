@@ -49,9 +49,19 @@ task cucumber: %i[cucumber_test cucumber_prod] do
   puts 'Completed running both test and prod scenarios'
 end
 
-Cucumber::Rake::Task.new(:acceptance_report) do |task|
-  task.cucumber_opts = ['features', '--publish-quiet', '--tags \'not @wip and not @local\'', '--format pretty',
+task :acceptance_report_prod do
+  puts 'Running production scenarios with STAGE=prod...'
+  system({ 'STAGE' => 'prod' }, 'bundle', 'exec', 'cucumber', 'features', '--publish-quiet', '--tags', 'not @wip and not @local and @emulate_prod',
+         '--format', 'pretty', '--format', 'html', '-o', 'reports/cucumber.html')
+end
+
+Cucumber::Rake::Task.new(:acceptance_report_test) do |task|
+  task.cucumber_opts = ['features', '--publish-quiet', '--tags \'not @wip and not @local and not @emulate_prod\'', '--format pretty',
                         '--format html -o reports/cucumber.html']
+end
+
+task acceptance_report: %i[acceptance_report_test acceptance_report_prod] do
+  puts 'Completed running both test and prod acceptance_report'
 end
 
 require 'rspec/core/rake_task'
