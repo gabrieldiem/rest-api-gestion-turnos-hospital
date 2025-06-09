@@ -85,5 +85,21 @@ describe Turnero do
                             Horario.new(fecha_de_maniana, Hora.new(9, 30)),
                             Horario.new(fecha_de_maniana, Hora.new(10, 0))])
     end
+
+    it 'obtener turnos disponibles de un médico dado que mañana y pasado mañana me da turnos dentro de 3 días' do
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      fecha_de_maniana = fecha_de_hoy + 1
+      fecha_de_pasado_maniana = fecha_de_hoy + 2
+      fecha_dentro_de_3_dias = fecha_de_hoy + 3
+      cuando_pido_los_feriados(fecha_de_hoy.year, [fecha_de_maniana, fecha_de_pasado_maniana])
+
+      turnos = turnero.obtener_turnos_disponibles('NAC456')
+
+      expect(turnos).to eq([Horario.new(fecha_dentro_de_3_dias, Hora.new(8, 0)),
+                            Horario.new(fecha_dentro_de_3_dias, Hora.new(8, 30)),
+                            Horario.new(fecha_dentro_de_3_dias, Hora.new(9, 0)),
+                            Horario.new(fecha_dentro_de_3_dias, Hora.new(9, 30)),
+                            Horario.new(fecha_dentro_de_3_dias, Hora.new(10, 0))])
+    end
   end
 end
