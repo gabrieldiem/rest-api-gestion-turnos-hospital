@@ -75,6 +75,15 @@ Cuando('envío los datos de asistencia con DNI {string}, ID de turno {string} y 
   @parsed_response = JSON.parse(@response.body, symbolize_names: true)
 end
 
+Cuando('envío los datos actualizados con DNI {string}, ID de turno {string} y asistencia {string}') do |dni, _id_turno, asistencia|
+  body = {
+    dni_paciente: dni,
+    asistio: asistencia != 'ausente'
+  }
+  @response = Faraday.put("/turnos/#{@id_turno}", body.to_json, { 'Content-Type' => 'application/json' })
+  @parsed_response = JSON.parse(@response.body, symbolize_names: true)
+end
+
 Entonces('el estado del turno queda como {string}') do |estado|
   response = Faraday.get("/turnos/#{@id_turno}")
   @parsed_response = JSON.parse(response.body, symbolize_names: true)
@@ -83,14 +92,21 @@ Entonces('el estado del turno queda como {string}') do |estado|
 end
 
 Dado('ya está registrada la asistencia para este turno como {string}') do |estado|
-  response = Faraday.get("/turnos/#{@id_turno}")
-  expect(response.status).to eq(200)
-  expect(response.body).to include(estado)
+  body = {
+    dni_paciente: @dni,
+    asistio: estado != 'ausente'
+  }
+  @response = Faraday.put("/turnos/#{@id_turno}", body.to_json, { 'Content-Type' => 'application/json' })
+  @parsed_response = JSON.parse(@response.body, symbolize_names: true)
+  expect(@response.status).to eq(200)
+  expect(@parsed_response[:estado]).to eq(estado)
 end
 
 Entonces('el estado del turno queda actualizado como {string}') do |estado|
+  @response = Faraday.get("/turnos/#{@id_turno}")
+  @parsed_response = JSON.parse(@response.body, symbolize_names: true)
   expect(@response.status).to eq(200)
-  expect(@parsed_response[:asistencia]).to eq(estado)
+  expect(@parsed_response[:estado]).to include(estado)
 end
 
 Dado('que no existe un paciente con DNI {string}') do |_string|
