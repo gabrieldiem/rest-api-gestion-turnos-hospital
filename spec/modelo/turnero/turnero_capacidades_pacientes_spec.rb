@@ -58,7 +58,7 @@ describe Turnero do
     it 'crea un paciente nuevo valido' do
       paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
 
-      expect(paciente).to have_attributes(email: 'juan.perez@example.com', dni: '12345678', username: 'juanperez')
+      expect(paciente).to have_attributes(email: 'juan.perez@example.com', dni: '12345678', username: 'juanperez', reputacion: 1.0)
     end
 
     it 'crea un paciente nuevo y lo guarda en el repositorio' do
@@ -66,7 +66,7 @@ describe Turnero do
 
       paciente_guardado = repositorio_pacientes.all.first
       expect(repositorio_pacientes.all.size).to eq(1)
-      expect(paciente_guardado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
+      expect(paciente_guardado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username, reputacion: paciente.reputacion)
     end
 
     it 'no se puede crear un paciente con DNI repetido' do
@@ -111,7 +111,7 @@ describe Turnero do
     it 'se obtiene un paciente por username' do
       paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
       paciente_encontrado = turnero.buscar_paciente_por_username('juanperez')
-      expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
+      expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username, reputacion: paciente.reputacion)
     end
 
     it 'no se encuentra un paciente por username inexistente' do
@@ -129,7 +129,7 @@ describe Turnero do
     it 'se obtiene un paciente por dni' do
       paciente = turnero.crear_paciente('juan.perez@example.com', '12345678', 'juanperez')
       paciente_encontrado = turnero.buscar_paciente_por_dni('12345678')
-      expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username)
+      expect(paciente_encontrado).to have_attributes(email: paciente.email, dni: paciente.dni, username: paciente.username, reputacion: paciente.reputacion)
     end
 
     it 'no se encuentra un paciente por dni inexistente' do
