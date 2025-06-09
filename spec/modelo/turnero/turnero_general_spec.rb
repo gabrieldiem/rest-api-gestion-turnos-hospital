@@ -96,5 +96,18 @@ describe Turnero do
       expect(repositorio_turnos.all.size).to eq(1)
       expect(repositorio_medicos.all.size).to eq(1)
     end
+
+    it 'sin habilitacion no se eliminan los datos de pacientes ni especialidades' do
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      turnero.crear_paciente('juan@mail.com', '123456', 'juanjuan')
+      habilitado = false
+
+      expect do
+        turnero.borrar_todos_los_datos(habilitado)
+      end.to raise_error(AccionProhibidaException)
+
+      expect(repositorio_pacientes.all.size).to eq(1)
+      expect(repositorio_especialidades.all.size).to eq(1)
+    end
   end
 end
