@@ -151,6 +151,40 @@ describe Paciente do
       expect(paciente.reputacion).to eq(0.5)
     end
 
+    it 'si tengo 4 turnos reservados de ayer, asisto a 1 y falto a 3. La reputacion es 0.25' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+
+      (1..4).each do |_i|
+        turno = Turno.new(paciente, nil, Horario.new(Date.today + 1, Hora.new(10, 0)))
+        paciente.turnos_reservados << turno
+      end
+
+      paciente.turnos_reservados[0].cambiar_asistencia(true)
+      paciente.turnos_reservados[1].cambiar_asistencia(false)
+      paciente.turnos_reservados[2].cambiar_asistencia(false)
+      paciente.turnos_reservados[3].cambiar_asistencia(false)
+      paciente.actualizar_reputacion
+
+      expect(paciente.reputacion).to eq(0.25)
+    end
+
+    it 'si tengo 4 turnos reservados de ayer, asisto a 3 y falto a 1. La reputacion es 0.75' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+
+      (1..4).each do |_i|
+        turno = Turno.new(paciente, nil, Horario.new(Date.today + 1, Hora.new(10, 0)))
+        paciente.turnos_reservados << turno
+      end
+
+      paciente.turnos_reservados[0].cambiar_asistencia(true)
+      paciente.turnos_reservados[1].cambiar_asistencia(true)
+      paciente.turnos_reservados[2].cambiar_asistencia(true)
+      paciente.turnos_reservados[3].cambiar_asistencia(false)
+      paciente.actualizar_reputacion
+
+      expect(paciente.reputacion).to eq(0.75)
+    end
+
     it 'la reputación mantiene en 1 cuando asiste a todos los turnos' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
       expect(paciente.reputacion).to eq(1.0)
@@ -162,6 +196,62 @@ describe Paciente do
         paciente.turnos_reservados << turno
         paciente.actualizar_reputacion
         expect(paciente.reputacion).to eq(1.0)
+      end
+    end
+
+    it 'la reputación mantiene en 1 cuando asiste a todos los turnos y tiene turnos reservados' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      expect(paciente.reputacion).to eq(1.0)
+
+      # creo 5 turnos reservados reservados
+      cantidad_turnos_reservados = 10
+      (1..cantidad_turnos_reservados).each do |_i|
+        turno = Turno.new(paciente, nil, Horario.new(Date.today, Hora.new(10, 0)))
+        paciente.turnos_reservados << turno
+        paciente.actualizar_reputacion
+        expect(paciente.reputacion).to eq(1.0)
+      end
+
+      # asisto a los primeros 5 turnos reservados y mantengo la reputación en 1
+      paciente.turnos_reservados.first(5).each do |turno|
+        turno.cambiar_asistencia(true)
+        paciente.actualizar_reputacion
+        expect(paciente.reputacion).to eq(1.0)
+      end
+    end
+
+    it 'la reputación es 0 cuando no asiste a ningun turno' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      expect(paciente.reputacion).to eq(1.0)
+
+      cantidad_turnos_ausentes = 10
+      (1..cantidad_turnos_ausentes).each do |_i|
+        turno = Turno.new(paciente, nil, Horario.new(Date.today, Hora.new(10, 0)))
+        turno.cambiar_asistencia(false)
+        paciente.turnos_reservados << turno
+        paciente.actualizar_reputacion
+        expect(paciente.reputacion).to eq(0.0)
+      end
+    end
+
+    it 'la reputación mantiene en 0 cuando falta a algunos turnos y los demas son reservados' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      expect(paciente.reputacion).to eq(1.0)
+
+      # creo 5 turnos reservados reservados
+      cantidad_turnos_reservados = 10
+      (1..cantidad_turnos_reservados).each do |_i|
+        turno = Turno.new(paciente, nil, Horario.new(Date.today, Hora.new(10, 0)))
+        paciente.turnos_reservados << turno
+        paciente.actualizar_reputacion
+        expect(paciente.reputacion).to eq(1.0)
+      end
+
+      # asisto a los primeros 5 turnos reservados y mantengo la reputación en 1
+      paciente.turnos_reservados.first(5).each do |turno|
+        turno.cambiar_asistencia(false)
+        paciente.actualizar_reputacion
+        expect(paciente.reputacion).to eq(0.0)
       end
     end
   end
