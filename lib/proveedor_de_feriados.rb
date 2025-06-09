@@ -10,6 +10,8 @@ class ProveedorDeFeriados
   def obtener_feriados(anio)
     final_url = "#{@api_feriados_url}/#{anio}"
     response = ejecutar_request_para_obtener_feriados(final_url)
+    # require 'debug'
+    # debugger
 
     case response.status
     when 200
