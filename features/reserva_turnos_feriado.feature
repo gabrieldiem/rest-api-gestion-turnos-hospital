@@ -17,7 +17,6 @@ Característica: No se puede hacer reserva de turnos en días feriados
     Entonces recibo los próximos 5 turnos disponibles
     Y son del "03/04/2025" a las "8:00" en adelante
 
-  @wip @indev
   Escenario: 5.2.2 - Se muestran turnos disponibles para día hábil consultando desde un día feriado
     Dado que hoy es "02/04/2025" y es feriado
     Y que el médico con matrícula "NAC123" no tiene turnos reservados el "03/04/2025"
