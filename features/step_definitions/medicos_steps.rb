@@ -35,3 +35,16 @@ Entonces('el médico se registra exitosamente') do
   expect(parsed_response['id']).not_to be_nil
   expect(parsed_response['created_on']).not_to be_nil
 end
+
+Dado('que ingreso el nombre {string}, apellido {string}, matrícula {string} y especialidad inexistente {string} para el médico') do |nombre, apellido, matricula, especialidad|
+  @request_body = {
+    nombre:,
+    apellido:,
+    matricula:,
+    especialidad:
+  }
+end
+
+Entonces('recibo una respuesta de error de creación de médico') do
+  pending # Write code here that turns the phrase above into concrete actions
+end
