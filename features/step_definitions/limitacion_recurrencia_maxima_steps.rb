@@ -5,10 +5,10 @@ end
 def crear_medico(especialidad, matricula)
   codigo_especialidad = especialidad.downcase[0..3]
   body = {
-  nombre: 'Julian',
-  apellido: 'Alvarez',
-  matricula:,
-  especialidad: codigo_especialidad
+    nombre: 'Julian',
+    apellido: 'Alvarez',
+    matricula:,
+    especialidad: codigo_especialidad
   }
   Faraday.post('/medicos', body.to_json, { 'Content-Type' => 'application/json' })
   matricula
