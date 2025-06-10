@@ -1,21 +1,17 @@
+Before do
+  @fecha_de_maniana = Date.today + 1
+end
+
 def crear_medico(especialidad, matricula)
   codigo_especialidad = especialidad.downcase[0..3]
   body = {
-    nombre: 'Julian',
-    apellido: 'Alvarez',
-    matricula:,
-    especialidad: codigo_especialidad
+  nombre: 'Julian',
+  apellido: 'Alvarez',
+  matricula:,
+  especialidad: codigo_especialidad
   }
   Faraday.post('/medicos', body.to_json, { 'Content-Type' => 'application/json' })
   matricula
-end
-
-Before do
-  @fecha_de_maniana = Date.today + 1
-  RepositorioTurnos.new(Configuration.logger).delete_all
-  RepositorioPacientes.new(Configuration.logger).delete_all
-  RepositorioMedicos.new(Configuration.logger).delete_all
-  RepositorioEspecialidades.new(Configuration.logger).delete_all
 end
 
 Dado('que el paciente con DNI {string} esta registrado en el sistema') do |dni_paciente|
