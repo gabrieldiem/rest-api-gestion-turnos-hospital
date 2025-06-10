@@ -304,7 +304,7 @@ describe Turnero do
       end
     end
 
-    xit 'asignar un turno que no es un horario valido (multiplo en minutos la duracion) lanza un error TurnoInvalidoException' do
+    it 'asignar un turno que no es un horario valido (multiplo en minutos la duracion) lanza un error TurnoInvalidoException' do
       especialidad_pediatra = turnero.crear_especialidad('Pediatra', 22, 1, 'pedi')
       turnero.crear_medico('Pablo', 'Pediatra', 'NAC000', especialidad_pediatra.codigo)
 
