@@ -327,5 +327,37 @@ describe Turnero do
 
       expect(paciente_actualizado.reputacion).to be > paciente.reputacion
     end
+
+    xit 'cuando reservo un turno con un paciente que no alcanzo la recurrencia maxima, el turnero me deja' do
+      especialidad_cirujano = turnero.crear_especialidad('Cirujano', 60, 3, 'ciru')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+      fecha_de_maniana = fecha_de_hoy + 1
+      dni = '999999999'
+      turnero.crear_paciente('carlosbianchi@mail.com', dni, 'carlosbianchi')
+      2.times do |i|
+        hora = "#{8 + i}:00"
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, hora, dni)
+      end
+      turno = turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '12:00', dni)
+      expect(turno).to have_attributes(medico: have_attributes(matricula: 'NAC456'),
+                                       paciente: have_attributes(dni:),
+                                       horario: have_attributes(fecha: fecha_de_maniana, hora: have_attributes(hora: 12, minutos: 0)))
+    end
+
+    xit 'cuando reservo un turno con un paciente que tiene el limite de recurrencia de turnos, produce un error' do
+      especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 3, 'ciru')
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+      fecha_de_maniana = fecha_de_hoy + 1
+      dni = '999999999'
+      turnero.crear_paciente('carlosbianchi@mail.com', dni, 'carlosbianchi')
+      3.times do |i|
+        hora = "#{8 + i}:00"
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, hora, dni)
+      end
+      expect do
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '11:00', dni)
+      end
+        .to raise_error(RecurrenciaMaximaException)
+    end
   end
 end

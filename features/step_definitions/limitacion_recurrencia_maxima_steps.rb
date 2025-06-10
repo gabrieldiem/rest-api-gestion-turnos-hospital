@@ -101,6 +101,8 @@ Cuando('el paciente solicita un turno adicional para la especialidad {string}') 
   allow(Date).to receive(:today).and_return(@fecha_de_hoy)
 end
 
-Entonces('el sistema rechaza el pedido con el mensaje {string}') do |_string|
-  pending # Write code here that turns the phrase above into concrete actions
+Entonces('el sistema rechaza el pedido con el mensaje {string}') do |mensaje|
+  expect(@response_reserva_turno.status).to eq(400)
+  response_body = JSON.parse(@response_reserva_turno.body, symbolize_names: true)
+  expect(response_body[:mensaje_error]).to eq(mensaje)
 end

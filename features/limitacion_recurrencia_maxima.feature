@@ -15,7 +15,7 @@ Característica: Limitar la asignación de turnos según la recurrencia máxima
     Entonces el sistema asigna el turno exitosamente
 
   Escenario: 19.2 Asignar un turno cuando el paciente no tiene turnos de una especialidad específica
-    Dado el paciente con DNI "23555102" tiene 1 turno asignado para la especialidad "Dermatología"
+    Dado el paciente con DNI "23555102" tiene 1 turnos asignados para la especialidad "Dermatología"
     Cuando el paciente solicita un turno para la especialidad "Cardiología"
     Entonces el sistema asigna el turno exitosamente
   
