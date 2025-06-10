@@ -30,10 +30,12 @@ describe Turnero do
     Configuration.logger
   end
   let(:repositorio_especialidades) { RepositorioEspecialidades.new(logger) }
-  let(:repositorios) { RepositoriosTurnero.new(RepositorioPacientes.new(logger),
-                                               repositorio_especialidades,
-                                               RepositorioMedicos.new(logger),
-                                               RepositorioTurnos.new(logger)) }
+  let(:repositorios) do
+    RepositoriosTurnero.new(RepositorioPacientes.new(logger),
+                            repositorio_especialidades,
+                            RepositorioMedicos.new(logger),
+                            RepositorioTurnos.new(logger))
+  end
   let(:fecha_de_hoy) { Date.new(2025, 6, 10) }
   let(:proveedor_de_fecha) do
     proveedor_double = class_double(Date, today: fecha_de_hoy)

@@ -27,9 +27,6 @@ describe Turnero do
     SemanticLogger.default_level = :fatal
     Configuration.logger
   end
-  let(:repositorio_turnos) { RepositorioTurnos.new(logger) }
-  let(:repositorio_especialidades) { RepositorioEspecialidades.new(logger) }
-  let(:repositorio_medicos) { RepositorioMedicos.new(logger) }
   let(:repositorio_pacientes) { RepositorioPacientes.new(logger) }
   let(:fecha_de_hoy) { Date.new(2025, 6, 10) }
   let(:proveedor_de_fecha) do
@@ -41,12 +38,15 @@ describe Turnero do
     proveedor_double = class_double(Time, now: hora_actual)
     ProveedorDeHora.new(proveedor_double)
   end
+  let(:repositorios) do
+    RepositoriosTurnero.new(repositorio_pacientes,
+                            RepositorioEspecialidades.new(logger),
+                            RepositorioMedicos.new(logger),
+                            RepositorioTurnos.new(logger))
+  end
   let(:turnero) do
     convertidor_de_tiempo = ConvertidorDeTiempo.new('%Y-%m-%d', ':', '%-H:%M')
-    described_class.new(repositorio_pacientes,
-                        repositorio_especialidades,
-                        repositorio_medicos,
-                        repositorio_turnos,
+    described_class.new(repositorios,
                         ProveedorDeFeriados.new(ENV['API_FERIADOS_URL'], logger),
                         proveedor_de_fecha,
                         proveedor_de_hora,
