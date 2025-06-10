@@ -1,12 +1,5 @@
 Before do
-  SemanticLogger.default_level = :fatal
-  @logger = Configuration.logger
   @repo_turnos = RepositorioTurnos.new(@logger)
-
-  @repo_turnos.delete_all
-  RepositorioMedicos.new(@logger).delete_all
-  RepositorioPacientes.new(@logger).delete_all
-  RepositorioEspecialidades.new(@logger).delete_all
 end
 
 def cargar_asistencias(turno_ids, cant_asistidos, cant_ausentes)
