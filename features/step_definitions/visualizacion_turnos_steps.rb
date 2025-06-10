@@ -1,13 +1,3 @@
-Before do
-  SemanticLogger.default_level = :fatal
-  @logger = Configuration.logger
-
-  RepositorioTurnos.new(@logger).delete_all
-  RepositorioMedicos.new(@logger).delete_all
-  RepositorioPacientes.new(@logger).delete_all
-  RepositorioEspecialidades.new(@logger).delete_all
-end
-
 Dado('que soy un paciente registrado con el username {string}') do |username|
   @username_registrado = username
   @dni_registrado = '44765456'
