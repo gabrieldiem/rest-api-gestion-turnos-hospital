@@ -27,6 +27,9 @@ World(RSpec::Mocks::ExampleMethods)
 
 Before do
   RSpec::Mocks.setup
+  SemanticLogger.default_level = :fatal
+  @logger = Configuration.logger
+  @api_feriado_url = ENV['API_FERIADOS_URL']
 end
 
 After do

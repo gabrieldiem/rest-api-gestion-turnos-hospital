@@ -1,14 +1,3 @@
-Before do
-  @api_feriado_url = ENV['API_FERIADOS_URL']
-  SemanticLogger.default_level = :fatal
-  @logger = Configuration.logger
-
-  RepositorioTurnos.new(@logger).delete_all
-  RepositorioMedicos.new(@logger).delete_all
-  RepositorioPacientes.new(@logger).delete_all
-  RepositorioEspecialidades.new(@logger).delete_all
-end
-
 Dado('que esta registrado el username {string} y DNI {string}') do |username, dni|
   @username_registrado = username
   @dni_registrado = dni
