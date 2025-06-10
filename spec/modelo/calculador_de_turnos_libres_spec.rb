@@ -176,4 +176,13 @@ describe CalculadorDeTurnosLibres do
     duracion_turno = medico.especialidad.duracion
     expect(calculador_de_turnos_libres.es_hora_un_slot_valido(duracion_turno, hora_a_chequear)).to be false
   end
+
+  it 'un horario es valido cuando es múltiplo de la duración' do
+    hora_a_chequear = Hora.new(8, 30)
+
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                                      proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
+    duracion_turno = medico.especialidad.duracion
+    expect(calculador_de_turnos_libres.es_hora_un_slot_valido(duracion_turno, hora_a_chequear)).to be true
+  end
 end
