@@ -24,7 +24,7 @@ Característica: Limitar la asignación de turnos según la recurrencia máxima
     Y que "Cardiología" tiene una recurrencia máxima de 3 turnos
     Cuando el paciente solicita un turno adicional para la especialidad "Cardiología"
     Entonces el sistema asigna el turno exitosamente
-  @wip
+  
   Escenario: 19.4 Rechazar un turno cuando el paciente excede la recurrencia máxima para la especialidad
     Dado el paciente con DNI "23555102" tiene 3 turnos asignados para la especialidad "Cardiología"
     Y que "Cardiología" tiene una recurrencia máxima de 3 turnos
