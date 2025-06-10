@@ -1,10 +1,3 @@
-Before do
-  SemanticLogger.default_level = :fatal
-  @logger = Configuration.logger
-  RepositorioTurnos.new(@logger).delete_all
-  RepositorioPacientes.new(@logger).delete_all
-end
-
 Dado('que mi username es {string}') do |username|
   @username = username
 end
