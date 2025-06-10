@@ -1,14 +1,7 @@
 require 'date'
 
 Before do
-  SemanticLogger.default_level = :fatal
-  @logger = Configuration.logger
   @convertidor_de_tiempo = ConvertidorDeTiempo.new('%Y-%m-%d', ':', '%-H:%M')
-
-  RepositorioTurnos.new(@logger).delete_all
-  RepositorioMedicos.new(@logger).delete_all
-  RepositorioPacientes.new(@logger).delete_all
-  RepositorioEspecialidades.new(@logger).delete_all
 end
 
 Dado('que existe un doctor de nombre {string} y apellido {string} registrado con matrícula {string}') do |nombre, apellido, matricula|

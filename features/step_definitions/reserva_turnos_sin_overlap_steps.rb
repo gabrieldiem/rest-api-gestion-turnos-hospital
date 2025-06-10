@@ -1,15 +1,5 @@
 require 'date'
 
-Before do
-  SemanticLogger.default_level = :fatal
-  @logger = Configuration.logger
-
-  RepositorioTurnos.new(@logger).delete_all
-  RepositorioMedicos.new(@logger).delete_all
-  RepositorioPacientes.new(@logger).delete_all
-  RepositorioEspecialidades.new(@logger).delete_all
-end
-
 Dado('que existe la especialidad {string} con código {string} y tiempo de una consulta de {string} minutos') do |nombre_especialidad, codigo_especialidad, duracion_turno|
   especialidad_body = { nombre: nombre_especialidad, duracion: duracion_turno, recurrencia_maxima: 5, codigo: codigo_especialidad }
   response = Faraday.post('/especialidades', especialidad_body.to_json, { 'Content-Type' => 'application/json' })

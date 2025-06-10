@@ -1,13 +1,3 @@
-Before do
-  SemanticLogger.default_level = :fatal
-  @logger = Configuration.logger
-
-  RepositorioTurnos.new(@logger).delete_all
-  RepositorioMedicos.new(@logger).delete_all
-  RepositorioPacientes.new(@logger).delete_all
-  RepositorioEspecialidades.new(@logger).delete_all
-end
-
 Dado('que el día {string} es feriado') do |fecha|
   @fechas_feriado = [Date.parse(fecha)]
   cuando_pido_los_feriados(@fechas_feriado.first.year, @fechas_feriado)
