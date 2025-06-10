@@ -253,7 +253,7 @@ describe Turnero do
       expect(turno_actualizado.estado.descripcion).to eq('presente')
     end
 
-    xit 'cuando falto a un turno luego de asistir a otro, la reputacion del paciente baja a 0.5 y el estado es ausente' do
+    it 'cuando falto a un turno luego de asistir a otro, la reputacion del paciente baja a 0.5 y el estado es ausente' do
       fecha_de_maniana = fecha_de_hoy + 1
       medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
       paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
@@ -265,6 +265,78 @@ describe Turnero do
       paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
       expect(paciente_actualizado.reputacion).to eq(0.5)
       expect(turno_actualizado.estado.descripcion).to eq('ausente')
+    end
+
+    it 'cuando asisto a 2 turnos, pero falto a uno, la reputacion del paciente baja a 0.66 y el estado es ausente' do
+      fecha_de_maniana = fecha_de_hoy + 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+
+      # Asigno y asisto a dos turnos
+      turno1 = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+      turno2 = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:30', paciente.dni)
+      turnero.cambiar_asistencia_turno(turno1.id, paciente.dni, true)
+      turnero.cambiar_asistencia_turno(turno2.id, paciente.dni, true)
+
+      # Asigno y falto a un tercer turno
+      turno3 = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:00', paciente.dni)
+      turno_actualizado = turnero.cambiar_asistencia_turno(turno3.id, paciente.dni, false)
+
+      paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+      expect(paciente_actualizado.reputacion).to eq(0.66)
+      expect(turno_actualizado.estado.descripcion).to eq('ausente')
+    end
+
+    it 'cuando reservo 3 turnos, pero solo asisto a 1, mi reputacion es 0.33 y el estado es presente o ausente según corresponda' do
+      fecha_de_maniana = fecha_de_hoy + 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+
+      # Asigno tres turnos
+      turno1 = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+      turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:30', paciente.dni)
+      turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:00', paciente.dni)
+
+      # Solo asisto al primero
+      turnero.cambiar_asistencia_turno(turno1.id, paciente.dni, true)
+
+      paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+      expect(paciente_actualizado.reputacion).to eq(1)
+    end
+
+    it 'cuando reservo 3 turnos, y no asisto al primero, mi reputacion va a ser 0' do
+      fecha_de_maniana = fecha_de_hoy + 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+
+      # Asigno tres turnos
+      turno1 = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+      turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:30', paciente.dni)
+      turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:00', paciente.dni)
+
+      # Solo asisto al primero
+      turnero.cambiar_asistencia_turno(turno1.id, paciente.dni, false)
+
+      paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+      expect(paciente_actualizado.reputacion).to eq(0)
+    end
+
+    it 'cuando reservo 3 turnos, y no asisto al primero, pero si al segundo, mi reputacion es 0.5' do
+      fecha_de_maniana = fecha_de_hoy + 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+
+      # Asigno tres turnos
+      turno1 = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+      turno2 = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:30', paciente.dni)
+      turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:00', paciente.dni)
+
+      # Solo asisto al primero
+      turnero.cambiar_asistencia_turno(turno1.id, paciente.dni, false)
+      turnero.cambiar_asistencia_turno(turno2.id, paciente.dni, true)
+
+      paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+      expect(paciente_actualizado.reputacion).to eq(0.5)
     end
 
     it 'obtener un turno por id' do
