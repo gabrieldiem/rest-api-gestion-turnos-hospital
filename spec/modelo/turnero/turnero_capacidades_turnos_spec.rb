@@ -392,6 +392,51 @@ describe Turnero do
       end
     end
 
+    describe 'permitir o rechazar reservas de turnos dependiendo de su reputacion' do
+      xit 'cuando la reputacion del paciente es mayor a 0.8, se le permite reservar hasta N = "recurrencia maxima de la especialidad" de turnos' do
+        fecha_de_maniana = fecha_de_hoy + 1
+        especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+        medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+        paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+        turno = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+        # el paciente asiste al turno
+        turnero.cambiar_asistencia_turno(turno.id, paciente.dni, true)
+
+        paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+        expect(paciente_actualizado.reputacion).to eq(1.0)
+
+        turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:30', paciente.dni)
+
+        expect do
+          turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:00', paciente.dni)
+        end.not_to raise_error(TurnoRechazadoException)
+      end
+
+      xit 'cuando la reputacion del paciente es menor a 0.8, el paciente solo puede reservar hasta 1 turno por especialidad' do
+        fecha_de_maniana = fecha_de_hoy + 1
+        especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+        medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+        paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
+        turno = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+        turno2 = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:30', paciente.dni)
+
+        # el paciente asiste al primer turno
+        turnero.cambiar_asistencia_turno(turno.id, paciente.dni, true)
+        # el paciente no asiste al segundo turno
+        turnero.cambiar_asistencia_turno(turno2.id, paciente.dni, false)
+
+        paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
+        expect(paciente_actualizado.reputacion).to eq(0.5)
+
+        # El paciente solo podrá reservar un turno más
+        turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:00', paciente.dni)
+
+        expect do
+          turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:30', paciente.dni)
+        end.to raise_error(TurnoRechazadoException)
+      end
+    end
+
     describe 'recurrencia maxima por turnos' do
       xit 'cuando reservo un turno con un paciente que no alcanzo la recurrencia maxima, el turnero me deja' do
         especialidad_cirujano = turnero.crear_especialidad('Cirujano', 60, 3, 'ciru')
