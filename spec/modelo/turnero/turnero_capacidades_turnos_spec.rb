@@ -169,15 +169,15 @@ describe Turnero do
                                                 horario: have_attributes(fecha: fecha_de_maniana, hora: have_attributes(hora: 8, minutos: 0)))
     end
 
-    xit 'asignar un turno despues de las 18 produce un error FueraDeHorarioException' do
-      especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 1, 'ciru')
-      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+    it 'asignar un turno despues de las 18 produce un error FueraDeHorarioException' do
+      especialidad_pediatra = turnero.crear_especialidad('Pediatra', 20, 1, 'pedi')
+      turnero.crear_medico('Pablo', 'Pediatra', 'NAC000', especialidad_pediatra.codigo)
 
       dni = '999999999'
       turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
       fecha_de_maniana = fecha_de_hoy + 1
       expect do
-        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '18:30', dni)
+        turnero.asignar_turno('NAC000', fecha_de_maniana.to_s, '18:20', dni)
       end
         .to raise_error(FueraDeHorarioException)
     end
