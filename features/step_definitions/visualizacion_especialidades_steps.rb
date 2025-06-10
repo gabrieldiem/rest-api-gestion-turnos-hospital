@@ -1,11 +1,3 @@
-Before do
-  SemanticLogger.default_level = :fatal
-  @logger = Configuration.logger
-  RepositorioTurnos.new(@logger).delete_all
-  RepositorioPacientes.new(@logger).delete_all
-  RepositorioEspecialidades.new(@logger).delete_all
-end
-
 Dado('que existe la especialidad {string} con código {string}, duración de turno de {string} minutos y recurrencia máxima de {string} turnos') do |nombre, codigo, duracion, recurrencia|
   @duracion = duracion
   request_body_json = {

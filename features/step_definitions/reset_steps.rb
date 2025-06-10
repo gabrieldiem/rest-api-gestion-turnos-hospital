@@ -1,8 +1,3 @@
-Before do
-  SemanticLogger.default_level = :fatal
-  @logger = Configuration.logger
-end
-
 Dado('que hay {int} médico y un {int} especialidad') do |cantidad_medicos, cantidad_especialidades|
   @cantidad_medicos = cantidad_medicos
   @cantidad_especialidades = cantidad_especialidades
