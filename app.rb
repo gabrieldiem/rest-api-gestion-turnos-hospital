@@ -35,10 +35,11 @@ configure do
   convertidor_de_tiempo_ = ConvertidorDeTiempo.new(FORMATO_FECHA, SEPARADOR_DE_HORA, FORMATO_HORA_OUTPUT)
   api_feriados = ENV['API_FERIADOS_URL']
   set :convertidor_de_tiempo, convertidor_de_tiempo_
-  set :turnero, Turnero.new(RepositorioPacientes.new(api_logger),
-                            RepositorioEspecialidades.new(api_logger),
-                            RepositorioMedicos.new(api_logger),
-                            RepositorioTurnos.new(api_logger),
+  repositorios = RepositoriosTurnero.new(RepositorioPacientes.new(api_logger),
+                                         RepositorioEspecialidades.new(api_logger),
+                                         RepositorioMedicos.new(api_logger),
+                                         RepositorioTurnos.new(api_logger))
+  set :turnero, Turnero.new(repositorios,
                             ProveedorDeFeriados.new(api_feriados, api_logger),
                             ProveedorDeFecha.new,
                             ProveedorDeHora.new,

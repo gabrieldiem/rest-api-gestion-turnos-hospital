@@ -5,18 +5,15 @@ class Turnero
   HORA_DE_COMIENZO_DE_JORNADA = Hora.new(8, 0)
   HORA_DE_FIN_DE_JORNADA = Hora.new(18, 0)
 
-  def initialize(repositorio_pacientes,
-                 repositorio_especialidades,
-                 repositorio_medicos,
-                 repositorio_turnos,
+  def initialize(repositorios,
                  proveedor_de_feriados,
                  proveedor_de_fecha,
                  proveedor_de_hora,
                  convertidor_de_tiempo)
-    @repositorio_pacientes = repositorio_pacientes
-    @repositorio_especialidades = repositorio_especialidades
-    @repositorio_medicos = repositorio_medicos
-    @repositorio_turnos = repositorio_turnos
+    @repositorio_pacientes = repositorios.repositorio_pacientes
+    @repositorio_especialidades = repositorios.repositorio_especialidades
+    @repositorio_medicos = repositorios.repositorio_medicos
+    @repositorio_turnos = repositorios.repositorio_turnos
     @proveedor_de_feriados = proveedor_de_feriados
     @proveedor_de_fecha = proveedor_de_fecha
     @proveedor_de_hora = proveedor_de_hora

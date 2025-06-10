@@ -131,11 +131,11 @@ end
 
 Dado('el médico con matrícula {string} no tiene turnos disponibles en los próximos {int} días') do |matricula, dias|
   convertidor_de_tiempo = ConvertidorDeTiempo.new('%Y-%m-%d', ':', '%-H:%M')
-
-  turnero = Turnero.new(RepositorioPacientes.new(@logger),
-                        RepositorioEspecialidades.new(@logger),
-                        RepositorioMedicos.new(@logger),
-                        RepositorioTurnos.new(@logger),
+  repositorios = RepositoriosTurnero.new(RepositorioPacientes.new(@logger),
+                                         RepositorioEspecialidades.new(@logger),
+                                         RepositorioMedicos.new(@logger),
+                                         RepositorioTurnos.new(@logger))
+  turnero = Turnero.new(repositorios,
                         ProveedorDeFeriados.new(@api_feriado_url, @logger),
                         ProveedorDeFecha.new,
                         ProveedorDeHora.new,
