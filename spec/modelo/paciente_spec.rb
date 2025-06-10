@@ -116,6 +116,43 @@ describe Paciente do
     end
   end
 
+  describe '- recurrencia de especialidad -' do
+    xit 'no tiene recurrencia cuando no tiene turnos reservados' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      expect(paciente.obtener_cantidad_de_turnos_reservados_por_especialidad(especialidad)).to eq(0)
+    end
+
+    xit 'tiene recurrencia cuando tiene turnos reservados' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      (1..2).each do |_i|
+        turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+        paciente.turnos_reservados << turno
+      end
+      expect(paciente.obtener_cantidad_de_turnos_reservados_por_especialidad(especialidad)).to eq(2)
+    end
+
+    xit 'tiene recurrencia cuando tiene turnos reservados de distintas especialidades' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+
+      (1..2).each do |_i|
+        turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+        paciente.turnos_reservados << turno
+      end
+
+      otra_especialidad = Especialidad.new('Oftalmología', 30, 5, 'ofta')
+      repositorio_especialidades.save(otra_especialidad)
+      otro_medico = Medico.new('Ana', 'Gomez', 'NAC456', otra_especialidad)
+      (1..3).each do |_i|
+        turno = Turno.new(paciente, otro_medico, Horario.new(Date.today + 2, Hora.new(11, 0)))
+        paciente.turnos_reservados << turno
+      end
+      expect(paciente.obtener_cantidad_de_turnos_reservados_por_especialidad(especialidad)).to eq(2)
+      expect(paciente.obtener_cantidad_de_turnos_reservados_por_especialidad(otra_especialidad)).to eq(3)
+    end
+  end
+
   describe '- actualizar reputación -' do
     it 'actualiza la reputación a 1.0 cuando no tiene turnos reservados' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
