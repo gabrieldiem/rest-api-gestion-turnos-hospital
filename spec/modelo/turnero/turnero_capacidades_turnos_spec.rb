@@ -12,6 +12,7 @@ require_relative '../../../dominio/exceptions/turno_no_disponible_exception'
 require_relative '../../../dominio/exceptions/sin_turnos_exception'
 require_relative '../../../dominio/exceptions/turno_inexistente_exception'
 require_relative '../../../dominio/exceptions/paciente_invalido_exception'
+require_relative '../../../dominio/exceptions/recurrencia_maxima_alcanzada_exception'
 require_relative '../../../persistencia/repositorio_pacientes'
 require_relative '../../../persistencia/repositorio_especialidades'
 require_relative '../../../persistencia/repositorio_medicos'
@@ -284,7 +285,7 @@ describe Turnero do
         turno_actualizado = turnero.cambiar_asistencia_turno(turno3.id, paciente.dni, false)
 
         paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
-        expect(paciente_actualizado.reputacion).to eq(0.66)
+        expect(paciente_actualizado.reputacion.truncate(2)).to eq(0.66)
         expect(turno_actualizado.estado.descripcion).to eq('ausente')
       end
 
@@ -438,7 +439,7 @@ describe Turnero do
     end
 
     describe 'recurrencia maxima por turnos' do
-      xit 'cuando reservo un turno con un paciente que no alcanzo la recurrencia maxima, el turnero me deja' do
+      it 'cuando reservo un turno con un paciente que no alcanzo la recurrencia maxima, el turnero me deja' do
         especialidad_cirujano = turnero.crear_especialidad('Cirujano', 60, 3, 'ciru')
         turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
         fecha_de_maniana = fecha_de_hoy + 1
@@ -454,8 +455,8 @@ describe Turnero do
                                          horario: have_attributes(fecha: fecha_de_maniana, hora: have_attributes(hora: 12, minutos: 0)))
       end
 
-      xit 'cuando reservo un turno con un paciente que tiene el limite de recurrencia de turnos, produce un error' do
-        especialidad_cirujano = turnero.crear_especialidad('Cirujano', 5 * 60, 3, 'ciru')
+      it 'cuando reservo un turno con un paciente que tiene el limite de recurrencia de turnos, produce un error' do
+        especialidad_cirujano = turnero.crear_especialidad('Cirujano', 60, 3, 'ciru')
         turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
         fecha_de_maniana = fecha_de_hoy + 1
         dni = '999999999'
@@ -467,7 +468,7 @@ describe Turnero do
         expect do
           turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '11:00', dni)
         end
-          .to raise_error(RecurrenciaMaximaException)
+          .to raise_error(RecurrenciaMaximaAlcanzadaException)
       end
     end
   end

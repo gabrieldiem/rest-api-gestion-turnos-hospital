@@ -69,17 +69,21 @@ class Turnero
     turno
   end
 
+  def paciente_tiene_recurrencia_maxima_excedida?(paciente, medico)
+    paciente.obtener_cantidad_de_turnos_reservados_por_especialidad(medico.especialidad) >= medico.especialidad.recurrencia_maxima
+  end
+
   def asignar_turno(matricula, fecha, hora, dni)
     medico = buscar_medico(matricula)
     paciente = @repositorio_pacientes.find_by_dni(dni)
     raise PacienteInexistenteException, 'Para reservar un turno se debe estar registrado' if paciente.nil?
 
-    fecha = @convertidor_de_tiempo.estandarizar_fecha(fecha)
-    hora = @convertidor_de_tiempo.estandarizar_hora(hora)
-    horario = Horario.new(fecha, hora)
+    raise RecurrenciaMaximaAlcanzadaException if paciente_tiene_recurrencia_maxima_excedida?(paciente, medico)
 
-    raise TurnoNoDisponibleException if @calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, fecha, hora)
-    raise TurnoFeriadoNoEsReservableException if coincide_con_feriado(fecha)
+    horario = obtener_horario_para_turno(fecha, hora)
+
+    raise TurnoNoDisponibleException if @calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, horario.fecha, horario.hora)
+    raise TurnoFeriadoNoEsReservableException if coincide_con_feriado(horario.fecha)
 
     turno = medico.asignar_turno(horario, paciente)
     @repositorio_turnos.save(turno)
@@ -154,6 +158,10 @@ class Turnero
   end
 
   private
+
+  def obtener_horario_para_turno(fecha, hora)
+    Horario.new(@convertidor_de_tiempo.estandarizar_fecha(fecha), @convertidor_de_tiempo.estandarizar_hora(hora))
+  end
 
   def paciente_ya_existente?(dni)
     paciente = @repositorio_pacientes.find_by_dni(dni)

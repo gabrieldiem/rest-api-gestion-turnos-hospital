@@ -88,7 +88,7 @@ describe Turnero do
     end
 
     it 'puedo consultar todos los turnos reservados con un médico' do
-      especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+      especialidad = turnero.crear_especialidad('Cardiología', 30, 21, 'card')
       paciente = turnero.crear_paciente('juancito@test.com', '999999999', 'juancito')
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
 
