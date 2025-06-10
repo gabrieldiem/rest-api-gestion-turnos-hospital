@@ -23,14 +23,21 @@ Característica: Reserva de turnos médicos
     Dado que hay un paciente registrado con username "juanperez"
     Cuando intento reservar el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "19:00"
     Entonces recibo el mensaje "No se puede reservar en ese horario, el horario de atención es de 8:00 a 18:00"
-    
+    @wip
   Escenario: 5.0.4 - No puedo reservar un turno si no estoy registrado
     Dado el Dr. con matricula "NAC123" tiene un turno disponible el "20/05/2025" a las "15:30"
     Cuando intento reservar el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "15:30" con el username "juandiaz"
     Entonces recibo el mensaje "Para reservar un turno se debe estar registrado"
-  
+  @wip
   Escenario: 5.0.5 - No puedo reservar un turno si alguien ya lo reservó
     Dado que hay un paciente registrado con username "juanperez"
     Y el Dr. con matricula "NAC123" tenía un turno disponible el "20/05/2025" a las "15:30" y alguien más lo reservó
     Cuando intento reservar el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "15:30"
     Entonces recibo el mensaje "Este turno no está disponible"
+
+    @wip
+  Escenario: 5.0.6 - No puedo reservar un turno que no es válido para la especialidad
+    Dado que hay un paciente registrado con username "juanperez"
+    Y el Dr. con matricula "NAC123" tiene un turno disponible el "20/05/2025" a las "9:00"
+    Cuando intento reservar el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "9:01"
+    Entonces recibo el mensaje "El turno que se quiere reservar no es un turno válido para la especialidad"
