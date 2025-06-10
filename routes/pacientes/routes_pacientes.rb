@@ -22,6 +22,10 @@ module RoutesPacientes
       logger.error("Error al buscar paciente: #{e.message}")
       status 404
       MensajeErrorResponse.new(e.message).to_json
+    rescue ActiveModel::ValidationError => e
+      logger.error("Error al reservar un turno: #{e.message}")
+      status 404
+      MensajeErrorResponse.new(e.model.errors.first.message).to_json
     end
   end
 
@@ -54,6 +58,10 @@ module RoutesPacientes
       logger.error("Error El paciente #{params[:dni]} no tiene turnos: #{e.message}")
       status 404
       MensajeErrorResponse.new(e.message).to_json
+    rescue ActiveModel::ValidationError => e
+      logger.error("Error al reservar un turno: #{e.message}")
+      status 404
+      MensajeErrorResponse.new(e.model.errors.first.message).to_json
     end
   end
 end

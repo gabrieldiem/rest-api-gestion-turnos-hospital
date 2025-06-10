@@ -2,6 +2,7 @@ require 'active_model'
 
 class Paciente
   include ActiveModel::Validations
+  REPUTACION_INICIAL = 1.0
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d-]+(\.[a-z]+)*\.[a-z]+\z/i
 
@@ -32,12 +33,12 @@ class Paciente
   end
 
   def actualizar_reputacion
-    @reputacion = 1.0 if @turnos_reservados.empty?
+    @reputacion = REPUTACION_INICIAL if @turnos_reservados.empty?
 
     cantidad_turnos_pasados = @turnos_reservados.count { |turno| !turno.reservado? }
     cantidad_turnos_asistidos = @turnos_reservados.count(&:asistio?)
 
-    @reputacion = cantidad_turnos_pasados.zero? ? 1.0 : cantidad_turnos_asistidos.to_f / cantidad_turnos_pasados
+    @reputacion = cantidad_turnos_pasados.zero? ? REPUTACION_INICIAL : cantidad_turnos_asistidos.to_f / cantidad_turnos_pasados
   end
 
   def ==(other)
