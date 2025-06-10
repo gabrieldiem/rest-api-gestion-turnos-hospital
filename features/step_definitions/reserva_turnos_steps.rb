@@ -71,7 +71,7 @@ Cuando('intento reservar el turno con el médico de matrícula {string} en la fe
   body = {
     dni: '66666666',
     turno: {
-      fecha:,
+      fecha: @convertidor_de_tiempo.presentar_fecha(Date.parse(fecha)),
       hora:
     }
   }

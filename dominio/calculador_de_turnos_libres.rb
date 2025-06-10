@@ -2,6 +2,10 @@ require_relative '../lib/horario'
 
 class CalculadorDeTurnosLibres
   CANTIDAD_DE_TURNOS_A_CALCULAR_MAXIMA = 5
+  CANTIDAD_MAXIMA_DE_DIAS_A_FUTURO_PARA_TURNO = 40
+  HORAS_EN_UN_DIA = 24
+  MINUTOS_EN_UNA_HORA = 60
+  MINUTOS_EN_UN_DIA = HORAS_EN_UN_DIA * MINUTOS_EN_UNA_HORA
 
   def initialize(hora_de_comienzo_de_jornada,
                  hora_de_fin_de_jornada,
@@ -18,7 +22,7 @@ class CalculadorDeTurnosLibres
 
   def calcular_turnos_disponibles_por_medico(medico)
     @fecha_posterior = @proveedor_de_fecha.hoy + 1
-    ultimo_dia_para_buscar_horarios = @proveedor_de_fecha.hoy + 40
+    ultimo_dia_para_buscar_horarios = @proveedor_de_fecha.hoy + CANTIDAD_MAXIMA_DE_DIAS_A_FUTURO_PARA_TURNO
 
     @indice_horario_candidato = 0
     horarios_disponibles_elegidos = []
@@ -43,6 +47,19 @@ class CalculadorDeTurnosLibres
     turnos_ya_asignados.each do |turno|
       return true if turno.horario == horario_turno
     end
+    false
+  end
+
+  def es_hora_un_slot_valido(duracion_turno, hora_turno)
+    indice_horario_candidato = 0
+    while indice_horario_candidato * duracion_turno < MINUTOS_EN_UN_DIA
+      siguiente_horario = calcular_siguiente_horario(@proveedor_de_fecha.hoy,
+                                                     indice_horario_candidato,
+                                                     duracion_turno)
+      indice_horario_candidato += 1
+      return true if siguiente_horario.hora == hora_turno
+    end
+
     false
   end
 

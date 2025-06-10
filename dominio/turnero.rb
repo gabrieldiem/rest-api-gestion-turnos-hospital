@@ -71,16 +71,17 @@ class Turnero
   end
 
   def asignar_turno(matricula, fecha, hora, dni)
+    horario = obtener_horario_para_turno(fecha, hora)
+    raise TurnoFeriadoNoEsReservableException if coincide_con_feriado(horario.fecha)
+
     medico = buscar_medico(matricula)
+    duracion_turno = medico.especialidad.duracion
+    raise TurnoInvalidoException unless @calculador_de_turnos_libres.es_hora_un_slot_valido(duracion_turno, horario.hora)
+    raise TurnoNoDisponibleException if @calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, horario.fecha, horario.hora)
+
     paciente = @repositorio_pacientes.find_by_dni(dni)
     raise PacienteInexistenteException, 'Para reservar un turno se debe estar registrado' if paciente.nil?
-
     raise RecurrenciaMaximaAlcanzadaException if paciente_tiene_recurrencia_maxima_excedida?(paciente, medico)
-
-    horario = obtener_horario_para_turno(fecha, hora)
-
-    raise TurnoNoDisponibleException if @calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, horario.fecha, horario.hora)
-    raise TurnoFeriadoNoEsReservableException if coincide_con_feriado(horario.fecha)
 
     turno = medico.asignar_turno(horario, paciente)
     @repositorio_turnos.save(turno)
