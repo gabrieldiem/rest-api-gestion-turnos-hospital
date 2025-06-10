@@ -117,12 +117,12 @@ describe Paciente do
   end
 
   describe '- recurrencia de especialidad -' do
-    xit 'no tiene recurrencia cuando no tiene turnos reservados' do
+    it 'no tiene recurrencia cuando no tiene turnos reservados' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
       expect(paciente.obtener_cantidad_de_turnos_reservados_por_especialidad(especialidad)).to eq(0)
     end
 
-    xit 'tiene recurrencia cuando tiene turnos reservados' do
+    it 'tiene recurrencia cuando tiene turnos reservados' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
       medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
       (1..2).each do |_i|
@@ -132,7 +132,7 @@ describe Paciente do
       expect(paciente.obtener_cantidad_de_turnos_reservados_por_especialidad(especialidad)).to eq(2)
     end
 
-    xit 'tiene recurrencia cuando tiene turnos reservados de distintas especialidades' do
+    it 'tiene recurrencia cuando tiene turnos reservados de distintas especialidades' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
       medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
 

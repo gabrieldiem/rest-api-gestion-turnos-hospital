@@ -37,7 +37,7 @@ class Paciente
     cantidad_turnos_pasados = @turnos_reservados.count { |turno| !turno.reservado? }
     cantidad_turnos_asistidos = @turnos_reservados.count(&:asistio?)
 
-    @reputacion = cantidad_turnos_pasados.zero? ? 1.0 : (cantidad_turnos_asistidos.to_f / cantidad_turnos_pasados).floor(2)
+    @reputacion = cantidad_turnos_pasados.zero? ? 1.0 : cantidad_turnos_asistidos.to_f / cantidad_turnos_pasados
   end
 
   def ==(other)
@@ -45,5 +45,9 @@ class Paciente
       @dni == other.dni &&
       @email == other.email &&
       @username == other.username
+  end
+
+  def obtener_cantidad_de_turnos_reservados_por_especialidad(especialidad)
+    @turnos_reservados.count { |turno| turno.medico.especialidad.codigo == especialidad.codigo }
   end
 end
