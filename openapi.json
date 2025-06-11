@@ -175,7 +175,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref":"#/components/schemas/Response201RegistrarPaciente" 
+                                    "$ref": "#/components/schemas/Response201RegistrarPaciente"
                                 }
                             }
                         }
@@ -185,7 +185,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref":"#/components/schemas/Response400Generic"
+                                    "$ref": "#/components/schemas/Response400Generic"
                                 }
                             }
                         }
@@ -205,6 +205,48 @@
                     },
                     "required": true
                 }
+            },
+            "get": {
+                "summary": "Obtener paciente por username",
+                "description": "Obtener paciente por username",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "roberto_1999"
+                        },
+                        "description": "Username del paciente"
+                    }
+                ],
+                "operationId": "Obtener paciente por username",
+                "responses": {
+                    "200": {
+                        "description": "Paciente obtenido correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response200ObtenerPaciente"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontró paciente con ese username",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Generic"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "pacientes"
+                ]
             }
         }
     },
@@ -448,6 +490,27 @@
                     "created_on": {
                         "type": "string",
                         "example": "2025-06-03T20:34:45+00:00"
+                    }
+                }
+            },
+            "Response200ObtenerPaciente": {
+                "type": "object",
+                "properties": {
+                    "dni": {
+                        "type": "string",
+                        "example": "110022"
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "roberto_1999"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "roberto@gmail.com"
+                    },
+                    "reputacion": {
+                        "type": "float",
+                        "example": "1.0"
                     }
                 }
             },
