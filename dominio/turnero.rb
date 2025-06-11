@@ -81,8 +81,7 @@ class Turnero
     raise TurnoNoDisponibleException if @calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, horario.fecha, horario.hora)
 
     paciente = @repositorio_pacientes.find_by_dni(dni)
-    raise PacienteInexistenteException, 'Para reservar un turno se debe estar registrado' if paciente.nil?
-    raise RecurrenciaMaximaAlcanzadaException if paciente_tiene_recurrencia_maxima_excedida?(paciente, medico)
+    validar_paciente(paciente, medico)
 
     turno = medico.asignar_turno(horario, paciente)
     @repositorio_turnos.save(turno)
@@ -188,7 +187,21 @@ class Turnero
     false
   end
 
-  def validar_reputacion(paciente)
-    raise PacienteInvalidoException, "El paciente con DNI #{paciente.dni} no tiene reputación suficiente para reservar turnos" if paciente.reputacion < REPUTACION_VALIDA && paciente.tiene_turnos_reservados?
+  def validar_paciente(paciente, medico)
+    validar_existencia_paciente(paciente)
+    validar_reputacion_paciente(paciente)
+    validar_recurrencia_maxima(paciente, medico)
+  end
+
+  def validar_reputacion_paciente(paciente)
+    raise ReputacionInvalidaException, "El paciente con DNI #{paciente.dni} no tiene reputación suficiente para reservar mas de un turno a la vez" if paciente.reputacion < REPUTACION_VALIDA && paciente.tiene_turnos_reservados?
+  end
+
+  def validar_existencia_paciente(paciente)
+    raise PacienteInexistenteException, 'Para reservar un turno se debe estar registrado' if paciente.nil?
+  end
+
+  def validar_recurrencia_maxima(paciente, medico)
+    raise RecurrenciaMaximaAlcanzadaException if paciente_tiene_recurrencia_maxima_excedida?(paciente, medico)
   end
 end

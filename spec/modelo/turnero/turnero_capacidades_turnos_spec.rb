@@ -14,6 +14,7 @@ require_relative '../../../dominio/exceptions/turno_inexistente_exception'
 require_relative '../../../dominio/exceptions/paciente_invalido_exception'
 require_relative '../../../dominio/exceptions/recurrencia_maxima_alcanzada_exception'
 require_relative '../../../dominio/exceptions/turno_invalido_exception'
+require_relative '../../../dominio/exceptions/reputacion_invalida_exception'
 require_relative '../../../persistencia/repositorio_pacientes'
 require_relative '../../../persistencia/repositorio_especialidades'
 require_relative '../../../persistencia/repositorio_medicos'
@@ -260,7 +261,7 @@ describe Turnero do
     end
 
     describe 'permitir o rechazar reservas de turnos dependiendo de su reputacion' do
-      xit 'cuando la reputacion del paciente es mayor a 0.8, se le permite reservar hasta N = "recurrencia maxima de la especialidad" de turnos' do
+      it 'cuando la reputacion del paciente es mayor a 0.8, se le permite reservar hasta N = "recurrencia maxima de la especialidad" de turnos' do
         fecha_de_maniana = fecha_de_hoy + 1
         especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
         medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
@@ -276,10 +277,10 @@ describe Turnero do
 
         expect do
           turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:00', paciente.dni)
-        end.not_to raise_error(TurnoRechazadoException)
+        end.not_to raise_error(ReputacionInvalidaException)
       end
 
-      xit 'cuando la reputacion del paciente es menor a 0.8, el paciente solo puede reservar hasta 1 turno por especialidad' do
+      it 'cuando la reputacion del paciente es menor a 0.8, el paciente solo puede reservar hasta 1 turno por especialidad' do
         fecha_de_maniana = fecha_de_hoy + 1
         especialidad = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
         medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
@@ -300,7 +301,7 @@ describe Turnero do
 
         expect do
           turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:30', paciente.dni)
-        end.to raise_error(TurnoRechazadoException)
+        end.to raise_error(ReputacionInvalidaException)
       end
     end
 

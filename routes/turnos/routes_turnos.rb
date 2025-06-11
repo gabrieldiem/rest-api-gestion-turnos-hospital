@@ -37,6 +37,10 @@ module RoutesTurnos
       logger.error("Error al cambiar asistencia del turno: #{e.message}")
       status 400
       MensajeErrorResponse.new('El turno no pertenece a ese paciente').to_json
+    rescue ReputacionInvalidaException => e
+      logger.error("Error al cambiar asistencia del turno: #{e.message}")
+      status 400
+      MensajeErrorResponse.new('Su reputación no es suficiente para cambiar la asistencia de este turno').to_json
     end
   end
 end
