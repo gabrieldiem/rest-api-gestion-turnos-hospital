@@ -165,9 +165,14 @@ describe Turnero do
   end
 
   describe 'cambiar asistencia a un turno' do
-    xit 'cuando cambio la asistencia de un paciente que no existe, produce un error' do
+    it 'cuando cambio la asistencia de un paciente que no existe, produce un error' do
+      fecha_de_maniana = fecha_de_hoy + 1
+      medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      paciente = turnero.crear_paciente('paciente@test.com', '123000', 'paciente_test')
+      turno_existente = turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '8:00', paciente.dni)
+
       expect do
-        turnero.cambiar_asistencia_turno(9999, '999999999', true)
+        turnero.cambiar_asistencia_turno(turno_existente.id, '999999999', true)
       end
         .to raise_error(PacienteInexistenteException)
     end
