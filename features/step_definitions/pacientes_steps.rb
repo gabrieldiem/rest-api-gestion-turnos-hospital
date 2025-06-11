@@ -4,6 +4,7 @@ end
 
 Cuando('me registro con DNI {string} y email {string}') do |dni, email|
   RepositorioPacientes.new(@logger).delete_all # Limpiar la base de datos antes de cada prueba
+  @dni = dni
   @request_body = { email:, dni:, username: @username }
   @response = Faraday.post('/pacientes', @request_body.to_json, {})
 end
