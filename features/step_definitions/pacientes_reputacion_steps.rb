@@ -57,8 +57,6 @@ def reservar_turno(turno, dni, matricula)
 end
 
 Cuando('el paciente con DNI {string} tiene {string} turnos asistidos y {string} turnos ausentes y {string} turnos reservado') do |dni, cant_asistidos, cant_ausentes, cant_reservados|
-  RepositorioTurnos.new(@logger).delete_all
-
   cantidad_turnos = cant_asistidos.to_i + cant_ausentes.to_i + cant_reservados.to_i
   reservar_turnos(@matricula, dni, cantidad_turnos)
 
