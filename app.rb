@@ -47,11 +47,24 @@ configure do
   api_logger.info('Iniciando turnero...')
 end
 
+def enable_cors(response)
+  response.headers['Access-Control-Allow-Origin'] = '*'
+  response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+  response.headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization'
+end
+
 before do
+  enable_cors(response)
+
   if !request.body.nil? && request.body.size.positive?
     request.body.rewind
     @params = JSON.parse(request.body.read, symbolize_names: true)
   end
+end
+
+options '*' do
+  enable_cors(response)
+  200
 end
 
 def turnero
