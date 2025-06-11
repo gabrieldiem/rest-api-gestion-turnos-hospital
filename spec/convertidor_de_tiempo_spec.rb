@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'integration_helper'
 require_relative '../lib/convertidor_de_tiempo'
 require_relative '../lib/exceptions/fecha_invalida_exception'
 require_relative '../lib/exceptions/hora_invalida_exception'
