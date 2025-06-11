@@ -13,7 +13,7 @@ module RoutesPacientes
 
   def self.get_paciente_por_username(app)
     app.get '/pacientes' do
-      logger.debug("GET /pacientes/#{params[:username]}")
+      logger.debug("GET /pacientes?username=#{params[:username]}")
 
       paciente = turnero.buscar_paciente_por_username(params[:username])
       status 200
