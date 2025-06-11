@@ -41,15 +41,6 @@ class CalculadorDeTurnosLibres
     horarios_disponibles_elegidos
   end
 
-  def chequear_si_tiene_turno_asignado(medico, fecha_turno_a_chequear, hora_turno_a_chequear)
-    horario_turno = Horario.new(fecha_turno_a_chequear, hora_turno_a_chequear)
-    turnos_ya_asignados = medico.turnos_asignados
-    turnos_ya_asignados.each do |turno|
-      return true if turno.horario == horario_turno
-    end
-    false
-  end
-
   def es_hora_un_slot_valido(duracion_turno, hora_turno)
     indice_horario_candidato = 0
     while indice_horario_candidato * duracion_turno < MINUTOS_EN_UN_DIA

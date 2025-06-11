@@ -1,10 +1,10 @@
 require 'date'
 require_relative '../lib/hora'
+require_relative './asignador_de_turnos'
 
 class Turnero
   HORA_DE_COMIENZO_DE_JORNADA = Hora.new(8, 0)
   HORA_DE_FIN_DE_JORNADA = Hora.new(18, 0)
-  REPUTACION_VALIDA = 0.8
 
   def initialize(repositorios,
                  proveedor_de_feriados,
@@ -24,6 +24,9 @@ class Turnero
                                                                 @proveedor_de_hora,
                                                                 @proveedor_de_feriados)
     @convertidor_de_tiempo = convertidor_de_tiempo
+    @asignador_de_turnos = AsignadorDeTurnos.new(@repositorio_turnos,
+                                                 @proveedor_de_feriados,
+                                                 @calculador_de_turnos_libres)
   end
 
   def crear_paciente(email, dni, username)
@@ -67,24 +70,12 @@ class Turnero
     turno
   end
 
-  def paciente_tiene_recurrencia_maxima_excedida?(paciente, medico)
-    paciente.obtener_cantidad_de_turnos_reservados_por_especialidad(medico.especialidad) >= medico.especialidad.recurrencia_maxima
-  end
-
   def asignar_turno(matricula, fecha, hora, dni)
-    horario = obtener_horario_para_turno(fecha, hora)
-    raise TurnoFeriadoNoEsReservableException if coincide_con_feriado(horario.fecha)
-
     medico = buscar_medico(matricula)
-    duracion_turno = medico.especialidad.duracion
-    raise TurnoInvalidoException unless @calculador_de_turnos_libres.es_hora_un_slot_valido(duracion_turno, horario.hora)
-    raise TurnoNoDisponibleException if @calculador_de_turnos_libres.chequear_si_tiene_turno_asignado(medico, horario.fecha, horario.hora)
-
     paciente = @repositorio_pacientes.find_by_dni(dni)
-    validar_paciente(paciente, medico)
+    horario = obtener_horario_para_turno(fecha, hora)
 
-    turno = medico.asignar_turno(horario, paciente)
-    @repositorio_turnos.save(turno)
+    @asignador_de_turnos.asignar_turno(medico, paciente, horario)
   end
 
   def obtener_turnos_disponibles(matricula)
@@ -178,31 +169,5 @@ class Turnero
     else
       true
     end
-  end
-
-  def coincide_con_feriado(fecha)
-    feriados = @proveedor_de_feriados.obtener_feriados(fecha.year)
-    feriados.each do |feriado|
-      return true if feriado.fecha == fecha
-    end
-    false
-  end
-
-  def validar_paciente(paciente, medico)
-    validar_existencia_paciente(paciente)
-    validar_reputacion_paciente(paciente)
-    validar_recurrencia_maxima(paciente, medico)
-  end
-
-  def validar_reputacion_paciente(paciente)
-    raise ReputacionInvalidaException, "El paciente con DNI #{paciente.dni} no tiene reputación suficiente para reservar mas de un turno a la vez" if paciente.reputacion < REPUTACION_VALIDA && paciente.tiene_turnos_reservados?
-  end
-
-  def validar_existencia_paciente(paciente)
-    raise PacienteInexistenteException, 'Para reservar un turno se debe estar registrado' if paciente.nil?
-  end
-
-  def validar_recurrencia_maxima(paciente, medico)
-    raise RecurrenciaMaximaAlcanzadaException if paciente_tiene_recurrencia_maxima_excedida?(paciente, medico)
   end
 end
