@@ -21,9 +21,7 @@ describe ConvertidorDeTiempo do
   end
 
   it 'al convertir hora cuando la fecha es inválida lanza FechaInvalidaException' do
-    expect do
-      convertidor.estandarizar_hora('8.30')
-    end.to raise_error(HoraInvalidaException)
+    expect { convertidor.estandarizar_hora('8.30') }.to raise_error(HoraInvalidaException)
   end
 
   it 'cuando la hora es valida devuelve una hora correcta' do
