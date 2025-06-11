@@ -1,5 +1,6 @@
 require 'date'
 require_relative '../lib/hora'
+require_relative './calendario_de_turnos'
 require_relative './asignador_de_turnos'
 
 class Turnero
@@ -18,11 +19,11 @@ class Turnero
     @proveedor_de_feriados = proveedor_de_feriados
     @proveedor_de_fecha = proveedor_de_fecha
     @proveedor_de_hora = proveedor_de_hora
-    @calculador_de_turnos_libres = CalculadorDeTurnosLibres.new(HORA_DE_COMIENZO_DE_JORNADA,
-                                                                HORA_DE_FIN_DE_JORNADA,
-                                                                @proveedor_de_fecha,
-                                                                @proveedor_de_hora,
-                                                                @proveedor_de_feriados)
+    @calculador_de_turnos_libres = CalendarioDeTurnos.new(HORA_DE_COMIENZO_DE_JORNADA,
+                                                          HORA_DE_FIN_DE_JORNADA,
+                                                          @proveedor_de_fecha,
+                                                          @proveedor_de_hora,
+                                                          @proveedor_de_feriados)
     @convertidor_de_tiempo = convertidor_de_tiempo
     @asignador_de_turnos = AsignadorDeTurnos.new(@repositorio_turnos,
                                                  @proveedor_de_feriados,

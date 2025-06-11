@@ -3,7 +3,7 @@ require_relative '../dominio/turnero'
 require_relative '../dominio/turno'
 require_relative '../dominio/exceptions/turno_no_disponible_exception'
 require_relative '../dominio/exceptions/horario_superpuesto_exception'
-require_relative '../dominio/calculador_de_turnos_libres'
+require_relative '../dominio/calendario_de_turnos'
 
 class Medico
   include ActiveModel::Validations

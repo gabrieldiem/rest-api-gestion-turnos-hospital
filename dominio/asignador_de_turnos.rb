@@ -1,10 +1,12 @@
+require_relative './calendario_de_turnos'
+
 class AsignadorDeTurnos
   REPUTACION_VALIDA = 0.8
 
-  def initialize(repositorio_turnos, proveedor_de_feriados, calculador_de_turnos_libres)
+  def initialize(repositorio_turnos, proveedor_de_feriados, calendario_de_turnos)
     @repositorio_turnos = repositorio_turnos
     @proveedor_de_feriados = proveedor_de_feriados
-    @calculador_de_turnos_libres = calculador_de_turnos_libres
+    @calendario_de_turnos = calendario_de_turnos
   end
 
   def asignar_turno(medico, paciente, horario)

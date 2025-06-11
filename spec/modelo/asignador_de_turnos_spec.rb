@@ -57,8 +57,8 @@ describe AsignadorDeTurnos do
   end
 
   let(:calculador_turnos_libres) do
-    CalculadorDeTurnosLibres.new(Hora.new(8, 0), Hora.new(18, 0),
-                                 proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
+    CalendarioDeTurnos.new(Hora.new(8, 0), Hora.new(18, 0),
+                           proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
   end
 
   let(:asignador_de_turnos) do
