@@ -89,7 +89,7 @@ describe Turnero do
         expect(turno_actualizado.estado.descripcion).to eq('ausente')
       end
 
-      xit 'cuando asisto a 2 turnos, pero falto a uno, la reputacion del paciente baja a 0.66 y el estado es ausente' do
+      it 'cuando asisto a 2 turnos, pero falto a uno, la reputacion del paciente baja a 0.66 y el estado es ausente' do
         fecha_de_maniana = fecha_de_hoy + 1
         medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
         paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')

@@ -93,7 +93,7 @@ describe RepositorioPacientes do
   end
 
   it 'obtener un paciente por id sin turno con un id inexistente devuelve nil' do
-    id_inexistente = 99999999
+    id_inexistente = 99_999_999
     repositorio = described_class.new(logger)
     expect(repositorio.find_without_loading_turnos(id_inexistente)).to eq nil
   end
