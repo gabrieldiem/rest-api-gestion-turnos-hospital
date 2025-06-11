@@ -19,15 +19,15 @@ class Turnero
     @proveedor_de_feriados = proveedor_de_feriados
     @proveedor_de_fecha = proveedor_de_fecha
     @proveedor_de_hora = proveedor_de_hora
-    @calculador_de_turnos_libres = CalendarioDeTurnos.new(HORA_DE_COMIENZO_DE_JORNADA,
-                                                          HORA_DE_FIN_DE_JORNADA,
-                                                          @proveedor_de_fecha,
-                                                          @proveedor_de_hora,
-                                                          @proveedor_de_feriados)
+    @calendario_de_turnos = CalendarioDeTurnos.new(HORA_DE_COMIENZO_DE_JORNADA,
+                                                   HORA_DE_FIN_DE_JORNADA,
+                                                   @proveedor_de_fecha,
+                                                   @proveedor_de_hora,
+                                                   @proveedor_de_feriados)
     @convertidor_de_tiempo = convertidor_de_tiempo
     @asignador_de_turnos = AsignadorDeTurnos.new(@repositorio_turnos,
                                                  @proveedor_de_feriados,
-                                                 @calculador_de_turnos_libres)
+                                                 @calendario_de_turnos)
   end
 
   def crear_paciente(email, dni, username)
@@ -81,7 +81,7 @@ class Turnero
 
   def obtener_turnos_disponibles(matricula)
     medico = buscar_medico(matricula)
-    @calculador_de_turnos_libres.calcular_turnos_disponibles_por_medico(medico)
+    @calendario_de_turnos.calcular_turnos_disponibles_por_medico(medico)
   end
 
   def cambiar_asistencia_turno(id_turno, dni, asistio)
