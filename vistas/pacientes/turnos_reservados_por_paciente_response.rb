@@ -9,6 +9,7 @@ class TurnosReservadosPorPacienteResponse
       cantidad_de_turnos: @turnos.size,
       turnos: @turnos.map do |turno|
         {
+          id: turno.id.to_s,
           fecha: @convertidor_de_tiempo.presentar_fecha(turno.horario.fecha),
           hora: @convertidor_de_tiempo.presentar_hora(turno.horario.hora),
           medico: convertir_medico(turno.medico)
