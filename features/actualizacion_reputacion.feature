@@ -16,7 +16,6 @@ Característica: Actualización de la reputación
     Cuando el paciente con DNI "69420" asiste "1" turnos
     Entonces el paciente mejora su reputacion
 
-  @wip
   Escenario: 10.1.2 Paciente empeora su reputación
     Cuando el paciente con DNI "69420" no asiste "1" turnos
     Entonces el paciente empeora su reputacion
