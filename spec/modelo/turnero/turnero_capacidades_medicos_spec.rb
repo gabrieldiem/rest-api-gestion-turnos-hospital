@@ -88,9 +88,23 @@ describe Turnero do
       expect { turnero.buscar_medico('NAC999') }.to raise_error(MedicoInexistenteException)
     end
 
+    def llenar_turnos_de_un_dia(cantidad_turnos, hora_inicio_jornada, fecha_de_maniana, dni_paciente)
+      turnos_asignados = []
+      cantidad_turnos.to_i.times do |i|
+        hora_a_asignar = hora_inicio_jornada + Hora.new(0, i * 30)
+        turno = turnero.asignar_turno('NAC456',
+                                      fecha_de_maniana.to_s,
+                                      "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}",
+                                      dni_paciente)
+        turnos_asignados.push(turno)
+      end
+      turnos_asignados
+    end
+
     it 'puedo consultar todos los turnos reservados con un médico' do
       especialidad = turnero.crear_especialidad('Cardiología', 30, 21, 'card')
-      paciente = turnero.crear_paciente('juancito@test.com', '999999999', 'juancito')
+      dni_paciente = '1230000'
+      turnero.crear_paciente('juancito@test.com', dni_paciente, 'juancito')
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
 
       fecha_de_maniana = fecha_de_hoy + 1
@@ -98,12 +112,8 @@ describe Turnero do
       hora_inicio_jornada = Hora.new(8, 0)
       hora_fin_jornada = Hora.new(18, 0)
 
-      cantidad_turnos = (hora_fin_jornada.hora - hora_inicio_jornada.hora) * 2 # Cada turno dura 30 minutos
-      turnos_asignados = []
-      cantidad_turnos.times do |i|
-        hora_a_asignar = hora_inicio_jornada + Hora.new(0, i * 30)
-        turnos_asignados.push(turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, "#{hora_a_asignar.hora}:#{hora_a_asignar.minutos}", paciente.dni))
-      end
+      cantidad_turnos = ((hora_fin_jornada.hora - hora_inicio_jornada.hora) * 60) / 30
+      turnos_asignados = llenar_turnos_de_un_dia(cantidad_turnos, hora_inicio_jornada, fecha_de_maniana, dni_paciente)
 
       turnos_reservados = turnero.obtener_turnos_reservados_por_medico('NAC456')
       expect(turnos_reservados).to eq(turnos_asignados)

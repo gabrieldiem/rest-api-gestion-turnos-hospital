@@ -31,7 +31,7 @@ class AsignadorDeTurnos
   end
 
   def validar_reputacion_paciente(paciente)
-    raise ReputacionInvalidaException, "El paciente con DNI #{paciente.dni} no tiene reputación suficiente para reservar mas de un turno a la vez" if paciente.reputacion < REPUTACION_VALIDA && paciente.tiene_turnos_reservados?
+    raise ReputacionInvalidaException, 'No se puede realizar la reserva de turno debiado a la mala reputacion' if paciente.reputacion < REPUTACION_VALIDA && paciente.tiene_turnos_reservados?
   end
 
   def validar_existencia_paciente(paciente)

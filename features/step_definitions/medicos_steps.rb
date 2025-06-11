@@ -1,6 +1,7 @@
 Dado('que existe la especialidad {string} con código {string}') do |especialidad, codigo|
   repo_especialidades = RepositorioEspecialidades.new(@logger)
   especialidad = Especialidad.new(especialidad, 30, 3, codigo)
+  @especialidad = especialidad
   repo_especialidades.save(especialidad)
   expect(repo_especialidades.find(especialidad.id)).not_to be_nil
 end

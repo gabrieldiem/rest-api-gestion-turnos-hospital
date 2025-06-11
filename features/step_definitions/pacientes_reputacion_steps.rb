@@ -2,72 +2,71 @@ Before do
   @repo_turnos = RepositorioTurnos.new(@logger)
 end
 
-def cargar_asistencias(turno_ids, cant_asistidos, cant_ausentes)
+def cargar_asistencias(dni, cant_asistidos, cant_ausentes)
   cant_asistidos.to_i.times do
-    id = turno_ids.shift
-    turno = @repo_turnos.find(id)
-    turno.asistido = true
-    @repo_turnos.save(turno)
+    id_turno = @turno_ids.shift
+    cargar_asistencia_turno(id_turno, dni, true)
   end
 
   cant_ausentes.to_i.times do
-    id = turno_ids.shift
-    turno = @repo_turnos.find(id)
-    turno.asistido = false
-    @repo_turnos.save(turno)
+    id_turno = @turno_ids.shift
+    cargar_asistencia_turno(id_turno, dni, false)
   end
+end
+
+def cargar_asistencia_turno(id_turno, dni, asistio)
+  body = {
+    dni_paciente: dni,
+    asistio:
+  }
+  @response = Faraday.put("/turnos/#{id_turno}", body.to_json, { 'Content-Type' => 'application/json' })
+  expect(@response.status).to eq(200)
+end
+
+def reservar_turnos(matricula, dni, cantidad_turnos)
+  response_turnos = Faraday.get("/medicos/#{matricula}/turnos-disponibles")
+  turnos_disponibles = JSON.parse(response_turnos.body)['turnos']
+
+  @turno_ids = []
+  cantidad_turnos.times do |i|
+    # Refresh available turns every 5 iterations
+    if i % 5 == 0 && i > 0
+      response_turnos = Faraday.get("/medicos/#{matricula}/turnos-disponibles")
+      turnos_disponibles.concat(JSON.parse(response_turnos.body)['turnos'])
+    end
+
+    turno = turnos_disponibles[i]
+    reservar_turno(turno, dni, matricula)
+  end
+end
+
+def reservar_turno(turno, dni, matricula)
+  body = {
+    dni:,
+    turno: {
+      fecha: turno['fecha'],
+      hora: turno['hora']
+    }
+  }
+
+  @response = Faraday.post("/medicos/#{matricula}/turnos-reservados",
+                           body.to_json,
+                           'Content-Type' => 'application/json')
+
+  @turno_ids << JSON.parse(@response.body, symbolize_names: true)[:id]
 end
 
 Cuando('el paciente con DNI {string} tiene {string} turnos asistidos y {string} turnos ausentes y {string} turnos reservado') do |dni, cant_asistidos, cant_ausentes, cant_reservados|
-  total_turnos = cant_asistidos.to_i + cant_ausentes.to_i + cant_reservados.to_i
+  RepositorioTurnos.new(@logger).delete_all
 
-  turnos_disponibles = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")['turnos']
+  cantidad_turnos = cant_asistidos.to_i + cant_ausentes.to_i + cant_reservados.to_i
+  reservar_turnos(@matricula, dni, cantidad_turnos)
 
-  turno_ids = []
-  total_turnos.times do |i|
-    turno = turnos_disponibles[i]
-    fecha = Date.parse(turno['fecha'])
-    hora = Time.parse(turno['hora'])
-
-    body = {
-      dni:,
-      turno: {
-        fecha:,
-        hora:
-      }
-    }
-    response = Faraday.post("/medicos/#{@matricula}/turnos-reservados", body.to_json, {
-                              'Content-Type' => 'application/json'
-                            })
-    expect(response.status).to eq(201)
-    turno_ids << JSON.parse(response.body, symbolize_names: true)[:id]
-  end
-
-  # TODO: refactorizar con el endpoint de asistencia de turnos para evitar usar repo de turnos
-
-  cargar_asistencias(turno_ids, cant_asistidos, cant_ausentes)
+  cargar_asistencias(dni, cant_asistidos, cant_ausentes)
 end
 
-Cuando('el paciente con DNI {string} reserva {string} turnos con el médico {string}') do |dni, _cant_reservas, _matricula|
-  turnos_disponibles = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")['turnos']
-
-  turnos_disponibles.map do |turno|
-    fecha = Date.parse(turno['fecha'])
-    hora = Time.parse(turno['hora'])
-
-    body = {
-      dni:,
-      turno: {
-        fecha:,
-        hora:
-      }
-    }
-    @response = Faraday.post(
-      "/medicos/#{@matricula}/turnos-reservados",
-      body.to_json,
-      { 'Content-Type' => 'application/json' }
-    )
-  end
+Cuando('el paciente con DNI {string} reserva {string} turnos') do |dni, cantidad_turnos|
+  reservar_turnos(@matricula, dni, cantidad_turnos.to_i)
 end
 
 Entonces('el sistema permite las reservas') do

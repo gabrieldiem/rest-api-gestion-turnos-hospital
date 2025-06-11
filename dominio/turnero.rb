@@ -34,7 +34,6 @@ class Turnero
     paciente = Paciente.new(email, dni, username, Paciente::REPUTACION_INICIAL)
     if !paciente_ya_existente?(dni)
       @repositorio_pacientes.save(paciente)
-      paciente
     else
       paciente.errors.add(:dni, 'El DNI ya está registrado')
       raise ActiveModel::ValidationError, paciente
@@ -54,7 +53,6 @@ class Turnero
     especialidad = @repositorio_especialidades.find_by_codigo(codigo_especialidad)
     medico = Medico.new(nombre, apellido, matricula, especialidad)
     @repositorio_medicos.save(medico)
-    medico
   end
 
   def buscar_medico(matricula)
