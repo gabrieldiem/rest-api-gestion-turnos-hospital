@@ -30,6 +30,9 @@ class RepositorioPacientes < AbstractRepository
 
   def find_without_loading_turnos(id)
     AbstractRepository.instance_method(:find).bind(self).call(id)
+  rescue ObjectNotFoundException
+    @logger.error 'No se pudo encontrar el paciente por id'
+    nil
   end
 
   protected

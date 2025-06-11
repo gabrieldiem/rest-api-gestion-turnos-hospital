@@ -91,4 +91,10 @@ describe RepositorioPacientes do
     expect(juan_encontrado).to have_attributes(email: juan.email, dni: juan.dni, username: juan.username)
     expect(juan_encontrado.created_on).to eq(hora_actual)
   end
+
+  it 'obtener un paciente por id sin turno con un id inexistente devuelve nil' do
+    id_inexistente = 99999999
+    repositorio = described_class.new(logger)
+    expect(repositorio.find_without_loading_turnos(id_inexistente)).to eq nil
+  end
 end
