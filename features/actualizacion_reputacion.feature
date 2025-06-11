@@ -12,7 +12,6 @@ Característica: Actualización de la reputación
     Y el paciente con DNI "69420" tiene "5" turnos asistidos y "5" turnos ausentes y "3" turnos reservado
     Y que mi reputacion esperada es "0.5"
 
-  @wip
   Escenario: 10.1.1 Paciente mejora su reputación
     Cuando el paciente con DNI "69420" asiste "1" turnos
     Entonces el paciente mejora su reputacion
