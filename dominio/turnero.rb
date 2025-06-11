@@ -27,7 +27,7 @@ class Turnero
   end
 
   def crear_paciente(email, dni, username)
-    paciente = Paciente.new(email, dni, username, 1)
+    paciente = Paciente.new(email, dni, username, Paciente::REPUTACION_INICIAL)
     if !paciente_ya_existente?(dni)
       @repositorio_pacientes.save(paciente)
       paciente

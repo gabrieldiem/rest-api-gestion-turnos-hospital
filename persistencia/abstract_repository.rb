@@ -33,13 +33,13 @@ class AbstractRepository
     found_record = dataset.first(pk_column => id)
     raise ObjectNotFoundException.new(self.class.model_class, id) if found_record.nil?
 
-    load_object dataset.first(found_record)
+    load_object found_record
   end
 
   def first
     @logger.debug "Obteniendo el primer registro de #{class_name}"
 
-    load_collection dataset.where(is_active: true)
+    load_collection dataset.where(true)
     load_object dataset.first
   end
 
