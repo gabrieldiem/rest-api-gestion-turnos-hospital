@@ -1,8 +1,12 @@
-Dado('que existe un paciente con DNI {string}') do |dni|
-  @username = 'juan_salchicon'
+def crear_paciente(username, dni, email)
+  @username = username
   @dni = dni
-  request_body = { email: 'juan.salchicon@example.com', dni: @dni, username: @username }.to_json
-  @response = Faraday.post('/pacientes', request_body, { 'Content-Type' => 'application/json' })
+  request_body = { email:, dni: @dni, username: @username }.to_json
+  Faraday.post('/pacientes', request_body, { 'Content-Type' => 'application/json' })
+end
+
+Dado('que existe un paciente con DNI {string}') do |dni|
+  @response = crear_paciente('juan_salchicon', dni, 'juan.salchicon@example.com')
   expect(@response.status).to eq(201)
 end
 
@@ -47,6 +51,33 @@ Dado('existe un turno con ID {string} para ese paciente') do |id_turno|
 
   body = {
     dni: @dni,
+    turno: {
+      fecha: fecha_de_maniana,
+      hora: '8:00'
+    }
+  }
+  @response = Faraday.post("/medicos/#{@matricula_medico}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
+  @id_turno = JSON.parse(@response.body, symbolize_names: true)[:id]
+  expect(@response.status).to eq(201)
+end
+
+Dado('existe un turno con ID {string} para otro paciente') do |id_turno|
+  dni_otro_paciente = 123_000
+  crear_paciente('juan_perez', dni_otro_paciente, 'juan_perez@example.com')
+
+  body = construir_especialidad
+  @response = Faraday.post('/especialidades', body.to_json, { 'Content-Type' => 'application/json' })
+  expect(@response.status).to eq(201)
+
+  body = construir_medico
+  @response = Faraday.post('/medicos', body.to_json, { 'Content-Type' => 'application/json' })
+  expect(@response.status).to eq(201)
+
+  @id_turno = id_turno
+  fecha_de_maniana = Date.today + 1
+
+  body = {
+    dni: dni_otro_paciente,
     turno: {
       fecha: fecha_de_maniana,
       hora: '8:00'

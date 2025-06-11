@@ -25,9 +25,10 @@ Característica: Registrar asistencia de paciente al turno
     Y ya está registrada la asistencia para este turno como "presente"
     Cuando envío los datos actualizados con DNI "12345678", ID de turno "100" y asistencia "ausente"
     Entonces el estado del turno queda actualizado como "ausente"
-  
+
   Escenario: 18.0.4 - Registrar asistencia con paciente inexistente
     Dado que no existe un paciente con DNI "99999999"
+    Y existe un turno con ID "100" para otro paciente
     Cuando envío los datos de asistencia con DNI "99999999", ID de turno "100" y asistencia "presente"
     Entonces recibo un mensaje de error indicando que el paciente no existe
   

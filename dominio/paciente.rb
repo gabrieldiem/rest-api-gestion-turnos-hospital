@@ -37,6 +37,14 @@ class Paciente
     turnos_reservados > 0
   end
 
+  def actualizar_turno(turno_actualizado)
+    indice_a_actualizar = -1
+    @turnos_reservados.each_with_index do |turno, indice_turno|
+      indice_a_actualizar = indice_turno if turno.id == turno_actualizado.id
+    end
+    @turnos_reservados[indice_a_actualizar] = turno_actualizado
+  end
+
   def actualizar_reputacion
     @reputacion = REPUTACION_INICIAL if @turnos_reservados.empty?
 

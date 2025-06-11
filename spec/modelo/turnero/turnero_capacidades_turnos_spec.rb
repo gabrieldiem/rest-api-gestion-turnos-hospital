@@ -277,7 +277,7 @@ describe Turnero do
 
         expect do
           turnero.asignar_turno(medico.matricula, fecha_de_maniana.to_s, '9:00', paciente.dni)
-        end.not_to raise_error(ReputacionInvalidaException)
+        end.not_to raise_error
       end
 
       it 'cuando la reputacion del paciente es menor a 0.8, el paciente solo puede reservar hasta 1 turno por especialidad' do

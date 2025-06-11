@@ -38,6 +38,10 @@ class Turno
     @estado.is_a?(EstadoTurnoPresente)
   end
 
+  def actualizar_paciente(paciente)
+    @paciente = paciente
+  end
+
   private
 
   def es_fuera_de_horario_de_atencion?(horario)
