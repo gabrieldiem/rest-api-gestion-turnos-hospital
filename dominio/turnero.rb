@@ -4,6 +4,7 @@ require_relative '../lib/hora'
 class Turnero
   HORA_DE_COMIENZO_DE_JORNADA = Hora.new(8, 0)
   HORA_DE_FIN_DE_JORNADA = Hora.new(18, 0)
+  REPUTACION_VALIDA = 0.8
 
   def initialize(repositorios,
                  proveedor_de_feriados,
@@ -185,5 +186,9 @@ class Turnero
       return true if feriado.fecha == fecha
     end
     false
+  end
+
+  def validar_reputacion(paciente)
+    raise PacienteInvalidoException, "El paciente con DNI #{paciente.dni} no tiene reputación suficiente para reservar turnos" if paciente.reputacion < REPUTACION_VALIDA && paciente.tiene_turnos_reservados?
   end
 end

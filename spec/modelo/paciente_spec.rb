@@ -116,6 +116,21 @@ describe Paciente do
     end
   end
 
+  describe '- tiene turnos reservados -' do
+    it 'no tiene turnos reservados cuando no tiene ningun turno reservado' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      expect(paciente.tiene_turnos_reservados?).to be false
+    end
+
+    it 'tiene turnos reservados cuando tiene al menos un turno reservado' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+      paciente.turnos_reservados << turno
+      expect(paciente.tiene_turnos_reservados?).to be true
+    end
+  end
+
   describe '- recurrencia de especialidad -' do
     it 'no tiene recurrencia cuando no tiene turnos reservados' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)

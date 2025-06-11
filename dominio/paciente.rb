@@ -32,6 +32,11 @@ class Paciente
     true
   end
 
+  def tiene_turnos_reservados?
+    turnos_reservados = @turnos_reservados.count(&:reservado?)
+    turnos_reservados > 0
+  end
+
   def actualizar_reputacion
     @reputacion = REPUTACION_INICIAL if @turnos_reservados.empty?
 

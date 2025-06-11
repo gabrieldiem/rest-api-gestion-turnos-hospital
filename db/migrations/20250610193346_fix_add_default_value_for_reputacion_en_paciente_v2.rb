@@ -14,9 +14,7 @@ Sequel.migration do
       reputacion_old = row[:reputacion_old]
       reputacion_new = Paciente::REPUTACION_INICIAL
 
-      unless reputacion_old.nil?
-        reputacion_new = reputacion_old
-      end
+      reputacion_new = reputacion_old unless reputacion_old.nil?
 
       self[:pacientes].where(id: row[:id]).update(reputacion: reputacion_new)
     end
@@ -37,7 +35,7 @@ Sequel.migration do
 
     self[:pacientes].each do |row|
       reputacion = row[:reputacion_new]
-      self[:pacientes].where(id: row[:id]).update(reputacion: reputacion) if reputacion
+      self[:pacientes].where(id: row[:id]).update(reputacion:) if reputacion
     end
 
     alter_table(:pacientes) do
