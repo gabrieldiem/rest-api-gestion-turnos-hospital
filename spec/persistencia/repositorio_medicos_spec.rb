@@ -70,4 +70,10 @@ describe RepositorioMedicos do
     medico = repositorio_medico.find_without_loading_turnos(medico.id)
     expect(medico.turnos_asignados).to eq []
   end
+
+  it 'obtener un médico por id sin turnos con un id inexistente devuelve nil' do
+    id_inexistente = 8888
+    repositorio_medico = described_class.new(logger)
+    expect(repositorio_medico.find_without_loading_turnos(id_inexistente)).to eq nil
+  end
 end
