@@ -21,7 +21,7 @@ Característica: Gestión de reputación de pacientes
     Y el paciente con DNI "69420" reserva "1" turnos
     Entonces el sistema permite las reservas
 
-   @wip
+
    Escenario: 10.0.3 - Rechazo de reserva por mala reputación
     Cuando el paciente con DNI "69420" tiene "2" turnos asistidos y "6" turnos ausentes y "1" turnos reservado
     Y el paciente con DNI "69420" reserva "1" turnos
