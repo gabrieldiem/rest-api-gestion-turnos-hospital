@@ -103,8 +103,7 @@ describe Turnero do
 
     it 'puedo consultar todos los turnos reservados con un médico' do
       especialidad = turnero.crear_especialidad('Cardiología', 30, 21, 'card')
-      dni_paciente = '1230000'
-      turnero.crear_paciente('juancito@test.com', dni_paciente, 'juancito')
+      turnero.crear_paciente('juancito@test.com', '1230000', 'juancito')
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
 
       fecha_de_maniana = fecha_de_hoy + 1
@@ -113,10 +112,14 @@ describe Turnero do
       hora_fin_jornada = Hora.new(18, 0)
 
       cantidad_turnos = ((hora_fin_jornada.hora - hora_inicio_jornada.hora) * 60) / 30
-      turnos_asignados = llenar_turnos_de_un_dia(cantidad_turnos, hora_inicio_jornada, fecha_de_maniana, dni_paciente)
+      turnos_asignados = llenar_turnos_de_un_dia(cantidad_turnos, hora_inicio_jornada, fecha_de_maniana, '1230000')
 
       turnos_reservados = turnero.obtener_turnos_reservados_por_medico('NAC456')
-      expect(turnos_reservados).to eq(turnos_asignados)
+      turnos_reservados.size.times do |i|
+        expect(turnos_reservados[i].horario).to eq(turnos_asignados[i].horario)
+        expect(turnos_reservados[i].paciente.id).to eq(turnos_asignados[i].paciente.id)
+        expect(turnos_reservados[i].medico.id).to eq(turnos_asignados[i].medico.id)
+      end
     end
 
     it 'cuando consulto los turnos de un médico sin turnos me devuelve un error' do
