@@ -1,0 +1,475 @@
+{
+    "openapi": "3.0.0",
+    "servers": [
+        {
+            "url": "http://0.0.0.0:3000",
+            "description": ""
+        },
+        {
+            "url": "https://api.9521.com.ar/verde-test",
+            "description": ""
+        }
+    ],
+    "info": {
+        "description": "Swagger para la OpenAPI del Turnero del equipo Verde.",
+        "version": "0.10.2",
+        "title": "Turnero Verde",
+        "termsOfService": "",
+        "contact": {
+            "email": ""
+        }
+    },
+    "tags": [
+        {
+            "name": "especialidades",
+            "description": "Operaciones sobre las especialidades"
+        },
+        {
+            "name": "medicos",
+            "description": "Operaciones sobre los médicos"
+        },
+        {
+            "name": "pacientes",
+            "description": "Operaciones sobre los pacientes"
+        }
+    ],
+    "paths": {
+        "/especialidades": {
+            "post": {
+                "summary": "Crear nueva especialidad",
+                "description": "Crear nueva especialidad",
+                "parameters": [],
+                "operationId": "Crear especialidad",
+                "responses": {
+                    "201": {
+                        "description": "Creación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response201CrearEspecialidad"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error al crear la especialidad",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Generic"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "especialidades"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestCrearEspecialidad"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            },
+            "get": {
+                "summary": "Obtener todas las especialidades",
+                "description": "Obtener todas las especialidades",
+                "parameters": [],
+                "operationId": "Obtener todas las especialidades",
+                "responses": {
+                    "200": {
+                        "description": "Todas traídas exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response200TodasEspecialidades"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "especialidades"
+                ]
+            }
+        },
+        "/medicos": {
+            "post": {
+                "summary": "Crear nuevo médico",
+                "description": "Crear nuevo médico",
+                "parameters": [],
+                "operationId": "Crear médico",
+                "responses": {
+                    "201": {
+                        "description": "Creación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response201CrearMedico"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error al crear el médico",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Generic"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "medicos"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "required": false,
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestCrearMedico"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            },
+            "get": {
+                "summary": "Obtener todos los médicos",
+                "description": "Obtener todos los médicos",
+                "parameters": [],
+                "operationId": "Obtener todos los médicos",
+                "responses": {
+                    "200": {
+                        "description": "Todos traídas exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response200TodosMedicos"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "medicos"
+                ]
+            }
+        },
+        "/pacientes": {
+            "post": {
+                "summary": "Registrar un nuevo paciente",
+                "description": "Registrar un nuevo paciente",
+                "parameters": [],
+                "operationId": "Registrar paciente",
+                "responses": {
+                    "201": {
+                        "description": "Registro exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/Response201RegistrarPaciente" 
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error al registrar paciente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/Response400Generic"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "pacientes"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "required": false,
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestRegistrarPaciente"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "RequestCrearEspecialidad": {
+                "type": "object",
+                "properties": {
+                    "nombre": {
+                        "type": "string",
+                        "example": "Cardiología"
+                    },
+                    "duracion": {
+                        "type": "integer",
+                        "example": 45
+                    },
+                    "recurrencia_maxima": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "codigo": {
+                        "type": "string",
+                        "example": "card"
+                    }
+                },
+                "required": [
+                    "nombre",
+                    "duracion",
+                    "recurrencia_maxima",
+                    "codigo"
+                ]
+            },
+            "Response201CrearEspecialidad": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Cardiología"
+                    },
+                    "duracion": {
+                        "type": "integer",
+                        "example": 45
+                    },
+                    "recurrencia_maxima": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "codigo": {
+                        "type": "string",
+                        "example": "card"
+                    },
+                    "created_on": {
+                        "type": "string",
+                        "example": "2025-06-03T20:34:45+00:00"
+                    }
+                }
+            },
+            "Response200TodasEspecialidades": {
+                "type": "object",
+                "properties": {
+                    "cantidad_total": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "especialidades": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "nombre": {
+                                    "type": "string",
+                                    "example": "Cardiología"
+                                },
+                                "duracion": {
+                                    "type": "integer",
+                                    "example": 45
+                                },
+                                "recurrencia_maxima": {
+                                    "type": "integer",
+                                    "example": 3
+                                },
+                                "codigo": {
+                                    "type": "string",
+                                    "example": "card"
+                                },
+                                "created_on": {
+                                    "type": "string",
+                                    "example": "2025-06-03T20:34:45+00:00"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RequestCrearMedico": {
+                "type": "object",
+                "properties": {
+                    "nombre": {
+                        "type": "string",
+                        "example": "Juan"
+                    },
+                    "apellido": {
+                        "type": "string",
+                        "example": "Perez"
+                    },
+                    "matricula": {
+                        "type": "string",
+                        "example": "NAC001"
+                    },
+                    "especialidad": {
+                        "type": "string",
+                        "example": "card"
+                    }
+                },
+                "required": [
+                    "nombre",
+                    "apellido",
+                    "matricula",
+                    "especialidad"
+                ]
+            },
+            "Response201CrearMedico": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Juan"
+                    },
+                    "apellido": {
+                        "type": "string",
+                        "example": "Perez"
+                    },
+                    "matricula": {
+                        "type": "string",
+                        "example": "NAC001"
+                    },
+                    "especialidad": {
+                        "type": "string",
+                        "example": "card"
+                    },
+                    "created_on": {
+                        "type": "string",
+                        "example": "2025-06-03T20:34:45+00:00"
+                    }
+                }
+            },
+            "Response200TodosMedicos": {
+                "type": "object",
+                "properties": {
+                    "cantidad_total": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "medicos": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "nombre": {
+                                    "type": "string",
+                                    "example": "Juan"
+                                },
+                                "apellido": {
+                                    "type": "string",
+                                    "example": "Perez"
+                                },
+                                "matricula": {
+                                    "type": "string",
+                                    "example": "NAC001"
+                                },
+                                "especialidad": {
+                                    "type": "string",
+                                    "example": "card"
+                                },
+                                "created_on": {
+                                    "type": "string",
+                                    "example": "2025-06-03T20:34:45+00:00"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RequestRegistrarPaciente": {
+                "type": "object",
+                "properties": {
+                    "dni": {
+                        "type": "string",
+                        "example": "110022"
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "roberto_1999"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "roberto@gmail.com"
+                    }
+                },
+                "required": [
+                    "dni",
+                    "username",
+                    "email"
+                ]
+            },
+            "Response201RegistrarPaciente": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "dni": {
+                        "type": "string",
+                        "example": "110022"
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "roberto_1999"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "roberto@gmail.com"
+                    },
+                    "created_on": {
+                        "type": "string",
+                        "example": "2025-06-03T20:34:45+00:00"
+                    }
+                }
+            },
+            "Response400Generic": {
+                "type": "object",
+                "properties": {
+                    "mensaje_error": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "requestBodies": {},
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "name": "api_key",
+                "in": "header"
+            }
+        },
+        "links": {},
+        "callbacks": {}
+    },
+    "security": []
+}
