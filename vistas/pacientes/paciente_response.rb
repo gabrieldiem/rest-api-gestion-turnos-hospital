@@ -7,7 +7,8 @@ class PacienteResponse
     {
       username: @paciente.username,
       dni: @paciente.dni,
-      email: @paciente.email
+      email: @paciente.email,
+      reputacion: @paciente.reputacion
     }.to_json
   end
 end
