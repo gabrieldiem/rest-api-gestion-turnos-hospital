@@ -18,7 +18,7 @@ class ConvertidorDeTiempo
     horas, minutos = hora_string.split(@separador_de_hora)
     raise HoraInvalidaException if horas.nil? || minutos.nil?
 
-    Hora.new(horas.to_i, minutos.to_i)  
+    Hora.new(horas.to_i, minutos.to_i)
   end
 
   def presentar_hora(hora)
