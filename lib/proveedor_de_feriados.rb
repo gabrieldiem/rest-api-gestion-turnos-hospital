@@ -35,6 +35,9 @@ class ProveedorDeFeriados
     @logger.info("Haciendo GET request a #{final_url}")
 
     Faraday.get(final_url)
+  rescue Faraday::Error => e
+    @logger.error("Response errónea de #{final_url}: #{e.class} - #{e.message}")
+    raise NoSePuedenObtenerFeriadosException
   end
 
   def obtener_response_body(response)

@@ -32,6 +32,13 @@ module FeriadosStubs
       .and_return(response)
   end
 
+  def cuando_pido_los_feriados_y_hay_timeout(anio)
+    permitir_todas_las_requests_con_parametros_originales
+    allow(Faraday).to receive(:get)
+      .with("#{ENV['API_FERIADOS_URL']}/#{anio}")
+      .and_raise(Faraday::TimeoutError)
+  end
+
   private
 
   def permitir_todas_las_requests_con_parametros_originales

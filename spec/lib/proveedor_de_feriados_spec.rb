@@ -35,4 +35,12 @@ describe ProveedorDeFeriados do
 
     expect { proveedor_de_feriados.obtener_feriados(2025) }.to raise_error(NoSePuedenObtenerFeriadosException)
   end
+
+  it 'lanza error cuando no puede obtener feriados porque la API está caída' do
+    proveedor_de_feriados = described_class.new(api_feriados_url, logger)
+    fecha_feriado = Date.new(2025, 6, 20)
+    cuando_pido_los_feriados_y_hay_timeout(fecha_feriado.year)
+
+    expect { proveedor_de_feriados.obtener_feriados(2025) }.to raise_error(NoSePuedenObtenerFeriadosException)
+  end
 end
