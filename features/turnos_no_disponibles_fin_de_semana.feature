@@ -7,11 +7,9 @@ Característica: Gestión de turnos disponibles
 Antecedentes:
     Dado que estoy consultando turnos disponibles
 
-@wip
 Escenario: 5.3.1 Consulta de turnos disponibles en cualquier día de la semana
-    Dado que estoy consultando turnos disponibles
-    Cuando consulto los turnos un día de semana, como "lunes", "martes", "miércoles" o "jueves"
-    Entonces el turnero me muestra los turnos disponibles para el dia siguiente
+    Cuando consulto los turnos un "martes"
+    Entonces el turnero me muestra los turnos disponibles para el "miércoles" siguiente
     
 @wip
 Escenario: 5.3.2 Consulta de turnos disponibles en dia viernes
