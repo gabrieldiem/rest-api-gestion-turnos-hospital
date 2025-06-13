@@ -19,7 +19,8 @@ def obtener_fecha_a_partir_de_dia(dia)
     "jueves": '12-06-2025',
     "viernes": '13-06-2025',
     "sábado": '14-06-2025',
-    "domingo": '15-06-2025'
+    "domingo": '15-06-2025',
+    "lunes_feriado": '16-06-2025'
   }
   fechas[dia.to_sym]
 end
@@ -59,6 +60,12 @@ Entonces('el turnero me muestra los turnos disponibles para el {string} siguient
   expect(Date.parse(fecha_recibida_turnos).strftime('%A')).to eq(traducir_dia_al_ingles(dia_siguiente))
 end
 
-Cuando('consulto los turnos un {string} y el {string} siguiente es feriado') do |_string, _string2|
-  pending # Write code here that turns the phrase above into concrete actions
+Cuando('consulto los turnos un {string} y el {string} siguiente es feriado') do |dia, feriado|
+  fecha = Date.parse(obtener_fecha_a_partir_de_dia(dia))
+  fecha_feriado = Date.parse(obtener_fecha_a_partir_de_dia("#{feriado}_feriado"))
+  allow(Date).to receive(:today).and_return(fecha)
+  cuando_pido_los_feriados(fecha.year, [fecha_feriado])
+  response = Faraday.get('/medicos/MP9876/turnos-disponibles')
+  @turnos_response = JSON.parse(response.body)
+  expect(response.status).to eq(200)
 end

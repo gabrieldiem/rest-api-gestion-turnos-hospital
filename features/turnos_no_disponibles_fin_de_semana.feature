@@ -26,7 +26,7 @@ Escenario: 5.3.4 Consulta de turnos disponibles en dia domingo
     Cuando consulto los turnos un "domingo"
     Entonces el turnero me muestra los turnos disponibles para el "lunes" siguiente
 
-@wip
+
 Escenario: 5.3.5 Consulta de turnos disponibles un viernes antes de un feriado
     Cuando consulto los turnos un "viernes" y el "lunes" siguiente es feriado
     Entonces el turnero me muestra los turnos disponibles para el "martes" siguiente
