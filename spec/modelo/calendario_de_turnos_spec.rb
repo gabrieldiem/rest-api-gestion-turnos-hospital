@@ -165,4 +165,23 @@ describe CalendarioDeTurnos do
     duracion_turno = medico.especialidad.duracion
     expect(calculador_de_turnos_libres.es_hora_un_slot_valido(duracion_turno, hora_a_chequear)).to be true
   end
+
+  xit 'obtener turnos disponibles de un médico dado que mañana es sabado me da turnos del siguiente lunes' do
+    fecha_viernes = Date.parse('13-06-2025')
+    fecha_de_siguiente_lunes = fecha_viernes + 3
+    cuando_pido_los_feriados(fecha_viernes.year, [])
+    proveedor_double = class_double(Date, today: fecha_viernes)
+    proveedor_de_fecha_viernes = ProveedorDeFecha.new(proveedor_double)
+
+    calculador_de_turnos_libres = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                                      proveedor_de_fecha_viernes, proveedor_de_hora, proveedor_de_feriados)
+
+    turnos = calculador_de_turnos_libres.calcular_turnos_disponibles_por_medico medico
+
+    expect(turnos).to eq([Horario.new(fecha_de_siguiente_lunes, Hora.new(8, 0)),
+                          Horario.new(fecha_de_siguiente_lunes, Hora.new(8, 30)),
+                          Horario.new(fecha_de_siguiente_lunes, Hora.new(9, 0)),
+                          Horario.new(fecha_de_siguiente_lunes, Hora.new(9, 30)),
+                          Horario.new(fecha_de_siguiente_lunes, Hora.new(10, 0))])
+  end
 end
