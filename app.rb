@@ -14,11 +14,8 @@ require_relative './lib/convertidor_de_tiempo'
 Dir[File.join(__dir__, 'dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'persistencia', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'routes', '*.rb')].each { |file| require file }
-Dir[File.join(__dir__, 'routes/control', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'routes/medicos', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'routes/pacientes', '*.rb')].each { |file| require file }
-Dir[File.join(__dir__, 'routes/especialidades', '*.rb')].each { |file| require file }
-Dir[File.join(__dir__, 'routes/turnos', '*.rb')].each { |file| require file }
 
 FORMATO_FECHA = '%Y-%m-%d'.freeze
 SEPARADOR_DE_HORA = ':'.freeze

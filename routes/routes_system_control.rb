@@ -1,7 +1,7 @@
-Dir[File.join(__dir__, '../../dominio', '*.rb')].each { |file| require file }
-Dir[File.join(__dir__, '../../dominio/exceptions', '*.rb')].each { |file| require file }
-Dir[File.join(__dir__, '../../persistencia', '*.rb')].each { |file| require file }
-Dir[File.join(__dir__, '../../vistas/error', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../dominio', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../dominio/exceptions', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../persistencia', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../vistas/error', '*.rb')].each { |file| require file }
 
 module RoutesSystemControl
   TEST_STAGE = 'test'.freeze
@@ -36,7 +36,7 @@ module RoutesSystemControl
 
     app.get '/openapi.json' do
       status 200
-      send_file File.join(__dir__, '../../openapi.json')
+      send_file File.join(__dir__, '../openapi.json')
     end
 
     app.get '/swagger' do
