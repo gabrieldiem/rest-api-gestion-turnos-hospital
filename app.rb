@@ -82,3 +82,4 @@ register RoutesPacientes
 register RoutesEspecialidades
 register RoutesMedicos
 register RoutesTurnos
+register RoutesSwagger
