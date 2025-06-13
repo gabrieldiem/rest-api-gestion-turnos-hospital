@@ -103,6 +103,28 @@ describe Turnero do
                             Horario.new(fecha_dentro_de_3_dias, Hora.new(10, 0))])
     end
 
+    xit 'obtener turnos disponibles de un medico dado que hoy es viernes me da los del lunes siguiente' do
+      convertidor_de_tiempo = ConvertidorDeTiempo.new('%Y-%m-%d', ':', '%-H:%M')
+
+      fecha_viernes = Date.parse('13-06-2025')
+      proveedor_double_viernes = class_double(Date, today: fecha_viernes)
+      proveedor_de_fecha_viernes = ProveedorDeFecha.new(proveedor_double_viernes)
+
+      turnero2 = described_class.new(repositorios,
+                                     ProveedorDeFeriados.new(ENV['API_FERIADOS_URL'], logger),
+                                     proveedor_de_fecha_viernes,
+                                     proveedor_de_hora,
+                                     convertidor_de_tiempo)
+
+      turnero2.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+      siguiente_lunes = fecha_viernes + 3
+      cuando_pido_los_feriados(fecha_viernes.year, [])
+
+      turnos = turnero2.obtener_turnos_disponibles('NAC456')
+
+      expect(turnos).to include(Horario.new(siguiente_lunes, Hora.new(8, 0)))
+    end
+
     it 'no se puede reservar un turno mañana si es feriado' do
       turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
       turnero.crear_paciente('robertito@mail.com', '123000', 'NAC456')
