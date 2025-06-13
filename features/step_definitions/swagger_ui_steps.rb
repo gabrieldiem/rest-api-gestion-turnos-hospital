@@ -10,9 +10,11 @@ Entonces('la recibo exitosamente y sigue el estándar') do
 end
 
 Entonces('la recibo exitosamente') do
-  pending # Write code here that turns the phrase above into concrete actions
+  swagger_html = @response.body
+  expect(@response.status).to eq 200
+  expect(swagger_html).to include('SwaggerUI')
 end
 
 Cuando('solicito la interfaz Swagger') do
-  pending # Write code here that turns the phrase above into concrete actions
+  @response = Faraday.get('/swagger')
 end

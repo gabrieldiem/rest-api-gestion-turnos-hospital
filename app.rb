@@ -30,6 +30,7 @@ configure do
   DB.loggers << api_logger
   set :logger, api_logger
   set :default_content_type, :json
+  set :views, File.join(__dir__, 'vistas')
   set :environment, ENV['APP_MODE'].to_sym
   set :stage, ENV['STAGE']
   convertidor_de_tiempo_ = ConvertidorDeTiempo.new(FORMATO_FECHA, SEPARADOR_DE_HORA, FORMATO_HORA_OUTPUT)
