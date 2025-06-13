@@ -6,8 +6,9 @@ Característica: Uso de API con interfaz amigable con Swagger
 
   Escenario: 21.0.1 - Obtención de especificación de la API (OpenAPI)
     Cuando solicito la especificación de la API con estándar OpenAPI
-    Entonces la recibo exitosamente
+    Entonces la recibo exitosamente y sigue el estándar
 
+    @wip
   Escenario: 21.0.2 - Visualización de forma amigable con Swagger
     Cuando solicito la interfaz Swagger
     Entonces la recibo exitosamente

@@ -33,5 +33,10 @@ module RoutesSystemControl
       status 503
       MensajeErrorResponse.new('Servicio no disponible').to_json
     end
+
+    app.get '/openapi.json' do
+      status 200
+      send_file File.join(__dir__, '../../openapi.json')
+    end
   end
 end
