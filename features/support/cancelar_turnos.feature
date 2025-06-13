@@ -1,0 +1,44 @@
+# language: es
+Característica: Cancelar turnos reservados en el sistema HMS
+  Como paciente
+  Quiero cancelar un turno
+  Para liberar mi espacio si no puedo asistir.
+
+  Antecedentes:
+    Dado que hoy es "19/05/2025"
+    Y que existe un paciente registrado con DNI "12345678"
+    Y que existe la especialidad "Traumatologia" con código "trau" y tiempo de una consulta de "45" minutos
+    Y que existe un medico registrado llamado "María Fernández" con matricula "NAC123" que atiende en "trau"
+
+  @wip
+  Escenario: 8.0.1 - Cancelar un turno sin repercuciones
+    Dado que el paciente con DNI "12345678" saca un turno con el medico de matrícula "NAC123" para el dia "20/05/2025" a las "10:00"
+    Y tengo una reputacion de "1"
+    Cuando cancela a la reserva "5" dias previo a la fecha del turno
+    Entonces el turno se cancela exitosamente y mi reputacion se mantiene igual
+
+  @wip
+  Escenario: 8.0.2 - Cancelar un turno con repercuciones
+    Dado que el paciente con DNI "12345678" saca un turno con el medico de matrícula "NAC123" para el dia "20/05/2025" a las "10:00"
+    Y tengo una reputacion de "1"
+    Cuando doy cancelar a la reserva "5" horas antes de la fecha del turno
+    Entonces el turno se cancela exitosamente y mi reputacion empeora
+
+  @wip
+  Escenario: 8.0.3 - Cancelar el turno antes de las 24 horas permite volver a reservarlo
+    Dado que el paciente con DNI "12345678" saca un turno con el medico de matrícula "NAC123" para el día "20/05/2025" a las "10:00"
+    Cuando cancela a la reserva "5" dias previo a la fecha del turno
+    Entonces el turno se libera y puede ser reservado nuevamente
+
+  @wip
+  Escenario: 8.0.4 - Cancelar el turno dentro de las 24 horas no permite volver a reservarlo
+    Dado que el paciente con DNI "12345678" saca un turno con el medico de matrícula "NAC123" para el día "20/05/2025" a las "10:00"
+    Cuando doy cancelar a la reserva "5" horas antes de la fecha del turno
+    Entonces el turno se pierde y no puede ser reservado nuevamente
+
+
+
+
+
+
+
