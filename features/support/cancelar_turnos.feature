@@ -6,20 +6,21 @@ Característica: Cancelar turnos reservados en el sistema HMS
 
   Antecedentes:
     Dado que hoy es "19/05/2025"
-    Y que existe un paciente registrado con DNI "12345678"
+    Y que existe un paciente registrado con DNI "12345678" y username "Maximo Urtea"
     Y que existe la especialidad "Traumatologia" con código "trau" y tiempo de una consulta de "45" minutos
     Y que existe un medico registrado llamado "María Fernández" con matricula "NAC123" que atiende en "trau"
 
   @wip
   Escenario: 8.0.1 - Cancelar un turno sin repercuciones
     Dado que el paciente con DNI "12345678" saca un turno con el medico de matrícula "NAC123" para el dia "20/05/2025" a las "10:00"
+    
     Y tengo una reputacion de "1"
     Cuando cancela a la reserva "5" dias previo a la fecha del turno
     Entonces el turno se cancela exitosamente y mi reputacion se mantiene igual
 
   @wip
   Escenario: 8.0.2 - Cancelar un turno con repercuciones
-    Dado que el paciente con DNI "12345678" saca un turno con el medico de matrícula "NAC123" para el dia "20/05/2025" a las "10:00"
+    Dado que el paciente con DNI "12345678" saca un turno con el medico de matrícula "NAC123" para el día "20/05/2025" a las "10:00"
     Y tengo una reputacion de "1"
     Cuando doy cancelar a la reserva "5" horas antes de la fecha del turno
     Entonces el turno se cancela exitosamente y mi reputacion empeora
