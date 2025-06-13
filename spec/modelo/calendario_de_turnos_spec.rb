@@ -166,7 +166,7 @@ describe CalendarioDeTurnos do
     expect(calculador_de_turnos_libres.es_hora_un_slot_valido(duracion_turno, hora_a_chequear)).to be true
   end
 
-  xit 'obtener turnos disponibles de un médico dado que mañana es sabado me da turnos del siguiente lunes' do
+  it 'obtener turnos disponibles de un médico dado que mañana es sabado me da turnos del siguiente lunes' do
     fecha_viernes = Date.parse('13-06-2025')
     fecha_de_siguiente_lunes = fecha_viernes + 3
     cuando_pido_los_feriados(fecha_viernes.year, [])

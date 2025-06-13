@@ -6,6 +6,9 @@ class CalendarioDeTurnos
   HORAS_EN_UN_DIA = 24
   MINUTOS_EN_UNA_HORA = 60
   MINUTOS_EN_UN_DIA = HORAS_EN_UN_DIA * MINUTOS_EN_UNA_HORA
+  SABADO = 'Saturday'.freeze
+  DOMINGO = 'Sunday'.freeze
+  FIN_DE_SEMANA = [SABADO, DOMINGO].freeze
 
   def initialize(hora_de_comienzo_de_jornada,
                  hora_de_fin_de_jornada,
@@ -72,7 +75,7 @@ class CalendarioDeTurnos
     feriados = @proveedor_de_feriados.obtener_feriados(horario.fecha.year)
 
     while horario.hora.hora < @hora_de_fin_de_jornada.hora
-      if existe_turno_asignado?(horario, turnos_ya_asignados) || es_dia_feriado?(horario, feriados)
+      if existe_turno_asignado?(horario, turnos_ya_asignados) || es_dia_feriado?(horario, feriados) || es_fin_de_semana?(horario)
         @indice_horario_candidato += 1 # Saltear indice evaluar el siguiente
       else
         return horario
@@ -98,6 +101,12 @@ class CalendarioDeTurnos
     feriados.each do |feriado|
       return true if feriado.fecha == horario_a_verificar.fecha
     end
+    false
+  end
+
+  def es_fin_de_semana?(horario_a_verificar)
+    return true if FIN_DE_SEMANA.include?(horario_a_verificar.fecha.strftime('%A'))
+
     false
   end
 end
