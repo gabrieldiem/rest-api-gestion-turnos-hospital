@@ -103,7 +103,7 @@ describe Turnero do
                             Horario.new(fecha_dentro_de_3_dias, Hora.new(10, 0))])
     end
 
-    xit 'obtener turnos disponibles de un medico dado que hoy es viernes me da los del lunes siguiente' do
+    it 'obtener turnos disponibles de un medico dado que hoy es viernes me da los del lunes siguiente' do
       convertidor_de_tiempo = ConvertidorDeTiempo.new('%Y-%m-%d', ':', '%-H:%M')
 
       fecha_viernes = Date.parse('13-06-2025')
