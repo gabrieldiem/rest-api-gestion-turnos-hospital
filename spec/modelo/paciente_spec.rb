@@ -307,4 +307,56 @@ describe Paciente do
       end
     end
   end
+
+  describe '- quitar turno -' do
+    it 'quita un turno existente de la lista de turnos reservados' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno1 = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)), 1)
+      turno2 = Turno.new(paciente, medico, Horario.new(Date.today + 2, Hora.new(11, 0)), 2)
+      paciente.turnos_reservados << turno1
+      paciente.turnos_reservados << turno2
+
+      expect(paciente.turnos_reservados.size).to eq(2)
+
+      paciente.quitar_turno(turno1)
+      expect(paciente.turnos_reservados).not_to include(turno1)
+      expect(paciente.turnos_reservados.size).to eq(1)
+    end
+
+    it 'no cambia la lista si el turno a quitar no existe' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno1 = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)), 1)
+      turno2 = Turno.new(paciente, medico, Horario.new(Date.today + 2, Hora.new(11, 0)), 2)
+      paciente.turnos_reservados << turno1
+
+      expect { paciente.quitar_turno(turno2) }.to raise_error(TurnoInexistenteException)
+    end
+
+    it 'si el turno no es reservado, entonces no puede ser quitado de la lista' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)), 1)
+
+      turno.cambiar_asistencia(true)
+
+      expect { paciente.quitar_turno(turno) }.to raise_error(TurnoInvalidoException)
+    end
+
+    it 'no puede quitar un turno que no tiene id' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+      paciente.turnos_reservados << turno
+
+      expect { paciente.quitar_turno(turno) }.to raise_error(TurnoInvalidoException)
+    end
+
+    it 'no puede quitar un turno nil' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+
+      expect { paciente.quitar_turno(nil) }.to raise_error(TurnoInvalidoException)
+    end
+  end
 end

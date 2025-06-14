@@ -45,6 +45,13 @@ class Paciente
     @turnos_reservados[indice_a_actualizar] = turno_actualizado
   end
 
+  def quitar_turno(turno_a_quitar)
+    raise TurnoInvalidoException if turno_a_quitar.nil? || turno_a_quitar.id.nil? || !turno_a_quitar.reservado?
+    raise TurnoInexistenteException unless @turnos_reservados.any? { |turno| turno.id == turno_a_quitar.id }
+
+    @turnos_reservados.reject! { |turno| turno.id == turno_a_quitar.id }
+  end
+
   def actualizar_reputacion
     @reputacion = REPUTACION_INICIAL if @turnos_reservados.empty?
 
