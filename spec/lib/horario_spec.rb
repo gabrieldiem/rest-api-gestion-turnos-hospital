@@ -20,6 +20,110 @@ describe Horario do
     expect(horario).to eq described_class.new(fecha, hora)
   end
 
+  it 'Un horario que tiene hora 10h 31min y fecha 25/10/1999 es despues de un horario que tiene la misma hora y fecha previa al anterior' do
+    hora = Hora.new(10, 31)
+    fecha = Date.parse('25/10/1999')
+    horario = described_class.new(fecha, hora)
+    fecha_anterior = Date.parse('24/10/1999')
+    horario_anterior = described_class.new(fecha_anterior, hora)
+    expect(horario.es_despues_de?(horario_anterior)).to be true
+  end
+
+  it 'Un horario que tiene hora 10h 31min y fecha 25/10/1999 no es despues de un horario que tiene la misma hora y fecha posterio al anterior' do
+    hora = Hora.new(10, 31)
+    fecha = Date.parse('25/10/1999')
+    horario = described_class.new(fecha, hora)
+    fecha_posterior = Date.parse('30/10/1999')
+    horario_anterior = described_class.new(fecha_posterior, hora)
+    expect(horario.es_despues_de?(horario_anterior)).to be false
+  end
+
+  it 'Un horario que tiene hora 10h 31min y fecha 25/10/1999 es antes de un horario que tiene la misma hora y fecha posterior al anterior' do
+    hora = Hora.new(10, 31)
+    fecha = Date.parse('25/10/1999')
+    horario = described_class.new(fecha, hora)
+    fecha_posterior = Date.parse('30/10/1999')
+    horario_posterior = described_class.new(fecha_posterior, hora)
+    expect(horario.es_antes_de?(horario_posterior)).to be true
+  end
+
+  it 'Un horario que tiene hora 10h 31min y fecha 25/10/1999 no es antes de un horario que tiene la misma hora y fecha previa al anterior' do
+    hora = Hora.new(10, 31)
+    fecha = Date.parse('25/10/1999')
+    horario = described_class.new(fecha, hora)
+    fecha_anterior = Date.parse('24/10/1999')
+    horario_anterior = described_class.new(fecha_anterior, hora)
+    expect(horario.es_antes_de?(horario_anterior)).to be false
+  end
+
+  it 'Si dos horarios son iguales, no son antes uno del otro' do
+    hora = Hora.new(10, 31)
+    fecha = Date.parse('25/10/1999')
+    horario = described_class.new(fecha, hora)
+    horario_igual = described_class.new(fecha, hora)
+    expect(horario.es_antes_de?(horario_igual)).to be false
+  end
+
+  it 'Si dos horarios son iguales, no son despues uno del otro' do
+    hora = Hora.new(10, 31)
+    fecha = Date.parse('25/10/1999')
+    horario = described_class.new(fecha, hora)
+    horario_igual = described_class.new(fecha, hora)
+    expect(horario.es_despues_de?(horario_igual)).to be false
+  end
+
+  describe '- diferencia horaria -' do
+    it 'calcula la diferencia horaria entre dos horarios en horas' do
+      hora1 = Hora.new(10, 30)
+      fecha1 = Date.parse('25/10/1999')
+      horario1 = described_class.new(fecha1, hora1)
+
+      hora2 = Hora.new(12, 0)
+      fecha2 = Date.parse('25/10/1999')
+      horario2 = described_class.new(fecha2, hora2)
+
+      diferencia = horario1.calcular_diferencia_con_otro_horario(horario2)
+
+      expect(diferencia).to eq 1.5
+    end
+
+    it 'calcula la diferencia horaria entre dos horarios en horas, con fechas distintas' do
+      hora1 = Hora.new(10, 30)
+      fecha1 = Date.parse('25/10/1999')
+      horario1 = described_class.new(fecha1, hora1)
+
+      hora2 = Hora.new(12, 0)
+      fecha2 = Date.parse('26/10/1999')
+      horario2 = described_class.new(fecha2, hora2)
+
+      diferencia = horario1.calcular_diferencia_con_otro_horario(horario2)
+
+      expect(diferencia).to eq 25.5 # 24 horas + 1.5 horas
+    end
+
+    it 'si ambos horarios son iguales, la diferencia es 0' do
+      hora = Hora.new(10, 30)
+      fecha = Date.parse('25/10/1999')
+      horario = described_class.new(fecha, hora)
+
+      diferencia = horario.calcular_diferencia_con_otro_horario(horario)
+
+      expect(diferencia).to eq 0
+    end
+
+    it 'lanza un error si los argumentos no son instancias de Horario' do
+      hora1 = Hora.new(10, 30)
+      fecha1 = Date.parse('25/10/1999')
+      horario1 = described_class.new(fecha1, hora1)
+
+      horario2 = DateTime.new(1999, 10, 25, 12, 0) # No es un Horario
+
+      expect do
+        horario1.calcular_diferencia_con_otro_horario(horario2)
+      end.to raise_error(ArgumentError, 'El otro horario debe ser una instancia de Horario')
+    end
+  end
+
   describe '- superposicion -' do
     let(:fecha) { Date.new(2024, 6, 1) }
     let(:dia_siguiente_a_fecha) { Date.new(2024, 6, 2) }
