@@ -52,6 +52,20 @@ describe Hora do
     expect(hora_resultado).to eq described_class.new(0, 0)
   end
 
+  it 'Resta de 10h30 - 1h45 da 8h45' do
+    h1 = described_class.new(10, 30)
+    h2 = described_class.new(1, 45)
+    hora_resultado = h1 - h2
+    expect(hora_resultado).to eq described_class.new(8, 45)
+  end
+
+  it 'Resta de 10h30 - 11h45 da 23h45' do
+    h1 = described_class.new(10, 30)
+    h2 = described_class.new(11, 45)
+    hora_resultado = h1 - h2
+    expect(hora_resultado).to eq described_class.new(22, 45)
+  end
+
   it 'Se normaliza correctamente una hora creada como 0h 120min a 2h 0min' do
     hora = described_class.new(0, 120)
 

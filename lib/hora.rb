@@ -18,6 +18,15 @@ class Hora
     Hora.new(total_horas, minutos_restantes)
   end
 
+  def -(other)
+    total_minutos_self = hora * 60 + minutos
+    total_minutos_other = other.hora * 60 + other.minutos
+    diff_minutos = (total_minutos_self - total_minutos_other) % (24 * 60)
+    horas, mins = diff_minutos.divmod(60)
+    Hora.new(horas, mins)
+  end
+  
+
   def hay_superposicion?(otra_hora, duracion)
     intervalo1 = construir_intervalo(self, duracion)
     intervalo2 = construir_intervalo(otra_hora, duracion)
