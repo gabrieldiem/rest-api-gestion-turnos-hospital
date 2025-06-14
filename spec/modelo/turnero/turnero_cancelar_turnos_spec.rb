@@ -79,7 +79,7 @@ describe Turnero do
       expect(paciente_actualizado.reputacion).to eq(1.0)
     end
 
-    xit 'cancelar un turno con anticipacion muestra que el paciente no tiene asignado ese turno y el medico tampoco' do
+    it 'cancelar un turno con anticipacion muestra que el paciente no tiene asignado ese turno y el medico tampoco' do
       fecha_pasado_2_dias_de_hoy = proveedor_de_fecha.hoy + 2
 
       medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
@@ -88,11 +88,9 @@ describe Turnero do
 
       turnero.cancelar_turno(turno.id)
 
-      paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
-      expect(paciente_actualizado.turnos_reservados.map(&:id)).not_to include(turno.id)
+      expect { turnero.obtener_turnos_reservados_del_paciente_por_dni(paciente.dni) }.to raise_error(SinTurnosException)
 
-      medico_actualizado = turnero.buscar_medico_por_matricula(medico.matricula)
-      expect(medico_actualizado.turnos_asignados.map(&:id)).not_to include(turno.id)
+      expect { turnero.obtener_turnos_reservados_por_medico(medico.matricula) }.to raise_error(SinTurnosException)
     end
 
     xit 'un turno cancelado con menos de 24hs de anticipacion debe no eliminarlo de la BDD y afectar la reputacion' do
