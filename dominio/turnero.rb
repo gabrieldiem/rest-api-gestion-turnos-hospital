@@ -6,6 +6,7 @@ require_relative './asignador_de_turnos'
 class Turnero
   HORA_DE_COMIENZO_DE_JORNADA = Hora.new(8, 0)
   HORA_DE_FIN_DE_JORNADA = Hora.new(18, 0)
+  MINIMO_PARA_CANCELAR_ANTICIPADAMENTE = 24
 
   def initialize(repositorios,
                  proveedor_de_feriados,
@@ -179,18 +180,17 @@ class Turnero
   end
 
   def es_cancelado_anticipado?(turno)
-    hoy = @proveedor_de_fecha.hoy
-    fecha_turno = turno.date
-    ((fecha_turno - hoy).to_f > 1 && fecha_turno <= hoy)
+    turno_horario = turno.horario
+    hoy_horario = Horario.new(@convertidor_de_tiempo.estandarizar_fecha(@proveedor_de_fecha.hoy.to_s), @convertidor_de_tiempo.estandarizar_hora(@proveedor_de_hora.hora_actual.to_s))
+
+    diferencia_hora = turno_horario.calcular_diferencia_con_otro_horario(hoy_horario)
+    previo_a_hoy = hoy_horario.es_antes_de?(turno_horario)
+
+    diferencia_hora >= MINIMO_PARA_CANCELAR_ANTICIPADAMENTE && previo_a_hoy
   end
 
   def cancelar_anticipadamente(turno)
     @repositorio_turnos.delete(turno)
-    turno.paciente.quitar_turno(turno)
-    turno.medico.quitar_turno(turno)
-
-    @repositorio_pacientes.save(turno.paciente)
-    @repositorio_medicos.save(turno.medico)
   end
 
   def cancelar_sin_anticipacion(turno)
