@@ -7,9 +7,13 @@ class Hora
     @minutos = normalizados_minutos
   end
 
-  def ==(other)
-    other.is_a?(Hora) && hora == other.hora && minutos == other.minutos
-  end
+    def ==(other)
+      other.is_a?(Hora) && hora == other.hora && minutos == other.minutos
+    end
+
+    def to_s
+      format('%02d:%02d', hora, minutos)
+    end
 
   def +(other)
     total_minutos = minutos + other.minutos

@@ -59,6 +59,11 @@ describe Hora do
     expect(hora_resultado).to eq described_class.new(8, 45)
   end
 
+  it 'Al converitr un horario en string, se muestra en formato HH:MM' do
+    h1 = described_class.new(10, 30)
+    expect(h1.to_s).to eq '10:30'
+  end
+
   it 'Resta de 10h30 - 11h45 da 23h45' do
     h1 = described_class.new(10, 30)
     h2 = described_class.new(11, 45)
