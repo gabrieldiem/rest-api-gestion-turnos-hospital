@@ -99,6 +99,14 @@ class Turnero
     turno_actualizado
   end
 
+  def cancelar_turno(id_turno)
+    turno = @repositorio_turnos.find_by_id(id_turno)
+    raise TurnoInexistenteException, "No existe un turno con el ID #{id_turno}" if turno.nil?
+    raise TurnoInvalidoException, 'No se puede cancelar un turno que ya ha sido actualizado' unless turno.reservado?
+
+    es_cancelado_anticipado?(turno) ? cancelar_anticipadamente(turno) : cancelar_sin_anticipacion(turno)
+  end
+
   def buscar_paciente_por_username(username)
     raise PacienteInexistenteException, 'Debe tener un username para poder realizar esta accion' if username.nil? || username.empty?
 
@@ -168,5 +176,30 @@ class Turnero
     else
       true
     end
+  end
+
+  def es_cancelado_anticipado?(turno)
+    hoy = @proveedor_de_fecha.hoy
+    fecha_turno = turno.date
+    ((fecha_turno - hoy).to_f > 1 && fecha_turno <= hoy)
+  end
+
+  def cancelar_anticipadamente(turno)
+    @repositorio_turnos.delete(turno)
+    turno.paciente.quitar_turno(turno)
+    turno.medico.quitar_turno(turno)
+
+    @repositorio_pacientes.save(turno.paciente)
+    @repositorio_medicos.save(turno.medico)
+  end
+
+  def cancelar_sin_anticipacion(turno)
+    turno.cambiar_asistencia(false)
+    turno_actualizado = @repositorio_turnos.save(turno)
+    turno.paciente.actualizar_turno(turno_actualizado)
+
+    turno.paciente.actualizar_reputacion
+    @repositorio_pacientes.save(turno.paciente)
+    turno_actualizado.actualizar_paciente(turno.paciente)
   end
 end

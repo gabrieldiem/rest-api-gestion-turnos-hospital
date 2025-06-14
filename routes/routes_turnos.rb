@@ -43,4 +43,17 @@ module RoutesTurnos
       MensajeErrorResponse.new('Su reputación no es suficiente para cambiar la asistencia de este turno').to_json
     end
   end
+
+  def self.put_turnos_cancelar(app)
+    app.put '/turnos/cancelar/:id' do
+      logger.debug("PUT /turnos/cancelar/#{params['id']} con params: #{params}")
+      turno = turnero.cancelar_turno(params['id'].to_i)
+      status 200
+      ActualizacionDeTurnoResponse.new(turno, convertidor_de_tiempo).to_json
+    rescue TurnoInexistenteException => e
+      logger.error("Error al cancelar el turno: #{e.message}")
+      status 404
+      MensajeErrorResponse.new('Turno inexistente').to_json
+    end
+  end
 end
