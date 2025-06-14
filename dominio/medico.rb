@@ -32,6 +32,13 @@ class Medico
     turno
   end
 
+  def quitar_turno(turno_a_quitar)
+    raise TurnoInvalidoException if turno_a_quitar.nil? || turno_a_quitar.id.nil? || !turno_a_quitar.reservado?
+    raise TurnoInexistenteException unless @turnos_asignados.any? { |turno| turno.id == turno_a_quitar.id }
+
+    @turnos_asignados.reject! { |turno| turno.id == turno_a_quitar.id }
+  end
+
   def ==(other)
     other.is_a?(Medico) &&
       @nombre == other.nombre &&
