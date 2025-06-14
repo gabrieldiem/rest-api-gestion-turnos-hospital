@@ -108,14 +108,17 @@ describe Turnero do
 
       turnero.cancelar_turno(turno.id)
 
-      expect { turnero.buscar_turno_by_id(turno.id) }.not_to raise_error(TurnoInexistenteException)
+      turno_actualizado = turnero.buscar_turno(turno.id)
+
+
+      expect(turno_actualizado.asistio?).to eq(false)
 
       paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
 
       expect(paciente_actualizado.reputacion).to be < reputacion_inicial
     end
 
-    xit 'un turno cancelado sin anticipacion de 24hs no puede ser nuevamente reservado' do
+    it 'un turno cancelado sin anticipacion de 24hs no puede ser nuevamente reservado' do
       fecha_turno = proveedor_de_fecha.hoy
 
       hora_turno = proveedor_de_hora.hora_actual + Hora.new(5, 0)
@@ -126,10 +129,10 @@ describe Turnero do
 
       turnero.cancelar_turno(turno.id)
 
-      expect { turnero.turnero.asignar_turno(medico.matricula, fecha_turno.to_s, hora_turno.to_s, paciente.dni) }.to raise_error(TurnoNoDisponibleException)
+      expect { turnero.asignar_turno(medico.matricula, fecha_turno.to_s, hora_turno.to_s, paciente.dni) }.to raise_error(TurnoNoDisponibleException)
     end
 
-    xit 'un turno cancelado con anticipacion de 24hs puede ser nuevamente reservado' do
+    it 'un turno cancelado con anticipacion de 24hs puede ser nuevamente reservado' do
       fecha_turno = proveedor_de_fecha.hoy + 2
 
       medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
@@ -138,7 +141,10 @@ describe Turnero do
 
       turnero.cancelar_turno(turno.id)
 
-      expect { turnero.turnero.asignar_turno(medico.matricula, fecha_turno.to_s, hora_turno.to_s, paciente.dni) }.not_to raise_error(TurnoNoDisponibleException)
+      turno_nuevo = turnero.asignar_turno(medico.matricula, fecha_turno.to_s,  '8:00', paciente.dni)
+
+      expect(turno_nuevo).to be_a(Turno)
+
     end
 
     xit 'no se puede cancelar un turno que no sea reservado' do
