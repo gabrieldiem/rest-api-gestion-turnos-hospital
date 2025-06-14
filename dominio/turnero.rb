@@ -105,7 +105,7 @@ class Turnero
     raise TurnoInexistenteException, "No existe un turno con el ID #{id_turno}" if turno.nil?
     raise TurnoInvalidoException, 'No se puede cancelar un turno que ya ha sido actualizado' unless turno.reservado?
 
-    es_cancelado_anticipado?(turno) ? cancelar_anticipadamente(turno) : cancelar_sin_anticipacion(turno)
+    es_cancelado_anticipado?(turno) ? @repositorio_turnos.delete(turno) : cambiar_asistencia_turno(turno.id, turno.paciente.dni, false)
   end
 
   def buscar_paciente_por_username(username)
@@ -187,19 +187,5 @@ class Turnero
     previo_a_hoy = hoy_horario.es_antes_de?(turno_horario)
 
     diferencia_hora >= MINIMO_PARA_CANCELAR_ANTICIPADAMENTE && previo_a_hoy
-  end
-
-  def cancelar_anticipadamente(turno)
-    @repositorio_turnos.delete(turno)
-  end
-
-  def cancelar_sin_anticipacion(turno)
-    turno.cambiar_asistencia(false)
-    turno_actualizado = @repositorio_turnos.save(turno)
-    turno.paciente.actualizar_turno(turno_actualizado)
-
-    turno.paciente.actualizar_reputacion
-    @repositorio_pacientes.save(turno.paciente)
-    turno_actualizado.actualizar_paciente(turno.paciente)
   end
 end

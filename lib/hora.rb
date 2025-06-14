@@ -7,13 +7,13 @@ class Hora
     @minutos = normalizados_minutos
   end
 
-    def ==(other)
-      other.is_a?(Hora) && hora == other.hora && minutos == other.minutos
-    end
+  def ==(other)
+    other.is_a?(Hora) && hora == other.hora && minutos == other.minutos
+  end
 
-    def to_s
-      format('%02d:%02d', hora, minutos)
-    end
+  def to_s
+    format('%<hora>02d:%<minutos>02d', hora:, minutos:)
+  end
 
   def +(other)
     total_minutos = minutos + other.minutos
@@ -29,7 +29,6 @@ class Hora
     horas, mins = diff_minutos.divmod(60)
     Hora.new(horas, mins)
   end
-  
 
   def hay_superposicion?(otra_hora, duracion)
     intervalo1 = construir_intervalo(self, duracion)

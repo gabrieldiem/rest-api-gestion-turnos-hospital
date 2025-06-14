@@ -70,13 +70,15 @@ describe Turnero do
       paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
       turno = turnero.asignar_turno(medico.matricula, fecha_pasado_2_dias_de_hoy.to_s, '8:00', paciente.dni)
 
+      reputacion_inicial = turnero.buscar_paciente_por_dni(paciente.dni).reputacion
+
       turnero.cancelar_turno(turno.id)
 
       expect { turnero.buscar_turno(turno.id) }.to raise_error(TurnoInexistenteException)
 
       paciente_actualizado = turnero.buscar_paciente_por_dni(paciente.dni)
 
-      expect(paciente_actualizado.reputacion).to eq(1.0)
+      expect(paciente_actualizado.reputacion).to eq(reputacion_inicial)
     end
 
     it 'cancelar un turno con anticipacion muestra que el paciente no tiene asignado ese turno y el medico tampoco' do
@@ -93,16 +95,16 @@ describe Turnero do
       expect { turnero.obtener_turnos_reservados_por_medico(medico.matricula) }.to raise_error(SinTurnosException)
     end
 
-    xit 'un turno cancelado con menos de 24hs de anticipacion debe no eliminarlo de la BDD y afectar la reputacion' do
+    it 'un turno cancelado con menos de 24hs de anticipacion debe no eliminarlo de la BDD y afectar la reputacion' do
       fecha_turno_con_menos_de_24hs_de_anticipacion = proveedor_de_fecha.hoy
-      hora_turno = :proveedor_de_hora.hora_actual - 1.hour
+
+      hora_turno = proveedor_de_hora.hora_actual + Hora.new(5, 0)
 
       medico = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
       paciente = turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test')
-      turno = turnero.asignar_turno(medico.matricula, fecha_turno_con_menos_de_24hs_de_anticipacion, hora_turno, paciente.dni)
+      turno = turnero.asignar_turno(medico.matricula, fecha_turno_con_menos_de_24hs_de_anticipacion.to_s, hora_turno.to_s, paciente.dni)
 
       reputacion_inicial = turnero.buscar_paciente_por_dni(paciente.dni).reputacion
-      expect(reputacion_inicial).to eq(1.0)
 
       turnero.cancelar_turno(turno.id)
 
