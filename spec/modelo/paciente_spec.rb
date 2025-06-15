@@ -379,5 +379,18 @@ describe Paciente do
       expect(paciente.obtener_historial).to eq([])
     end
 
+    it 'devuelve una lista de turnos que ya han pasado' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+
+      turno.cambiar_asistencia(true)
+
+      paciente.turnos_reservados << turno
+
+      expect(paciente.obtener_historial.size).to eq(1)
+      expect(paciente.obtener_historial).to include(turno)
+    end
+
   end
 end
