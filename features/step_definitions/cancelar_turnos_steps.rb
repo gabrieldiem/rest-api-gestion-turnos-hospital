@@ -20,7 +20,6 @@ Dado('que el paciente con DNI {string} saca un turno con el medico de matrícula
   }
 
   response = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
-  puts "Response body: #{response.body}"
   @turno_reservado = JSON.parse(response.body, symbolize_names: true)
   expect(response.status).to eq(201)
 end
@@ -28,6 +27,7 @@ end
 Dado('tengo una reputacion de {string}') do |reputacion_esperada|
   paciente = obtener_paciente_por_username(@username)
   expect(paciente[:reputacion]).to eq(reputacion_esperada.to_i)
+  @reputacion = paciente[:reputacion]
 end
 
 Cuando('cancela a la reserva {string} dias previo a la fecha del turno') do |cant_dias_previos|
@@ -38,30 +38,27 @@ Cuando('cancela a la reserva {string} dias previo a la fecha del turno') do |can
   allow(Date).to receive(:today).and_return(@fecha_de_hoy)
 
   @response = Faraday.put("/turnos/cancelar/#{@turno_reservado[:id]}")
-
-  puts "Response body: #{@response.body}"
 end
 
 Entonces('el turno se cancela exitosamente y mi reputacion se mantiene igual') do
   expect(@response.status).to eq(200)
   paciente = obtener_paciente_por_username(@username)
-  expect(paciente['reputacion']).to eq(@reputacion)
+  expect(paciente[:reputacion]).to eq(@reputacion)
 end
 
 Cuando('doy cancelar a la reserva {string} horas antes de la fecha del turno') do |cantidad_horas_antes|
-  fecha_actual = Date.parse(@turno_reservado[:fecha])
-
-  @fecha_de_hoy = fecha_actual - cantidad_horas_antes.to_i
+  fecha_actual = DateTime.parse("#{@turno_reservado[:turno][:fecha]} #{@turno_reservado[:turno][:hora]}")
+  @fecha_de_hoy = (fecha_actual - (cantidad_horas_antes.to_f / 24)).to_date
 
   allow(Date).to receive(:today).and_return(@fecha_de_hoy)
 
-  @response = Faraday.put("/turnos/cancelar/#{@turno_reservado['id']}")
+  @response = Faraday.put("/turnos/cancelar/#{@turno_reservado[:id]}")
 end
 
 Entonces('el turno se cancela exitosamente y mi reputacion empeora') do
   expect(@response.status).to eq(200)
   paciente = obtener_paciente_por_username(@username)
-  expect(paciente['reputacion']).to be < @reputacion
+  expect(paciente[:reputacion]).to be < @reputacion
 end
 
 Entonces('el turno se libera y puede ser reservado nuevamente') do
