@@ -359,4 +359,41 @@ describe Paciente do
       expect { paciente.quitar_turno(nil) }.to raise_error(TurnoInvalidoException)
     end
   end
+
+  describe ' - hisotiral de turnos -' do
+    it 'devuelve un array vacío cuando no tiene turnos' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+
+      expect(paciente.obtener_historial).to eq([])
+    end
+
+    it 'devuelve un array vacío cuando no tiene turnos ya pasados' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+
+      paciente.turnos_reservados << turno
+
+      expect(paciente.obtener_historial).to eq([])
+    end
+
+    it 'devuelve una lista de turnos que ya han pasado' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno1 = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+      turno2 = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+      turno_reservado = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+
+      turno1.cambiar_asistencia(true)
+      turno2.cambiar_asistencia(false)
+
+      paciente.turnos_reservados << turno1
+      paciente.turnos_reservados << turno2
+      paciente.turnos_reservados << turno_reservado
+
+      expect(paciente.obtener_historial.size).to eq(2)
+      expect(paciente.obtener_historial).to include(turno1)
+      expect(paciente.obtener_historial).to include(turno2)
+    end
+  end
 end
