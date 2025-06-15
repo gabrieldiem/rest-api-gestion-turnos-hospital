@@ -7,9 +7,9 @@ describe EstadoTurnoReservado do
     expect(estado.descripcion).to eq('reservado')
   end
 
-  xit 'el estado reservado cuando cambiamos de asistencia a true es igual a "presente"' do
+  it 'el estado reservado cuando cambiamos de asistencia a true es igual a "presente"' do
     estado = described_class.new
-    estado.cambiar_asistencia(true)
-    expect(estado.descripcion).to eq('presente')
+    nuevo_estado = estado.cambiar_asistencia(true)
+    expect(nuevo_estado.descripcion).to eq('presente')
   end
 end
