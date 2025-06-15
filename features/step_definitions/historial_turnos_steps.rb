@@ -5,7 +5,7 @@ Dado('que hay {string} turnos reservados para {string}') do |cantidad_turnos, us
 
   hora_inicio = Time.parse('08:00')
 
-  for i in 1..cantidad_turnos.to_i
+  (1..cantidad_turnos.to_i).each do |i|
     fecha = Date.today + i
     hora = (hora_inicio + ((i - 1) * @duracion * 60)).strftime('%H:%M')
     turno = {
@@ -27,7 +27,7 @@ Dado('{string} han sido asisitidos') do |cant_turnos|
 end
 
 Cuando('quiere ver su historial de turnos') do
-  @respuesta = Faraday.get("/pacientes/#{@dni_registrado}/hitorial")
+  @respuesta = Faraday.get("/pacientes/#{@dni_registrado}/historial")
   @respuesta_parseada = JSON.parse(@respuesta.body, symbolize_names: true)
 end
 
