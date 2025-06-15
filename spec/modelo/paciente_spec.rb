@@ -363,8 +363,6 @@ describe Paciente do
   describe ' - hisotiral de turnos -' do
     it 'devuelve un array vacío cuando no tiene turnos' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
-      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
-      turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
 
       expect(paciente.obtener_historial).to eq([])
     end
@@ -382,15 +380,20 @@ describe Paciente do
     it 'devuelve una lista de turnos que ya han pasado' do
       paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
       medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
-      turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+      turno1 = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+      turno2 = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+      turno_reservado = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
 
-      turno.cambiar_asistencia(true)
+      turno1.cambiar_asistencia(true)
+      turno2.cambiar_asistencia(false)
 
-      paciente.turnos_reservados << turno
+      paciente.turnos_reservados << turno1
+      paciente.turnos_reservados << turno2
+      paciente.turnos_reservados << turno_reservado
 
-      expect(paciente.obtener_historial.size).to eq(1)
-      expect(paciente.obtener_historial).to include(turno)
+      expect(paciente.obtener_historial.size).to eq(2)
+      expect(paciente.obtener_historial).to include(turno1)
+      expect(paciente.obtener_historial).to include(turno2)
     end
-
   end
 end
