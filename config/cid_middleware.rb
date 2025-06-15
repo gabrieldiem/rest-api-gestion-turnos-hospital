@@ -6,7 +6,7 @@ class CIDMiddleware
   def call(env)
     correlation_id = "cid:#{UUID.new.generate}"
     Thread.current[:cid] = correlation_id
-    SematicLogger.tagged(correlation_id) do
+    SemanticLogger.tagged(correlation_id) do
       @app.call(env)
     end
   end

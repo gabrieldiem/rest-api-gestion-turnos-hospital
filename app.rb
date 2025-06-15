@@ -4,7 +4,9 @@ require 'sequel'
 require 'sinatra/custom_logger'
 require 'active_model'
 require 'dotenv/load'
+require 'uuid'
 require_relative './config/configuration'
+require_relative './config/cid_middleware'
 require_relative './lib/version'
 require_relative './lib/proveedor_de_fecha'
 require_relative './lib/proveedor_de_hora'
@@ -42,6 +44,7 @@ configure do
                             ProveedorDeFecha.new,
                             ProveedorDeHora.new,
                             convertidor_de_tiempo_)
+  use CIDMiddleware
   api_logger.info('Iniciando turnero...')
 end
 
