@@ -359,4 +359,14 @@ describe Paciente do
       expect { paciente.quitar_turno(nil) }.to raise_error(TurnoInvalidoException)
     end
   end
+
+  describe ' - hisotiral de turnos -' do
+    it 'devuelve un array vacío cuando no tiene turnos' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+
+      expect(paciente.obtener_historial).to eq([])
+    end
+  end
 end
