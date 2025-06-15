@@ -245,6 +245,15 @@ describe Turnero do
     end
 
     describe 'obtener historial de turnos reservados por un paciente' do
+      it 'obtener historial de turnos de un paciente sin turnos reservados produce un error SinTurnosException' do
+        dni = '999999999'
+        turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
+
+        expect do
+          turnero.obtener_historial_turno_del_paciente_por_dni(dni)
+        end.to raise_error(SinTurnosException)
+      end
+
       xit 'obtener historial de turnos de un paciente' do
         especialidad_cirujano = turnero.crear_especialidad('Cirujano', 30, 10, 'ciru')
         turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
