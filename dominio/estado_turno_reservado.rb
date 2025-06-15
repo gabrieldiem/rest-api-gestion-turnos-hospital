@@ -1,5 +1,3 @@
-require_relative 'estado_turno_presente'
-
 class EstadoTurnoReservado
   ESTADO_RESERVADO = 'reservado'.freeze
 
@@ -9,7 +7,9 @@ class EstadoTurnoReservado
     @descripcion = ESTADO_RESERVADO
   end
 
-  def cambiar_asistencia(_asistio)
-    EstadoTurnoPresente.new
+  def cambiar_asistencia(asistio)
+    return EstadoTurnoPresente.new if asistio
+
+    EstadoTurnoAusente.new
   end
 end
