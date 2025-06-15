@@ -10,33 +10,36 @@ def obtener_paciente_por_username(username)
   JSON.parse(response.body, symbolize_names: true)
 end
 
-Dado('que el paciente con DNI {string} saca un turno con el medico de matrícula {string} para el día {string} a las {string}') do |dni, matricula, dia, hora|
+Dado('que el paciente con DNI {string} saca un turno con el medico de matrícula {string} para el día {string} a las {string}') do |dni, matricula, fecha, hora|
   body = {
     dni:,
     turno: {
-      fecha: dia,
+      fecha:,
       hora:
     }
   }
-  response = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
 
+  response = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
+  puts "Response body: #{response.body}"
   @turno_reservado = JSON.parse(response.body, symbolize_names: true)
   expect(response.status).to eq(201)
 end
 
 Dado('tengo una reputacion de {string}') do |reputacion_esperada|
   paciente = obtener_paciente_por_username(@username)
-  expect(paciente['reputacion']).to eq(reputacion_esperada.to_i)
+  expect(paciente[:reputacion]).to eq(reputacion_esperada.to_i)
 end
 
 Cuando('cancela a la reserva {string} dias previo a la fecha del turno') do |cant_dias_previos|
-  fecha_actual = Date.parse(@turno_reservado[:fecha])
+  fecha_actual = Date.parse(@turno_reservado[:turno][:fecha])
 
   @fecha_de_hoy = fecha_actual - cant_dias_previos.to_i
 
   allow(Date).to receive(:today).and_return(@fecha_de_hoy)
 
-  @response = Faraday.put("/turnos/cancelar/#{@turno_reservado['id']}")
+  @response = Faraday.put("/turnos/cancelar/#{@turno_reservado[:id]}")
+
+  puts "Response body: #{@response.body}"
 end
 
 Entonces('el turno se cancela exitosamente y mi reputacion se mantiene igual') do

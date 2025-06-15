@@ -8,6 +8,7 @@ module RoutesTurnos
   def self.registered(app)
     get_turnos_por_id(app)
     put_turnos(app)
+    put_turnos_cancelar(app)
   end
 
   def self.get_turnos_por_id(app)
@@ -47,13 +48,16 @@ module RoutesTurnos
   def self.put_turnos_cancelar(app)
     app.put '/turnos/cancelar/:id' do
       logger.debug("PUT /turnos/cancelar/#{params['id']} con params: #{params}")
-      turno = turnero.cancelar_turno(params['id'].to_i)
+      turnero.cancelar_turno(params['id'].to_i)
       status 200
-      ActualizacionDeTurnoResponse.new(turno, convertidor_de_tiempo).to_json
     rescue TurnoInexistenteException => e
       logger.error("Error al cancelar el turno: #{e.message}")
       status 404
       MensajeErrorResponse.new('Turno inexistente').to_json
+    rescue TurnoInvalidoException => e
+      logger.error("Error al cancelar el turno: #{e.message}")
+      status 400
+      MensajeErrorResponse.new('No se puede cancelar un turno que ya ha sido actualizado').to_json
     end
   end
 end
