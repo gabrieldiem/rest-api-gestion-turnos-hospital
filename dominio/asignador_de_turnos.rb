@@ -49,10 +49,7 @@ class AsignadorDeTurnos
 
   def coincide_con_feriado(fecha)
     feriados = @proveedor_de_feriados.obtener_feriados(fecha.year)
-    feriados.each do |feriado|
-      return true if feriado.fecha == fecha
-    end
-    false
+    feriados.any? { |feriado| feriado.fecha == fecha }
   end
 
   def paciente_tiene_recurrencia_maxima_excedida?(paciente, medico)
