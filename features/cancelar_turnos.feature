@@ -10,7 +10,7 @@ Característica: Cancelar turnos reservados en el sistema HMS
     Y que existe la especialidad "Traumatologia" con código "trau" y tiempo de una consulta de "60" minutos
     Y que existe un medico registrado llamado "María Fernández" con matricula "NAC123" que atiende en "trau"
 
-  @indev
+  @wip @indev
   Escenario: 8.0.1 - Cancelar un turno sin repercuciones
     Dado que el paciente con DNI "12345678" saca un turno con el medico de matrícula "NAC123" para el día "2025-06-06" a las "10:00"
     Y tengo una reputacion de "1"
