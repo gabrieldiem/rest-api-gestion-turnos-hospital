@@ -290,12 +290,18 @@ describe Turnero do
         expect(historial_turnos.first.medico.matricula).to eq('NAC456')
       end
 
-      xit 'obtener turnos reservados de un paciente sin turnos devuelve un error' do
+      it 'pedir el historial solo teniendo turnos reservados devuelve un error' do
+        especialidad_cirujano = turnero.crear_especialidad('Cirujano', 30, 10, 'ciru')
+        turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+        fecha_de_maniana = fecha_de_hoy + 1
+
         dni = '999999999'
         turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '8:00', dni)
+        turnero.asignar_turno('NAC456', fecha_de_maniana.to_s, '8:30', dni)
 
         expect do
-          turnero.obtener_turnos_reservados_del_paciente_por_dni(dni)
+          turnero.obtener_historial_turno_del_paciente_por_dni(dni)
         end.to raise_error(SinTurnosException)
       end
     end
