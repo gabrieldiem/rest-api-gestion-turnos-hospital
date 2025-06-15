@@ -44,11 +44,7 @@ class AsignadorDeTurnos
 
   def chequear_si_tiene_turno_asignado(medico, fecha_turno_a_chequear, hora_turno_a_chequear)
     horario_turno = Horario.new(fecha_turno_a_chequear, hora_turno_a_chequear)
-    turnos_ya_asignados = medico.turnos_asignados
-    turnos_ya_asignados.each do |turno|
-      return true if turno.horario == horario_turno
-    end
-    false
+    medico.tiene_turno_asignado?(horario_turno)
   end
 
   def coincide_con_feriado(fecha)
