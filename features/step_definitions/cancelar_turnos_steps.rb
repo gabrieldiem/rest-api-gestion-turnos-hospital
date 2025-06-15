@@ -10,7 +10,7 @@ def obtener_paciente_por_username(username)
   JSON.parse(response.body, symbolize_names: true)
 end
 
-Dado('que el paciente con DNI {string} saca un turno con el medico de matrícula {string} para el día {string} a las {string}') do |dni, matricula, fecha, hora|
+def reservar_un_turno(dni, matricula, fecha, hora)
   body = {
     dni:,
     turno: {
@@ -19,9 +19,13 @@ Dado('que el paciente con DNI {string} saca un turno con el medico de matrícula
     }
   }
 
-  response = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
-  @turno_reservado = JSON.parse(response.body, symbolize_names: true)
-  expect(response.status).to eq(201)
+  @response = Faraday.post("/medicos/#{matricula}/turnos-reservados", body.to_json, { 'Content-Type' => 'application/json' })
+  JSON.parse(@response.body, symbolize_names: true)
+end
+
+Dado('que el paciente con DNI {string} saca un turno con el medico de matrícula {string} para el día {string} a las {string}') do |dni, matricula, fecha, hora|
+  @turno_reservado = reservar_un_turno(dni, matricula, fecha, hora)
+  expect(@response.status).to eq(201)
 end
 
 Dado('tengo una reputacion de {string}') do |reputacion_esperada|
@@ -61,24 +65,20 @@ Entonces('el turno se cancela exitosamente y mi reputacion empeora') do
   expect(paciente[:reputacion]).to be < @reputacion
 end
 
-Entonces('el turno se libera y puede ser reservado nuevamente') do
-  response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
-  turnos = JSON.parse(response.body, symbolize_names: true)
-  turnos_disponibles = turnos[:turnos]
+Entonces('el turno con el medico de matricula {string} se libera y puede ser reservado nuevamente') do |matricula|
+  dni = @turno_reservado[:dni]
+  fecha = @turno_reservado[:turno][:fecha]
+  hora = @turno_reservado[:turno][:hora]
 
-  expect(turnos_disponibles).to include({
-                                          fecha: @turno_reservado[:fecha],
-                                          hora: @turno_reservado[:hora]
-                                        })
+  @turno_reservado = reservar_un_turno(dni, matricula, fecha, hora)
+  expect(@response.status).to eq(201)
 end
 
-Entonces('el turno se pierde y no puede ser reservado nuevamente') do
-  response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
-  turnos = JSON.parse(response.body, symbolize_names: true)
-  turnos_disponibles = turnos[:turnos]
+Entonces('el turno con el medico de matricula {string} se pierde y no puede ser reservado nuevamente') do |matricula|
+  dni = @turno_reservado[:dni]
+  fecha = @turno_reservado[:turno][:fecha]
+  hora = @turno_reservado[:turno][:hora]
 
-  expect(turnos_disponibles).not_to include({
-                                              fecha: @turno_reservado[:fecha],
-                                              hora: @turno_reservado[:hora]
-                                            })
+  @turno_reservado = reservar_un_turno(dni, matricula, fecha, hora)
+  expect(@response.status).to eq(400)
 end
