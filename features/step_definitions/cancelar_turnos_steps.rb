@@ -82,3 +82,12 @@ Entonces('el turno con el medico de matricula {string} se pierde y no puede ser 
   @turno_reservado = reservar_un_turno(dni, matricula, fecha, hora)
   expect(@response.status).to eq(400)
 end
+
+Dado('el turno ya ha sido atendido') do
+  cargar_asistencia_turno(@turno_reservado[:id], @turno_reservado[:dni], true)
+end
+
+Entonces('el turno no se cancela y se muestra un mensaje de error') do
+  expect(@response.status).to eq(400)
+  expect(@response.body).to include('No se puede cancelar un turno que ya ha sido actualizado')
+end
