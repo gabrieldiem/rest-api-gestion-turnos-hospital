@@ -1,5 +1,6 @@
 Dado('que existe un paciente registrado con DNI {string} y username {string}') do |dni, username|
   @username = username
+  @dni = dni
   @response = crear_paciente(username, dni, 'juan.salchicon@example.com')
   expect(@response.status).to eq(201)
 end
