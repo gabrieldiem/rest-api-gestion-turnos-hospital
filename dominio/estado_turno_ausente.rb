@@ -6,4 +6,8 @@ class EstadoTurnoAusente
   def initialize
     @descripcion = ESTADO_AUSENTE
   end
+
+  def cambiar_asistencia(_asistio)
+    EstadoTurnoPresente.new
+  end
 end

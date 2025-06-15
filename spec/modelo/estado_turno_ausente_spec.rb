@@ -7,7 +7,7 @@ describe EstadoTurnoAusente do
     expect(estado.descripcion).to eq('ausente')
   end
 
-  xit 'el estado ausente cuando cambiamos de asistencia a true es igual a "presente"' do
+  it 'el estado ausente cuando cambiamos de asistencia a true es igual a "presente"' do
     estado = described_class.new
     nuevo_estado = estado.cambiar_asistencia(true)
     expect(nuevo_estado.descripcion).to eq('presente')
