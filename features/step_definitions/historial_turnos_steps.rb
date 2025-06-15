@@ -1,29 +1,23 @@
-
-
 Dado('que hay {string} turnos reservados para {string}') do |cantidad_turnos, username|
-
-
   paciente = obtener_paciente_por_username(username)
 
   @fecha_de_hoy = Date.today
 
   hora_inicio = Time.parse('08:00')
 
-  for i in 1..cantidad_turnos.to_i
+  (1..cantidad_turnos.to_i).each do |i|
     fecha = Date.today + i
     hora = (hora_inicio + ((i - 1) * @duracion * 60)).strftime('%H:%M')
     turno = {
-      fecha: fecha,
-      hora: hora
+      fecha:,
+      hora:
     }
     reservar_turno(turno, paciente[:dni], @matricula)
     expect(@response.status).to eq(201)
   end
-
 end
 
 Dado('{string} han sido asisitidos') do |cant_turnos|
-
   @cantidad_de_turnos_esperados = cant_turnos.to_i
 
   cant_turnos.to_i.times do |i|
@@ -33,7 +27,7 @@ Dado('{string} han sido asisitidos') do |cant_turnos|
 end
 
 Cuando('quiere ver su historial de turnos') do
-  @respuesta = Faraday.get("/pacientes/#{@dni_registrado}/hitorial")
+  @respuesta = Faraday.get("/pacientes/#{@dni_registrado}/historial")
   @respuesta_parseada = JSON.parse(@respuesta.body, symbolize_names: true)
 end
 
