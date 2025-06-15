@@ -39,6 +39,10 @@ class Medico
     @turnos_asignados.reject! { |turno| turno.id == turno_a_quitar.id }
   end
 
+  def tiene_turno_asignado?(horario)
+    @turnos_asignados.any? { |turno| turno.horario == horario }
+  end
+
   def ==(other)
     other.is_a?(Medico) &&
       @nombre == other.nombre &&

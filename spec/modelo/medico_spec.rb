@@ -23,13 +23,13 @@ describe Medico do
     end.to raise_error(ActiveModel::ValidationError)
   end
 
-  xit 'preguntar si tiene un turno asignado' do
+  it 'preguntar si tiene un turno asignado' do
     paciente = Paciente.new('juan.perez@example.com', '12345678', '@juanperez', 1)
     medico = described_class.new('Juan', 'Perez', 'NAC123', especialidad)
 
     horario = Horario.new(Date.today + 1, Hora.new(10, 0))
     turno = Turno.new(paciente, medico, horario, 1)
-    
+
     medico.asignar_turno(turno.horario, paciente)
 
     expect(medico.tiene_turno_asignado?(horario)).to be true

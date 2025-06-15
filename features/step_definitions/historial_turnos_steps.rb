@@ -1,8 +1,4 @@
-
-
 Dado('que hay {string} turnos reservados para {string}') do |cantidad_turnos, username|
-
-
   paciente = obtener_paciente_por_username(username)
 
   @fecha_de_hoy = Date.today
@@ -13,17 +9,15 @@ Dado('que hay {string} turnos reservados para {string}') do |cantidad_turnos, us
     fecha = Date.today + i
     hora = (hora_inicio + ((i - 1) * @duracion * 60)).strftime('%H:%M')
     turno = {
-      fecha: fecha,
-      hora: hora
+      fecha:,
+      hora:
     }
     reservar_turno(turno, paciente[:dni], @matricula)
     expect(@response.status).to eq(201)
   end
-
 end
 
 Dado('{string} han sido asisitidos') do |cant_turnos|
-
   @cantidad_de_turnos_esperados = cant_turnos.to_i
 
   cant_turnos.to_i.times do |i|
