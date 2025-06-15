@@ -254,7 +254,7 @@ describe Turnero do
         end.to raise_error(SinTurnosException)
       end
 
-      xit 'obtener historial de turnos de un paciente' do
+      it 'obtener historial de turnos de un paciente' do
         especialidad_cirujano = turnero.crear_especialidad('Cirujano', 30, 10, 'ciru')
         turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
         fecha_de_maniana = fecha_de_hoy + 1
