@@ -13,8 +13,8 @@ class AsignadorDeTurnos
     duracion_turno = medico.especialidad.duracion
 
     raise TurnoFeriadoNoEsReservableException if coincide_con_feriado(horario.fecha)
-    raise TurnoInvalidoException unless @calendario_de_turnos.es_hora_un_slot_valido(duracion_turno,
-                                                                                     horario.hora)
+    raise TurnoInvalidoException, 'No se puede reservar en este slot por superposicion con otro turno' unless @calendario_de_turnos.es_hora_un_slot_valido(duracion_turno,
+                                                                                                                                                           horario.hora)
     raise TurnoNoDisponibleException if chequear_si_tiene_turno_asignado(medico, horario.fecha, horario.hora)
 
     validar_paciente(paciente, medico)
