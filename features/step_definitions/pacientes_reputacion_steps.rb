@@ -19,8 +19,11 @@ def cargar_asistencia_turno(id_turno, dni, asistio)
     dni_paciente: dni,
     asistio:
   }
+
   @response = Faraday.put("/turnos/#{id_turno}", body.to_json, { 'Content-Type' => 'application/json' })
+
   expect(@response.status).to eq(200)
+  JSON.parse(@response.body, symbolize_names: true)
 end
 
 def reservar_turnos(matricula, dni, cantidad_turnos)

@@ -10,7 +10,6 @@ Característica: Hisotrial de turnos asistidos
   Y que existe la especialidad "Traumatologia" con código "trau" y tiempo de una consulta de "60" minutos
   Y que existe un medico registrado llamado "María Fernández" con matricula "NAC123" que atiende en "trau"
 
-  @wip
   Escenario: 9.0.1 - Ver historial de turnos
     Dado que hay "3" turnos reservados para "agustoSanchez"
     Y "2" han sido asisitidos

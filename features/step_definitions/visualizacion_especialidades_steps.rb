@@ -1,5 +1,4 @@
 Dado('que existe la especialidad {string} con código {string}, duración de turno de {string} minutos y recurrencia máxima de {string} turnos') do |nombre, codigo, duracion, recurrencia|
-  @duracion = duracion
   request_body_json = {
     nombre:,
     codigo:,
