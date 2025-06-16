@@ -33,3 +33,14 @@ Cuando consulto los médicos dados de alta
 Entonces se obtiene una respuesta exitosa
 Y se muestran "0" médicos en total
 Y no se observa ningún médico
+
+@wip
+Escenario: 17.1.4 - Consulto los medicos por especialidad me trae todos los especialistas en dicha especialidad
+Dado que existe un medico dado de alta con nombre "María", apellido "Fernández", matricula "NAC123" y especialidad con codigo "trau"
+Dado que existe un medico dado de alta con nombre "Pedro", apellido "Sueco", matricula "NAC001" y especialidad con codigo "trau"
+Dado que existe un medico dado de alta con nombre "Juan", apellido "Perez", matricula "PROV001" y especialidad con codigo "pedi"
+Cuando consulto por los medicos de especialidad "trau"
+Entonces se obtiene una respuesta exitosa
+Y se muestran "2" medicos en total
+Y se observa el médico con nombre "María", apellido "Fernández", matricula "NAC123", especialista en "Traumatologia"
+Y se observa el médico con nombre "Pedro", apellido "Sueco", matricula "NAC001", especialista en "Traumatologia"
