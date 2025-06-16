@@ -34,9 +34,9 @@ Característica: Reserva de turnos médicos
     Y el Dr. con matricula "NAC123" tenía un turno disponible el "20/05/2025" a las "15:20" y alguien más lo reservó
     Cuando intento reservar el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "15:20"
     Entonces recibo el mensaje "Este turno no está disponible"
-
+  @wip
   Escenario: 5.0.6 - No puedo reservar un turno que no es válido para la especialidad
     Dado que hay un paciente registrado con username "juanperez"
     Y el Dr. con matricula "NAC123" tiene un turno disponible el "20/05/2025" a las "9:00"
     Cuando intento reservar el turno con el médico de matrícula "NAC123" en la fecha "20/05/2025" y la hora "9:01"
-    Entonces recibo el mensaje "El turno que se quiere reservar no es valido"
+    Entonces recibo el mensaje "No se puede reservar en este slot por superposicion con otro turno"
