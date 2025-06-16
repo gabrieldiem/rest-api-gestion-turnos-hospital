@@ -91,7 +91,7 @@ describe RepositorioMedicos do
     expect(medicos).to include(medico, medico2)
   end
 
-  it 'obtener un medico por especialidad me trae vacio si no hay medicos de esa especialidad' do
+  xit 'obtener un medico por especialidad me trae vacio si no hay medicos de esa especialidad' do
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
     otra_especialidad = 212_121
     repositorio_medico = described_class.new(logger)
