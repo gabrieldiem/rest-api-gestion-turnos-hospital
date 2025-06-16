@@ -3,20 +3,21 @@ require_relative './estado_turno_presente'
 require_relative './estado_turno_ausente'
 
 class EstadoTurnoFactory
+  ESTADO_RESERVADO = '0'.freeze
+  ESTADO_PRESENTE = '1'.freeze
+  ESTADO_AUSENTE = '2'.freeze
+
+  ESTADOS_DISPONIBLES = {
+    ESTADO_RESERVADO => EstadoTurnoReservado,
+    ESTADO_PRESENTE => EstadoTurnoPresente,
+    ESTADO_AUSENTE => EstadoTurnoAusente
+  }.freeze
+
   def self.crear_estado(tipo)
-    case tipo
-    when '0'
-      EstadoTurnoReservado.new
-    when '1'
-      EstadoTurnoPresente.new
-    when '2'
-      EstadoTurnoAusente.new
-    end
+    ESTADOS_DISPONIBLES[tipo].new
   end
 
   def self.obtener_tipo(estado)
-    return '0' if estado.is_a?(EstadoTurnoReservado)
-    return '1' if estado.is_a?(EstadoTurnoPresente)
-    return '2' if estado.is_a?(EstadoTurnoAusente)
+    ESTADOS_DISPONIBLES.key(estado.class)
   end
 end
