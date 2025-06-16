@@ -22,7 +22,7 @@ Característica: Hisotrial de turnos asistidos
     Cuando quiere ver su historial de turnos
     Entonces recibo un mensaje con "No tenés turnos pasados"
 
-  @indev
+  
   Escenario: 9.0.3 - Ver turno reservado pasar a historial
     Dado que hay "1" turnos reservados para "agustoSanchez"
     Y "0" han sido asisitidos
