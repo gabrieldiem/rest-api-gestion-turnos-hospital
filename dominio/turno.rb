@@ -27,11 +27,11 @@ class Turno
   end
 
   def reservado?
-    @estado.is_a?(EstadoTurnoReservado)
+    @estado.reservado?
   end
 
   def asistio?
-    @estado.is_a?(EstadoTurnoPresente)
+    @estado.asistio?
   end
 
   def actualizar_paciente(paciente)
