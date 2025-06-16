@@ -16,7 +16,7 @@ Característica: Hisotrial de turnos asistidos
     Cuando quiere ver su historial de turnos
     Entonces debo ver un mensaje con la lista de mis turnos pasados y todos sus datos deben ser correctos
 
-  @wip
+  @indev
   Escenario: 9.0.2 - Sin turnos
     Dado que hay "3" turnos reservados para "agustoSanchez"
     Y "0" han sido asisitidos
