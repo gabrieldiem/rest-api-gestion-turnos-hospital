@@ -28,6 +28,13 @@ class RepositorioMedicos < AbstractRepository
     nil
   end
 
+  def find_by_especialidad(id_especialidad)
+    records = dataset.where(especialidad: id_especialidad)
+    return [] if records.nil?
+
+    load_collection(records)
+  end
+
   protected
 
   def load_turnos(id)

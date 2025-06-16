@@ -77,7 +77,7 @@ describe RepositorioMedicos do
     expect(repositorio_medico.find_without_loading_turnos(id_inexistente)).to eq nil
   end
 
-  xit 'obtener un medico por especialidad me trae todos los medicos de esa especialidad' do
+  it 'obtener un medico por especialidad me trae todos los medicos de esa especialidad' do
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
     medico2 = Medico.new('Juan', 'Suarez', 'NAC345', especialidad)
 
@@ -91,7 +91,7 @@ describe RepositorioMedicos do
     expect(medicos).to include(medico, medico2)
   end
 
-  xit 'obtener un medico por especialidad me trae vacio si no hay medicos de esa especialidad' do
+  it 'obtener un medico por especialidad me trae vacio si no hay medicos de esa especialidad' do
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
     otra_especialidad = 212_121
     repositorio_medico = described_class.new(logger)
