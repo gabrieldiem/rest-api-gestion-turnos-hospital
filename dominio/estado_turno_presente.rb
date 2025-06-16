@@ -12,4 +12,12 @@ class EstadoTurnoPresente
 
     self
   end
+
+  def reservado?
+    false
+  end
+
+  def asistio?
+    true
+  end
 end
