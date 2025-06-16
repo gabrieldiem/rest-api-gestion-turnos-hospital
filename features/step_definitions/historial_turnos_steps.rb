@@ -36,7 +36,6 @@ Entonces('debo ver un mensaje con la lista de mis turnos pasados y todos sus dat
 end
 
 Dado('esta presente en su lista de turnos reservados') do
-  
   @respuesta = Faraday.get("/pacientes/#{@paciente[:dni]}/turnos-reservados")
 
   turnos_reservados = JSON.parse(@respuesta.body, symbolize_names: true)[:turnos]
@@ -49,7 +48,6 @@ end
 
 Cuando('asiste al turno reservado') do
   @turno_ids.each do |id_turno|
-    
     cargar_asistencia_turno(id_turno, @paciente[:dni], true)
   end
 end
