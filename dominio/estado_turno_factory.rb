@@ -19,13 +19,4 @@ class EstadoTurnoFactory
     return '1' if estado.is_a?(EstadoTurnoPresente)
     return '2' if estado.is_a?(EstadoTurnoAusente)
   end
-
-  def self.crear_estado_por_descripcion(descripcion)
-    case descripcion
-    when 'reservado'
-      EstadoTurnoReservado.new
-    when 'presente'
-      EstadoTurnoPresente.new
-    end
-  end
 end
