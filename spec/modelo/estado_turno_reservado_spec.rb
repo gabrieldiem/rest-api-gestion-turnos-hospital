@@ -19,7 +19,7 @@ describe EstadoTurnoReservado do
     expect(nuevo_estado.descripcion).to eq('ausente')
   end
 
-  xit 'el estado reservado acepta el metodo reservado? y asistio?' do
+  it 'el estado reservado acepta el metodo reservado? y asistio?' do
     estado = described_class.new
     expect(estado.reservado?).to be true
     expect(estado.asistio?).to be false

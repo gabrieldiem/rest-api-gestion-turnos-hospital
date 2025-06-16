@@ -12,4 +12,12 @@ class EstadoTurnoReservado
 
     EstadoTurnoAusente.new
   end
+
+  def reservado?
+    true
+  end
+
+  def asistio?
+    false
+  end
 end
