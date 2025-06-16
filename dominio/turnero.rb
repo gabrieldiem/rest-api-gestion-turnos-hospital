@@ -155,6 +155,11 @@ class Turnero
     @repositorio_medicos.all
   end
 
+  def obtener_medicos_por_especialidad(codigo_especialidad)
+    especialidad = @repositorio_especialidades.find_by_codigo(codigo_especialidad)
+    @repositorio_medicos.find_by_especialidad(especialidad.id)
+  end
+
   def borrar_todos_los_datos(habilitado)
     raise AccionProhibidaException unless habilitado
 
