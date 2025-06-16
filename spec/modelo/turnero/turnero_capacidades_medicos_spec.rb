@@ -142,5 +142,24 @@ describe Turnero do
         have_attributes(nombre: medico_tres.nombre, apellido: medico_tres.apellido, matricula: medico_tres.matricula, especialidad: medico_tres.especialidad)
       )
     end
+
+    xit 'obtener todos los medicos de una especialidad' do
+      especialidad_uno = turnero.crear_especialidad('Cardiología', 30, 5, 'card')
+      especialidad_dos = turnero.crear_especialidad('Pediatría', 20, 3, 'pedi')
+
+      medico_uno = turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_uno.codigo)
+      medico_dos = turnero.crear_medico('Ana', 'Gómez', 'NAC789', especialidad_uno.codigo)
+      medico_tres = turnero.crear_medico('Luis', 'Martínez', 'NAC101', especialidad_dos.codigo)
+
+      medicos = turnero.obtener_medicos_por_especialidad(especialidad_uno.codigo)
+      expect(medicos.size).to eq(3)
+      expect(medicos).to include(
+        have_attributes(nombre: medico_uno.nombre, apellido: medico_uno.apellido, matricula: medico_uno.matricula, especialidad: medico_uno.especialidad),
+        have_attributes(nombre: medico_dos.nombre, apellido: medico_dos.apellido, matricula: medico_dos.matricula, especialidad: medico_dos.especialidad)
+      )
+      expect(medicos).not_to include(
+        have_attributes(nombre: medico_tres.nombre, apellido: medico_tres.apellido, matricula: medico_tres.matricula, especialidad: medico_tres.especialidad)
+      )
+    end
   end
 end
