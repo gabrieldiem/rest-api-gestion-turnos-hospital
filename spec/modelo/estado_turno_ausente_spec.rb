@@ -18,4 +18,10 @@ describe EstadoTurnoAusente do
     nuevo_estado = estado.cambiar_asistencia(false)
     expect(nuevo_estado.descripcion).to eq('ausente')
   end
+
+  xit 'el estado ausente acepta el metodo reservado? y asistio?' do
+    estado = described_class.new
+    expect(estado.reservado?).to be false
+    expect(estado.asistio?).to be false
+  end
 end
