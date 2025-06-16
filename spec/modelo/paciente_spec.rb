@@ -396,4 +396,18 @@ describe Paciente do
       expect(paciente.obtener_historial).to include(turno2)
     end
   end
+
+  describe '- obtener turnos reservados -' do
+    it 'devuelve un array vacío cuando no tiene turnos' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+
+      expect(paciente.obtener_turnos_reservados).to eq([])
+    end
+
+    xit 'devuelve un array vacío cuando no tiene turnos ya pasados' do
+    end
+
+    xit 'devuelve una lista de turnos que ya han pasado' do
+    end
+  end
 end

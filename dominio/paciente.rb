@@ -49,6 +49,10 @@ class Paciente
     @turnos_reservados.reject(&:reservado?)
   end
 
+  def obtener_turnos_reservados
+    @turnos_reservados.select(&:reservado?)
+  end
+
   def quitar_turno(turno_a_quitar)
     raise TurnoInvalidoException if turno_a_quitar.nil? || turno_a_quitar.id.nil? || !turno_a_quitar.reservado?
     raise TurnoInexistenteException unless @turnos_reservados.any? { |turno| turno.id == turno_a_quitar.id }
