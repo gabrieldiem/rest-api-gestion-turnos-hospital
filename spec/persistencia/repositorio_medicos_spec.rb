@@ -81,11 +81,24 @@ describe RepositorioMedicos do
     medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
     medico2 = Medico.new('Juan', 'Suarez', 'NAC345', especialidad)
 
-    especialidad = repositorio_especialidades.find_by_codigo('card')
+    especialidad_aux = repositorio_especialidades.find_by_codigo(especialidad.codigo)
     repositorio_medico = described_class.new(logger)
+    repositorio_medico.save(medico)
+    repositorio_medico.save(medico2)
 
-    medicos = repositorio_medico.find_by_especialidad(especialidad.id)
-    expect(medicos).not_to eq nil
+    medicos = repositorio_medico.find_by_especialidad(especialidad_aux.id)
+    expect(medicos).not_to eq []
     expect(medicos).to include(medico, medico2)
+  end
+
+  it 'obtener un medico por especialidad me trae vacio si no hay medicos de esa especialidad' do
+    medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+    otra_especialidad = 212_121
+    repositorio_medico = described_class.new(logger)
+    repositorio_medico.save(medico)
+
+    medicos = repositorio_medico.find_by_especialidad(otra_especialidad)
+    expect(medicos).to eq []
+    expect(medicos).not_to include(medico)
   end
 end
