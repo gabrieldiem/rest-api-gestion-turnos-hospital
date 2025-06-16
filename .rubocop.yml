@@ -46,7 +46,7 @@ RSpec/HookArgument:
 RSpec/MessageSpies:
   EnforcedStyle: receive
 RSpec/MultipleExpectations:
-  Max: 3
+  Max: 4
 Style/NumericPredicate:
   Enabled: false  
 Style/GuardClause:

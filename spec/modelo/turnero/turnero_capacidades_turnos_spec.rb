@@ -303,6 +303,27 @@ describe Turnero do
           turnero.obtener_historial_turno_del_paciente_por_dni(dni)
         end.to raise_error(SinTurnosException)
       end
+
+      it 'cuando un turno se actualiza, no se muestrará mas en la lista de turnos reservados, pero si en el historial' do
+        especialidad_cirujano = turnero.crear_especialidad('Cirujano', 30, 10, 'ciru')
+        turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad_cirujano.codigo)
+        dni = '999999999'
+        turnero.crear_paciente('paciente@test.com', dni, 'paciente_test')
+        turno = turnero.asignar_turno('NAC456', (fecha_de_hoy + 1).to_s, '8:00', dni)
+        expect(turnero.obtener_turnos_reservados_del_paciente_por_dni(dni).size).to eq(1)
+
+        expect do
+          turnero.obtener_historial_turno_del_paciente_por_dni(dni)
+        end.to raise_error(SinTurnosException)
+
+        turnero.cambiar_asistencia_turno(turno.id, dni, true)
+
+        historial_turnos = turnero.obtener_historial_turno_del_paciente_por_dni(dni)
+        expect(historial_turnos.size).to eq(1)
+        expect do
+          turnero.obtener_turnos_reservados_del_paciente_por_dni(dni)
+        end.to raise_error(SinTurnosException)
+      end
     end
 
     describe 'buscar turno por id' do

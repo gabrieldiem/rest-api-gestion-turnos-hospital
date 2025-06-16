@@ -126,16 +126,18 @@ class Turnero
 
   def obtener_turnos_reservados_del_paciente_por_dni(dni)
     paciente = buscar_paciente_por_dni(dni)
-    raise SinTurnosException, 'No tenés turnos reservados' if paciente.turnos_reservados.empty?
+    turnos_reservados = paciente.obtener_turnos_reservados
+    raise SinTurnosException, 'No tenés turnos reservados' if turnos_reservados.empty?
 
-    paciente.turnos_reservados
+    turnos_reservados
   end
 
   def obtener_historial_turno_del_paciente_por_dni(dni)
     paciente = buscar_paciente_por_dni(dni)
-    raise SinTurnosException, 'No tenés turnos pasados' if paciente.obtener_historial.empty?
+    historial_turnos = paciente.obtener_historial
+    raise SinTurnosException, 'No tenés turnos pasados' if historial_turnos.empty?
 
-    paciente.obtener_historial
+    historial_turnos
   end
 
   def obtener_turnos_reservados_por_medico(matricula)
