@@ -39,3 +39,11 @@ Entonces('no se observa ningún médico') do
   expect(@response_body[:cantidad_total]).to eq(0)
   expect(@response_body[:medicos]).to be_empty
 end
+
+Cuando('consulto por los medicos de especialidad {string}') do |_string|
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Entonces('se muestran {string} medicos en total') do |_string|
+  pending # Write code here that turns the phrase above into concrete actions
+end
