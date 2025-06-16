@@ -21,3 +21,12 @@ Característica: Hisotrial de turnos asistidos
     Y "0" han sido asisitidos
     Cuando quiere ver su historial de turnos
     Entonces recibo un mensaje con "No tenés turnos pasados"
+
+  @indev
+  Escenario: 9.0.3 - Ver turno reservado pasar a historial
+    Dado que hay "1" turnos reservados para "agustoSanchez"
+    Y "0" han sido asisitidos
+    Y esta presente en su lista de turnos reservados
+    Cuando asiste al turno reservado
+    Entonces el turno reservado pasa a su historial de turnos
+    Y el turno reservado ya no está en su lista de turnos reservados
