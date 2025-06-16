@@ -404,10 +404,22 @@ describe Paciente do
       expect(paciente.obtener_turnos_reservados).to eq([])
     end
 
-    xit 'devuelve un array vacío cuando no tiene turnos ya pasados' do
+    it 'devuelve un array vacío cuando no tiene turnos reservados' do
+      paciente = described_class.new('juan.perez@example.com', '12345678', '@juanperez', 1)
+      medico = Medico.new('Juan', 'Perez', 'NAC123', especialidad)
+      turno1 = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+      turno2 = Turno.new(paciente, medico, Horario.new(Date.today + 1, Hora.new(10, 0)))
+
+      turno1.cambiar_asistencia(true)
+      turno2.cambiar_asistencia(false)
+
+      paciente.turnos_reservados << turno1
+      paciente.turnos_reservados << turno2
+
+      expect(paciente.obtener_turnos_reservados.size).to eq(0)
     end
 
-    xit 'devuelve una lista de turnos que ya han pasado' do
+    xit 'devuelve una lista de solo turnos reservados' do
     end
   end
 end
