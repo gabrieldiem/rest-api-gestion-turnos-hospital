@@ -7,7 +7,9 @@ class EstadoTurnoAusente
     @descripcion = ESTADO_AUSENTE
   end
 
-  def cambiar_asistencia(_asistio)
-    EstadoTurnoPresente.new
+  def cambiar_asistencia(asistio)
+    return EstadoTurnoPresente.new if asistio
+
+    self
   end
 end
