@@ -285,9 +285,8 @@ describe Turnero do
 
         historial_turnos = turnero.obtener_historial_turno_del_paciente_por_dni(dni)
         expect(historial_turnos.size).to eq(1)
-        expect(historial_turnos.first.horario.fecha.to_s).to include(fecha_de_maniana.to_s)
+        expect(historial_turnos).to include(turno_asistido)
         expect(historial_turnos).not_to include(turno_reservado)
-        expect(historial_turnos.first.medico.matricula).to eq('NAC456')
       end
 
       it 'pedir el historial solo teniendo turnos reservados devuelve un error' do
