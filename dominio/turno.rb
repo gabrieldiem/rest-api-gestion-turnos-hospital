@@ -23,11 +23,7 @@ class Turno
   end
 
   def cambiar_asistencia(asistio)
-    @estado = if asistio
-                EstadoTurnoPresente.new
-              else
-                EstadoTurnoAusente.new
-              end
+    @estado = @estado.cambiar_asistencia(asistio)
   end
 
   def reservado?
