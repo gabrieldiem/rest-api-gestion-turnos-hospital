@@ -13,17 +13,20 @@ describe TurnosReservadosPorPacienteResponse do
     }
   end
 
+  def turno_a_hash(turno)
+    {
+      id: turno.id.to_s,
+      estado: turno.estado.descripcion,
+      fecha: convertidor_de_tiempo.presentar_fecha(turno.horario.fecha),
+      hora: convertidor_de_tiempo.presentar_hora(turno.horario.hora),
+      medico: convertir_medico(turno.medico)
+    }
+  end
+
   def respuesta_esperada(turnos)
     {
       cantidad_de_turnos: turnos.size,
-      turnos: turnos.map do |turno|
-        {
-          id: turno.id.to_s,
-          fecha: convertidor_de_tiempo.presentar_fecha(turno.horario.fecha),
-          hora: convertidor_de_tiempo.presentar_hora(turno.horario.hora),
-          medico: convertir_medico(turno.medico)
-        }
-      end
+      turnos: turnos.map { |turno| turno_a_hash(turno) }
     }.to_json
   end
 
