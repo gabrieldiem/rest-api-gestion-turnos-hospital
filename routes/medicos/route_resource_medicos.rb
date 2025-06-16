@@ -8,6 +8,7 @@ module RoutesResourceMedicos
   def self.registered(app)
     get_medicos(app)
     post_medicos(app)
+    get_medicos_por_especialidad(app)
   end
 
   def self.get_medicos(app)
@@ -34,6 +35,17 @@ module RoutesResourceMedicos
       logger.error("Error al crear médico: #{e.message}")
       status 400
       MensajeErrorResponse.new(e.model.errors.first.message).to_json
+    end
+  end
+
+  def self.get_medicos_por_especialidad(app)
+    app.get '/medicos/:codigo_especialidad' do
+      logger.debug("GET /medicos/#{@params['codigo_especialidad']} con params: #{@params}")
+
+      medicos = turnero.obtener_medicos_por_especialidad(@params['codigo_especialidad'])
+
+      status 200
+      TodosMedicosResponse.new(medicos).to_json
     end
   end
 end
