@@ -7,7 +7,11 @@ class ProveedorDeHora
   end
 
   def hora_actual
-    hora_actual = @proveedor.now
+    hora_actual = @hora_fija || @proveedor.now
     Hora.new(hora_actual.hour, hora_actual.min)
+  end
+
+  def actualizar_hora_actual(hora)
+    @hora_fija = Time.parse(hora)
   end
 end
