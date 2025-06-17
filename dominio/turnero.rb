@@ -172,8 +172,8 @@ class Turnero
   def actualizar_fecha_actual(habilitado, proveedor_de_fecha, proveedor_de_hora)
     raise AccionProhibidaException unless habilitado
 
-    @proveedor_de_fecha = proveedor_de_fecha
-    @proveedor_de_hora = proveedor_de_hora
+    @proveedor_de_fecha = proveedor_de_fecha unless proveedor_de_fecha.nil?
+    @proveedor_de_hora = proveedor_de_hora unless proveedor_de_hora.nil?
 
     @calendario_de_turnos.actualizar_proveedores_de_fecha_hora(@proveedor_de_fecha, @proveedor_de_hora)
   end
