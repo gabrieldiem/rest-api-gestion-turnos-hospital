@@ -8,11 +8,20 @@ module RoutesSystemControl
   PROD_STAGE = 'prod'.freeze
 
   def self.registered(app)
+    get_version(app)
+    post_reset(app)
+    post_definir_fecha(app)
+    get_health_check(app)
+  end
+
+  def self.get_version(app)
     app.get '/version' do
       logger.debug('GET /version')
       json({ version: Version.current })
     end
+  end
 
+  def self.post_reset(app)
     app.post '/reset' do
       habilitado = stage == TEST_STAGE
       turnero.borrar_todos_los_datos(habilitado)
@@ -21,7 +30,9 @@ module RoutesSystemControl
       status 403
       MensajeErrorResponse.new(e.message).to_json
     end
+  end
 
+  def self.post_definir_fecha(app)
     app.post '/definir_fecha' do
       habilitado = stage == TEST_STAGE
       proveedor_de_fecha = ProveedorDeFecha.new(Date.parse(@params[:fecha]))
@@ -32,7 +43,9 @@ module RoutesSystemControl
       status 403
       MensajeErrorResponse.new(e.message).to_json
     end
+  end
 
+  def self.get_health_check(app)
     app.get '/health-check' do
       logger.debug('GET health-check')
       repo_especialidades = RepositorioEspecialidades.new(logger)

@@ -71,8 +71,6 @@ describe CalendarioDeTurnos do
     # TODO: FINALIZAR DE AGREGAR TEST
   end
 
-
-
   it 'obtener turnos disponibles dado que ya se asigno un turno' do
     paciente = Paciente.new('j@perez.com', '999999999', 'juanperez', 1)
     repositorio_pacientes.save paciente
