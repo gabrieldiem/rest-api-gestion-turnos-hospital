@@ -8,4 +8,8 @@ class ProveedorDeFecha
   def hoy
     @proveedor.today
   end
+
+  def actualizar_fecha_actual(fecha)
+    @proveedor = Date.parse(fecha)
+  end
 end
