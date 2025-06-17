@@ -49,6 +49,14 @@ class CalendarioDeTurnos
     @proveedor_de_hora = proveedor_de_hora unless proveedor_de_hora.nil?
   end
 
+  def fecha_actual
+    @proveedor_de_fecha.hoy
+  end
+
+  def hora_actual
+    @proveedor_de_hora.hora_actual
+  end
+
   def es_hora_un_slot_valido(duracion_turno, hora_turno)
     indice_horario_candidato = 0
     while indice_horario_candidato * duracion_turno < MINUTOS_EN_UN_DIA

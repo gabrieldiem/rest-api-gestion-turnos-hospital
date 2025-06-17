@@ -67,8 +67,20 @@ describe CalendarioDeTurnos do
                           Horario.new(fecha_de_maniana, Hora.new(10, 0))])
   end
 
-  xit 'obtener turnos disponibles de un médico dado que la fecha y hora han sido actualizado' do
-    # TODO: FINALIZAR DE AGREGAR TEST
+  it 'actualiza los proveedores de fecha y hora correctamente' do
+    calculador = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                     proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
+
+    nuevo_proveedor_fecha_double = class_double(Date, today: Date.new(2030, 1, 1))
+    nuevo_proveedor_hora_double = class_double(Time, now: DateTime.new(2030, 1, 1, 12, 0))
+
+    nuevo_proveedor_de_fecha = ProveedorDeFecha.new(nuevo_proveedor_fecha_double)
+    nuevo_proveedor_de_hora = ProveedorDeHora.new(nuevo_proveedor_hora_double)
+
+    calculador.actualizar_proveedores_de_fecha_hora(nuevo_proveedor_de_fecha, nuevo_proveedor_de_hora)
+
+    expect(calculador.fecha_actual).to eq(Date.new(2030, 1, 1))
+    expect(calculador.hora_actual).to eq(Hora.new(12, 0))
   end
 
   it 'obtener turnos disponibles dado que ya se asigno un turno' do
