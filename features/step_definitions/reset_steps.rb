@@ -2,6 +2,8 @@ Dado('que hay {int} médico y un {int} especialidad') do |cantidad_medicos, cant
   @cantidad_medicos = cantidad_medicos
   @cantidad_especialidades = cantidad_especialidades
 
+  @medicos = []
+
   cantidad_especialidades.times do |i|
     request_body_json = {
       nombre: "Cardiologia-#{i}",
@@ -19,7 +21,8 @@ Dado('que hay {int} médico y un {int} especialidad') do |cantidad_medicos, cant
       matricula: "NAC00#{i}",
       especialidad: 'car0'
     }
-    Faraday.post('/medicos', medicos_body.to_json, { 'Content-Type' => 'application/json' })
+    response = Faraday.post('/medicos', medicos_body.to_json, { 'Content-Type' => 'application/json' })
+    @medicos << JSON.parse(response.body, symbolize_names: true)
   end
 end
 
