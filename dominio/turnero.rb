@@ -169,6 +169,18 @@ class Turnero
     @repositorio_especialidades.delete_all
   end
 
+
+  def actualizar_fecha_actual(habilitado, proveedor_de_fecha, proveedor_de_hora)
+    raise AccionProhibidaException unless habilitado
+
+
+    @proveedor_de_fecha = proveedor_de_fecha
+    @proveedor_de_hora = proveedor_de_hora
+
+    @calendario_de_turnos.actualizar_proveedores_de_fecha_hora(@proveedor_de_fecha, @proveedor_de_hora)
+
+  end
+
   private
 
   def obtener_horario_para_turno(fecha, hora)

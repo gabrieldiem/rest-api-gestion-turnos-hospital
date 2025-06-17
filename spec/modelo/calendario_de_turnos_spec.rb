@@ -67,6 +67,12 @@ describe CalendarioDeTurnos do
                           Horario.new(fecha_de_maniana, Hora.new(10, 0))])
   end
 
+  xit 'obtener turnos disponibles de un médico dado que la fecha y hora han sido actualizado' do
+    # TODO: FINALIZAR DE AGREGAR TEST
+  end
+
+
+
   it 'obtener turnos disponibles dado que ya se asigno un turno' do
     paciente = Paciente.new('j@perez.com', '999999999', 'juanperez', 1)
     repositorio_pacientes.save paciente

@@ -22,6 +22,17 @@ module RoutesSystemControl
       MensajeErrorResponse.new(e.message).to_json
     end
 
+    app.post '/definir_fecha' do
+      habilitado = stage == TEST_STAGE
+      proveedor_de_fecha = ProveedorDeFecha.new(Date.parse(@params[:fecha]))
+      proveedor_de_hora = ProveedorDeHora.new(Hora.parse(@params[:hora]))
+      turnero.actualizar_fecha_actual(habilitado, proveedor_de_fecha, proveedor_de_hora)
+      status 200
+    rescue AccionProhibidaException => e
+      status 403
+      MensajeErrorResponse.new(e.message).to_json
+    end
+
     app.get '/health-check' do
       logger.debug('GET health-check')
       repo_especialidades = RepositorioEspecialidades.new(logger)
