@@ -53,9 +53,9 @@ module RoutesSystemControl
   end
 
   def self.post_definir_fecha(app)
-    app.delete '/defisnir_fecha' do
+    app.delete '/definir_fecha' do
       habilitado = stage == TEST_STAGE
-      turnero.actualizar_fecha_actual(habilitado, ProveedorDeFecha.new,, ProveedorDeHora.new)
+      turnero.actualizar_fecha_actual(habilitado, ProveedorDeFecha.new, ProveedorDeHora.new)
       status 200
     rescue Date::Error => e
       status 400
