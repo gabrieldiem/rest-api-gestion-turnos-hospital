@@ -11,8 +11,10 @@ Característica: Cambiar la fecha actual para el entorno test
     Y pido los turnos disponibles del medico
     Entonces me muestra los valores del dia "2025-06-09"
 
-  @wip
+  @emulate_prod
   Escenario: 28.0.2 - No Se puede cambiar la fecha actual en el amiente test
     Dado que hay un medico registrado de matricula "NAC000" y una especialidad "Cardiología"
     Cuando cambio la fecha actual a "2025-06-06" y la hora "8:00"
     Entonces recibo un error de acción prohibida
+
+

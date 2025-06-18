@@ -7,8 +7,6 @@ Cuando('cambio la fecha actual a {string} y la hora {string}') do |fecha, hora|
   }.to_json
 
   @response = Faraday.post('/definir_fecha', body, { 'Content-Type' => 'application/json' })
-
-  puts @response.body
 end
 
 Dado('que hay un medico registrado de matricula {string} y una especialidad {string}') do |matricula, especialidad|
