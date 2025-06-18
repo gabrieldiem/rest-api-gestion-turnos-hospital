@@ -12,6 +12,7 @@ module RoutesSystemControl
     get_version(app)
     post_reset(app)
     post_definir_fecha(app)
+    delete_definir_fecha(app)
     get_health_check(app)
   end
 

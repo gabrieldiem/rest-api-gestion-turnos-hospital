@@ -11,7 +11,8 @@ Dado('que hay {int} médico y un {int} especialidad') do |cantidad_medicos, cant
       duracion: 30,
       recurrencia_maxima: 1
     }.to_json
-    Faraday.post('/especialidades', request_body_json, { 'Content-Type' => 'application/json' })
+    response = Faraday.post('/especialidades', request_body_json, { 'Content-Type' => 'application/json' })
+    expect(response.status).to eq 201
   end
 
   cantidad_medicos.times do |i|
@@ -22,6 +23,7 @@ Dado('que hay {int} médico y un {int} especialidad') do |cantidad_medicos, cant
       especialidad: 'car0'
     }
     response = Faraday.post('/medicos', medicos_body.to_json, { 'Content-Type' => 'application/json' })
+    expect(response.status).to eq 201
     @medicos << JSON.parse(response.body, symbolize_names: true)
   end
 end
