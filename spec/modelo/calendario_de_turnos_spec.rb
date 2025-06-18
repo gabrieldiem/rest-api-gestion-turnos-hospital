@@ -92,4 +92,14 @@ describe CalendarioDeTurnos do
     resultado = calendario.calcular_siguiente_horario_disponible(Date.new(2025, 6, 21), 0, 30, turnos_asignados)
     expect(resultado).to eq(Horario.new(fecha_de_hoy, Hora.new(9, 0)))
   end
+
+  xit 'salta los horarios en días feriados' do
+    allow(proveedor_feriados).to receive(:obtener_feriados).and_return(Date.new(2025, 6, 20))
+    allow(calendario).to receive(:calcular_siguiente_horario).and_return(
+      Horario.new(Date.new(2025, 6, 20), Hora.new(9, 0)), Horario.new(Date.new(2025, 6, 20), Hora.new(9, 0))
+    )
+
+    resultado = calendario.calcular_siguiente_horario_disponible(Date.new(2025, 6, 20), 0, 30, turnos_asignados)
+    expect(resultado).to eq(Horario.new(Date.new(2025, 6, 20), Hora.new(9, 0)))
+  end
 end
