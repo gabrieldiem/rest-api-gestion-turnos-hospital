@@ -1,4 +1,4 @@
-Cuando('cambio la fecha actual a {string} y la hora {string} exitosamente') do |fecha, hora|
+Cuando('cambio la fecha actual a {string} y la hora {string}') do |fecha, hora|
   @hoy = fecha
 
   body = {
@@ -9,12 +9,9 @@ Cuando('cambio la fecha actual a {string} y la hora {string} exitosamente') do |
   @response = Faraday.post('/definir_fecha', body, { 'Content-Type' => 'application/json' })
 
   puts @response.body
-
-  expect(@response.status).to eq 200
 end
 
 Dado('que hay un medico registrado de matricula {string} y una especialidad {string}') do |matricula, especialidad|
-
   especialidad_body = {
     nombre: 'Cardiologia',
     codigo: especialidad,
@@ -27,7 +24,7 @@ Dado('que hay un medico registrado de matricula {string} y una especialidad {str
   medico_body = {
     nombre: 'Juan',
     apellido: 'Perez',
-    matricula: matricula,
+    matricula:,
     especialidad:
   }
   response = Faraday.post('/medicos', medico_body.to_json, { 'Content-Type' => 'application/json' })
@@ -35,8 +32,8 @@ Dado('que hay un medico registrado de matricula {string} y una especialidad {str
   @matricula = matricula
 end
 
-
 Cuando('pido los turnos disponibles del medico') do
+  expect(@response.status).to eq 200 # Asegurarse de que la fecha se ha cambiado correctamente
   cuando_pido_los_feriados(2025, [])
   @response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
   expect(@response.status).to eq 200
