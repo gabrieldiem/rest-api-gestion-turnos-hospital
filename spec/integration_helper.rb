@@ -6,6 +6,8 @@ require_relative '../persistencia/repositorio_turnos'
 require_relative '../persistencia/repositorio_medicos'
 require_relative '../persistencia/repositorio_pacientes'
 require_relative '../persistencia/repositorio_especialidades'
+require_relative '../dominio/exceptions/accion_prohibida_exception'
+Dir[File.join(__dir__, 'dominio/exceptions', '*.rb')].each { |file| require file }
 
 RSpec.configure do |config|
   config.before :suite do
