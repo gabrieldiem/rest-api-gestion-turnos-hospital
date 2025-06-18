@@ -116,3 +116,20 @@ smoke_test_on_prod_job:
   needs:
     - job: deploy_prod_job
     - job: build_job
+
+
+acceptance_test_job:
+  stage: acceptance_test
+  image: nicopaez/kubectl:1.32.5
+  environment: test
+  needs:
+    - job: smoke_test_on_test_job
+  script:
+    - chmod +x ./scripts/acceptance_test.sh
+    - ./scripts/acceptance_test.sh $API_TURNERO_URL
+  artifacts:
+    when: always
+    paths:
+      - scripts
+  only:
+    - tags
