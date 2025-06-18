@@ -83,4 +83,13 @@ describe CalendarioDeTurnos do
                                                                  ])
     expect(resultado).to eq(Horario.new(fecha_de_hoy, Hora.new(9, 30)))
   end
+
+  xit 'salta los horarios en fin de semana' do
+    allow(calendario).to receive(:calcular_siguiente_horario).and_return(
+      Horario.new(Date.new(2025, 6, 21), Hora.new(9, 0)), Horario.new(fecha_de_hoy, Hora.new(9, 0))
+    )
+
+    resultado = calendario.calcular_siguiente_horario_disponible(Date.new(2025, 6, 21), 0, 30, turnos_asignados)
+    expect(resultado).to eq(Horario.new(fecha_de_hoy, Hora.new(9, 0)))
+  end
 end
