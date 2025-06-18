@@ -52,6 +52,8 @@ security_scan_job:
 package_job:
   stage: package
   image: docker:stable
+  needs:
+    - job: build_job
   before_script:
     - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
   script:
@@ -70,6 +72,7 @@ deploy_test_job:
   environment: test
   needs:
     - job: package_job
+
   script:
     - VERSION=$(cat VERSION.txt)
     - cp ${KUBECONFIG} $HOME/.kube/config
