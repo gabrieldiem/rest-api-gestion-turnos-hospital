@@ -53,4 +53,12 @@ describe CalendarioDeTurnos do
     )
     expect(calendario.es_hora_un_slot_valido(30, Hora.new(9, 30))).to be false
   end
+
+  xit 'retorna el horario cuando está disponible' do
+    horario_esperado = Horario.new(fecha_actual, Hora.new(9, 0))
+    allow(calendario).to receive(:calcular_siguiente_horario).and_return(horario_esperado)
+    
+    resultado = calendario.calcular_siguiente_horario_disponible(fecha_actual, 0, 30, turnos_asignados)
+    expect(resultado).to eq(horario_esperado)
+  end
 end
