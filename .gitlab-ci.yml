@@ -93,16 +93,16 @@ smoke_test_on_test_job:
   image: nicopaez/kubectl:1.32.5
   environment: test
   needs:
-  artifacts:
-    when: always
-    paths:
-      - VERSION.txt
-      - scripts
     - job: deploy_test_job
   script:
     - VERSION=$(cat VERSION.txt)
     - chmod +x ./scripts/smoke_test.sh
     - ./scripts/smoke_test.sh $VERSION $API_TURNERO_URL
+  artifacts:
+    when: always
+    paths:
+      - VERSION.txt
+      - scripts
   only:
     - tags
 
@@ -110,17 +110,17 @@ acceptance_test_job:
   stage: acceptance_test
   image: nicopaez/kubectl:1.32.5
   environment: test
-  artifacts:
-    when: always
-    paths:
-      - VERSION.txt
-      - scripts
   needs:
     - job: smoke_test_on_test_job
   script:
     - VERSION=$(cat VERSION.txt)
     - chmod +x ./scripts/acceptance_test.sh
     - ./scripts/acceptance_test.sh $API_TURNERO_URL
+  artifacts:
+    when: always
+    paths:
+      - VERSION.txt
+      - scripts
   only:
     - tags
 
