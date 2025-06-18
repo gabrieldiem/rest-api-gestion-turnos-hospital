@@ -2,6 +2,7 @@ Dir[File.join(__dir__, '../dominio', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../dominio/exceptions', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../persistencia', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, '../vistas/error', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, '../lib', '*.rb')].each { |file| require file }
 
 module RoutesSystemControl
   TEST_STAGE = 'test'.freeze
@@ -35,10 +36,16 @@ module RoutesSystemControl
   def self.post_definir_fecha(app)
     app.post '/definir_fecha' do
       habilitado = stage == TEST_STAGE
-      proveedor_de_fecha = ProveedorDeFecha.new(Date.parse(@params[:fecha]))
-      proveedor_de_hora = ProveedorDeHora.new(Hora.parse(@params[:hora]))
+      fecha = Date.parse(params[:fecha])
+      hora = DateTime.parse(params[:hora])
+
+      proveedor_de_fecha = ProveedorDeFechaFijo.new(fecha)
+      proveedor_de_hora = ProveedorDeHoraFijo.new(hora)
       turnero.actualizar_fecha_actual(habilitado, proveedor_de_fecha, proveedor_de_hora)
       status 200
+    rescue Date::Error => e
+      status 400
+      MensajeErrorResponse.new("Fecha o hora es inválida").to_json
     rescue AccionProhibidaException => e
       status 403
       MensajeErrorResponse.new(e.message).to_json
