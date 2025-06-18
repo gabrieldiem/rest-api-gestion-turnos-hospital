@@ -43,7 +43,7 @@ module RoutesSystemControl
       proveedor_de_hora = ProveedorDeHoraFijo.new(hora)
       turnero.actualizar_fecha_actual(habilitado, proveedor_de_fecha, proveedor_de_hora)
       status 200
-    rescue Date::Error => e
+    rescue Date::Error
       status 400
       MensajeErrorResponse.new('Fecha o hora es inválida').to_json
     rescue AccionProhibidaException => e
@@ -52,14 +52,14 @@ module RoutesSystemControl
     end
   end
 
-  def self.post_definir_fecha(app)
+  def self.delete_definir_fecha(app)
     app.delete '/definir_fecha' do
       habilitado = stage == TEST_STAGE
       turnero.actualizar_fecha_actual(habilitado, ProveedorDeFecha.new, ProveedorDeHora.new)
       status 200
-    rescue Date::Error => e
+    rescue Date::Error
       status 400
-      MensajeErrorResponse.new("Fecha o hora es inválida").to_json
+      MensajeErrorResponse.new('Fecha o hora es inválida').to_json
     rescue AccionProhibidaException => e
       status 403
       MensajeErrorResponse.new(e.message).to_json
