@@ -86,7 +86,7 @@ describe CalendarioDeTurnos do
     expect(calculador.hora_actual).to eq(Hora.new(12, 0))
   end
 
-  xit 'actualiza solo el proveedor de fecha si el de hora es nil' do
+  it 'actualiza solo el proveedor de fecha si el de hora es nil' do
     calculador = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
                                      proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
 
