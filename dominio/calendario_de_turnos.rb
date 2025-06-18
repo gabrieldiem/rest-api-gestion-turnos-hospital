@@ -104,17 +104,11 @@ class CalendarioDeTurnos
   end
 
   def existe_turno_asignado?(horario_a_verificar, turnos_ya_asignados)
-    turnos_ya_asignados.each do |turno|
-      return true if turno.horario == horario_a_verificar
-    end
-    false
+    turnos_ya_asignados.any? { |turno| turno.horario == horario_a_verificar }
   end
 
   def es_dia_feriado?(horario_a_verificar, feriados)
-    feriados.each do |feriado|
-      return true if feriado.fecha == horario_a_verificar.fecha
-    end
-    false
+    feriados.any? { |feriado| feriado.fecha == horario_a_verificar.fecha }
   end
 
   def es_fin_de_semana?(horario_a_verificar)

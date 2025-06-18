@@ -45,7 +45,7 @@ module RoutesSystemControl
       status 200
     rescue Date::Error => e
       status 400
-      MensajeErrorResponse.new("Fecha o hora es inválida").to_json
+      MensajeErrorResponse.new('Fecha o hora es inválida').to_json
     rescue AccionProhibidaException => e
       status 403
       MensajeErrorResponse.new(e.message).to_json
