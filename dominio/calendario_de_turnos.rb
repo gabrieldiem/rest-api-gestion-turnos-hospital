@@ -34,4 +34,8 @@ class CalendarioDeTurnos
     minutos_explorados = (cantidad_turnos_explorados * duracion_de_turno)
     Horario.new(fecha, Hora.new(@hora_de_comienzo_de_jornada.hora, minutos_explorados))
   end
+
+  def calcular_siguiente_horario_disponible(fecha_actual, _indice_horario_candidato, duracion_turno, _turnos_asignados)
+    calcular_siguiente_horario(fecha_actual, 0, duracion_turno)
+  end
 end

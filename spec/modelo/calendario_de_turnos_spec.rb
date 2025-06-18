@@ -7,6 +7,7 @@ describe CalendarioDeTurnos do
   let(:fecha_de_hoy) { Date.new(2025, 1, 1) }
   let(:hora_actual) { DateTime.new(2025, 1, 1, 8, 0) }
   let(:hora_de_comienzo_de_jornada) { Hora.new(8, 0) }
+  let(:turnos_asignados) { [] }
 
   let(:proveedor_de_fecha) do
     proveedor_double = class_double(Date, today: fecha_de_hoy)
@@ -54,11 +55,11 @@ describe CalendarioDeTurnos do
     expect(calendario.es_hora_un_slot_valido(30, Hora.new(9, 30))).to be false
   end
 
-  xit 'retorna el horario cuando está disponible' do
-    horario_esperado = Horario.new(fecha_actual, Hora.new(9, 0))
+  it 'retorna el horario cuando está disponible' do
+    horario_esperado = Horario.new(fecha_de_hoy, Hora.new(9, 0))
     allow(calendario).to receive(:calcular_siguiente_horario).and_return(horario_esperado)
-    
-    resultado = calendario.calcular_siguiente_horario_disponible(fecha_actual, 0, 30, turnos_asignados)
+
+    resultado = calendario.calcular_siguiente_horario_disponible(fecha_de_hoy, 0, 30, turnos_asignados)
     expect(resultado).to eq(horario_esperado)
   end
 end
