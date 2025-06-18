@@ -6,10 +6,13 @@ Cuando('cambio la fecha actual a {string} y la hora {string}') do |fecha, hora|
     hora:
   }.to_json
 
-  @response = Faraday.post('/definir_fecha', body, { 'Content-Type' => 'application/json' })
+  @response = Faraday.post('/fecha', body, { 'Content-Type' => 'application/json' })
 end
 
 Dado('que hay un medico registrado de matricula {string} y una especialidad {string}') do |matricula, especialidad|
+  RepositorioMedicos.new(@logger).delete_all
+  RepositorioEspecialidades.new(@logger).delete_all
+
   especialidad_body = {
     nombre: 'Cardiologia',
     codigo: especialidad,
@@ -42,5 +45,5 @@ Entonces('me muestra los valores del dia {string}') do |fecha|
 end
 
 Entonces('cuando reseteo la fecha actual') do
-  @response = Faraday.delete('/definir_fecha')
+  @response = Faraday.delete('/fecha')
 end
