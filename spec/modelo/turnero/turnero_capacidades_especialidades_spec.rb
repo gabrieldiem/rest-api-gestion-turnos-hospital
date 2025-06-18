@@ -1,8 +1,6 @@
 require 'integration_helper'
 
 require_relative '../../../dominio/turnero'
-require_relative '../../../dominio/exceptions/especialidad_duplicada_exception'
-require_relative '../../../lib/hora'
 
 describe Turnero do
   before(:each) do

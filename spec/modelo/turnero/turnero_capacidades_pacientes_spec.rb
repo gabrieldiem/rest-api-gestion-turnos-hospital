@@ -1,7 +1,6 @@
 require 'integration_helper'
 
 require_relative '../../../dominio/turnero'
-require_relative '../../../lib/hora'
 
 describe Turnero do
   before(:each) do
