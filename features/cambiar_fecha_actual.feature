@@ -16,7 +16,7 @@ Característica: Cambiar la fecha actual para el entorno test
     Entonces me muestra los valores del dia "2025-06-09"
 
   @emulate_prod
-  Escenario: 28.0.2 - No se puede cambiar la fecha actual en el amiente test
+  Escenario: 28.0.2 - No se puede cambiar la fecha actual en el amiente prod
     Dado que hay un medico registrado de matricula "NAC000" y una especialidad "Cardiología"
     Cuando cambio la fecha actual a "2025-06-06" y la hora "8:00"
     Y recibo un error de acción prohibida
@@ -32,6 +32,12 @@ Característica: Cambiar la fecha actual para el entorno test
     Entonces cuando reseteo la fecha actual
     Y pido los turnos disponibles del medico asumiendo qu el año actual es "2022"
     Entonces me muestra los valores del dia "2022-06-10"
+
+  @emulate_prod
+  Escenario: 28.0.4 - No Se puede resetar la fecha actual en el amiente prod
+    Dado que hay un medico registrado de matricula "NAC000" y una especialidad "Cardiología"
+    Cuando cuando reseteo la fecha actual
+    Entonces recibo un error de acción prohibida
 
 
 

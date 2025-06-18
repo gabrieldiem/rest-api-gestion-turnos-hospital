@@ -43,5 +43,4 @@ end
 
 Entonces('cuando reseteo la fecha actual') do
   @response = Faraday.delete('/definir_fecha')
-  expect(@response.status).to eq 200
 end
