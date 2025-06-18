@@ -20,8 +20,8 @@ describe CalendarioDeTurnos do
     described_class.new(proveedor_de_fecha, proveedor_de_hora)
   end
 
-  xit 'obtengo la fecha y la hora actual el proveedor de fecha' do
+  it 'obtengo la fecha y la hora actual el proveedor de fecha' do
     expect(calendario.fecha_actual).to eq(fecha_de_hoy)
-    expect(calendario.hora_actual).to eq(hora_actual)
+    expect(calendario.hora_actual).to eq(Hora.new(8, 0))
   end
 end
