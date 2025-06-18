@@ -17,7 +17,7 @@ class RepositorioMedicos < AbstractRepository
     return nil if records.nil?
 
     medico = load_object(records)
-    medico.turnos_asignados = load_turnos(medico.id)
+    medico.turnos_asignados = load_turnos(medico)
     medico
   end
 
@@ -37,8 +37,8 @@ class RepositorioMedicos < AbstractRepository
 
   protected
 
-  def load_turnos(id)
-    @repositorio_turnos.find_by_medico_id(id)
+  def load_turnos(medico)
+    @repositorio_turnos.find_by_medico(medico)
   end
 
   def load_object(a_hash)

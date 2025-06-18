@@ -36,7 +36,7 @@ describe RepositorioTurnos do
     turno = Turno.new(paciente, medico, Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0)))
     described_class.new(logger).save(turno)
 
-    turnos = described_class.new(logger).find_by_medico_id(medico.id)
+    turnos = described_class.new(logger).find_by_medico(medico)
     expect(turnos).to eq([turno])
   end
 
@@ -48,7 +48,7 @@ describe RepositorioTurnos do
     turno = Turno.new(paciente, medico, Horario.new(Date.new(2025, 6, 11), Hora.new(8, 0)))
     described_class.new(logger).save(turno)
 
-    turnos = described_class.new(logger).find_by_paciente_id(paciente.id)
+    turnos = described_class.new(logger).find_by_paciente(paciente)
     expect(turnos).to eq([turno])
   end
 

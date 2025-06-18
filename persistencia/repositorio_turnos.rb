@@ -13,17 +13,17 @@ class RepositorioTurnos < AbstractRepository
     @logger = logger
   end
 
-  def find_by_medico_id(medico_id)
-    @logger.info("Buscando turnos para el médico con ID: #{medico_id}")
-    records = dataset.where(medico: medico_id)
+  def find_by_medico(medico)
+    @logger.info("Buscando turnos para el médico con ID: #{medico.id}")
+    records = dataset.where(medico: medico.id)
     return [] if records.empty?
 
     load_collection(records)
   end
 
-  def find_by_paciente_id(paciente_id)
-    @logger.info("Buscando turnos para el médico con ID: #{paciente_id}")
-    records = dataset.where(paciente: paciente_id)
+  def find_by_paciente(paciente)
+    @logger.info("Buscando turnos para el paciente con ID: #{paciente.id}")
+    records = dataset.where(paciente: paciente.id)
     return [] if records.empty?
 
     load_collection(records)

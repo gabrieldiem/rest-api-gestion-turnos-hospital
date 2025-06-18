@@ -45,7 +45,6 @@ class CalendarioDeTurnos
   end
 
   def actualizar_proveedores_de_fecha_hora(proveedor_de_fecha, proveedor_de_hora)
-
     @proveedor_de_fecha = proveedor_de_fecha unless proveedor_de_fecha.nil?
     @proveedor_de_hora = proveedor_de_hora unless proveedor_de_hora.nil?
   end

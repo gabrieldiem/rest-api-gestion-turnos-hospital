@@ -15,7 +15,7 @@ class RepositorioPacientes < AbstractRepository
     return nil if records.nil?
 
     paciente = load_object(records)
-    paciente.turnos_reservados = load_turnos(paciente.id)
+    paciente.turnos_reservados = load_turnos(paciente)
     paciente
   end
 
@@ -24,7 +24,7 @@ class RepositorioPacientes < AbstractRepository
     return nil if records.nil?
 
     paciente = load_object(records)
-    paciente.turnos_reservados = load_turnos(paciente.id)
+    paciente.turnos_reservados = load_turnos(paciente)
     paciente
   end
 
@@ -37,8 +37,8 @@ class RepositorioPacientes < AbstractRepository
 
   protected
 
-  def load_turnos(id)
-    @repositorio_turnos.find_by_paciente_id(id)
+  def load_turnos(paciente)
+    @repositorio_turnos.find_by_paciente(paciente)
   end
 
   def load_object(a_hash)
