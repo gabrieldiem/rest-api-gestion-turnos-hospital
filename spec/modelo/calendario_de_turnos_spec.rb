@@ -71,6 +71,9 @@ describe CalendarioDeTurnos do
     calculador = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
                                      proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
 
+    expect(calculador.fecha_actual).to eq(Date.new(2025, 6, 10))
+    expect(calculador.hora_actual).to eq(Hora.new(8, 0))
+
     nuevo_proveedor_fecha_double = class_double(Date, today: Date.new(2030, 1, 1))
     nuevo_proveedor_hora_double = class_double(Time, now: DateTime.new(2030, 1, 1, 12, 0))
 
@@ -83,8 +86,19 @@ describe CalendarioDeTurnos do
     expect(calculador.hora_actual).to eq(Hora.new(12, 0))
   end
 
+  xit 'actualiza solo el proveedor de fecha si el de hora es nil' do
+    calculador = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                     proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
 
+    nuevo_proveedor_fecha_double = class_double(Date, today: Date.new(2040, 1, 1))
+    nuevo_proveedor_de_fecha = ProveedorDeFecha.new(nuevo_proveedor_fecha_double)
+    hora_original = calculador.hora_actual
 
+    calculador.actualizar_proveedores_de_fecha_hora(nuevo_proveedor_de_fecha, nil)
+
+    expect(calculador.fecha_actual).to eq(Date.new(2040, 1, 1))
+    expect(calculador.hora_actual).to eq(hora_original)
+  end
 
   it 'obtener turnos disponibles dado que ya se asigno un turno' do
     paciente = Paciente.new('j@perez.com', '999999999', 'juanperez', 1)

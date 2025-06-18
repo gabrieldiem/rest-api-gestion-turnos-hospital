@@ -15,5 +15,4 @@ describe ProveedorDeFecha do
 
     expect(described_class.new(double_proveedor).hoy).to eq(hoy)
   end
-
 end

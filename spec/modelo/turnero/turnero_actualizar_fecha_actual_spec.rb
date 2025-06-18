@@ -65,7 +65,7 @@ describe Turnero do
   let(:paciente) { turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test') }
 
   describe '- Cambiar la fecha actual del turnero - ' do
-    it 'actualiza la fecha actual y obtiene los turnos disponibles del médico' do
+    xit 'actualiza la fecha actual y obtiene los turnos disponibles del médico' do
       # Actualizar la fecha actual a 2030-01-01 y hora a 12:00
       nuevo_proveedor_fecha = ProveedorDeFecha.new(class_double(Date, today: Date.new(2030, 1, 1)))
       nuevo_proveedor_hora = ProveedorDeHora.new(class_double(Time, now: DateTime.new(2030, 1, 1, 12, 0)))

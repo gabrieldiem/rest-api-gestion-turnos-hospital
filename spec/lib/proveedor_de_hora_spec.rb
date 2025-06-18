@@ -11,5 +11,4 @@ describe ProveedorDeHora do
     expect(hora_proveida.is_a?(Hora)).to be true
     expect(hora_proveida).to have_attributes(hora: 10, minutos: 31)
   end
-
 end
