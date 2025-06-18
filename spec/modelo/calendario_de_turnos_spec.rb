@@ -39,4 +39,11 @@ describe CalendarioDeTurnos do
     expect(horario.hora.hora).to eq(9)
     expect(horario.hora.minutos).to eq(0)
   end
+
+  xit 'retorna true si la hora coincide con un slot calculable' do
+    allow(calendario).to receive(:calcular_siguiente_horario).and_return(
+      Horario.new(fecha_actual, Hora.new(9, 0))
+    )
+    expect(calendario.es_hora_un_slot_valido(30, Hora.new(9, 0))).to be true
+  end
 end
