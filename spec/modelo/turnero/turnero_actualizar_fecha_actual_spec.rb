@@ -30,6 +30,7 @@ describe Turnero do
   before(:each) do
     ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
     cuando_pido_los_feriados(2025, [])
+    cuando_pido_los_feriados(2030, [])
   end
 
   let(:logger) do
@@ -61,15 +62,19 @@ describe Turnero do
                         convertidor_de_tiempo)
   end
   let(:especialidad) { turnero.crear_especialidad('Cardiología', 30, 5, 'card') }
-  let(:medico) { turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo) }
   let(:paciente) { turnero.crear_paciente('paciente@test.com', '999999999', 'paciente_test') }
 
   describe '- Cambiar la fecha actual del turnero - ' do
-    xit 'actualiza la fecha actual y obtiene los turnos disponibles del médico' do
+    it 'actualiza la fecha actual y obtiene los turnos disponibles del médico' do
       # Actualizar la fecha actual a 2030-01-01 y hora a 12:00
       nuevo_proveedor_fecha = ProveedorDeFecha.new(class_double(Date, today: Date.new(2030, 1, 1)))
       nuevo_proveedor_hora = ProveedorDeHora.new(class_double(Time, now: DateTime.new(2030, 1, 1, 12, 0)))
+
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+
+
       turnero.actualizar_fecha_actual(true, nuevo_proveedor_fecha, nuevo_proveedor_hora)
+
 
       turnos = turnero.obtener_turnos_disponibles('NAC456')
       # Espera que los turnos sean para el día siguiente a la fecha actual (según tu lógica de calendario)
