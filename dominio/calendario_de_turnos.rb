@@ -2,6 +2,9 @@ require_relative '../lib/horario'
 
 class CalendarioDeTurnos
   MINUTOS_EN_UN_DIA = 60
+  SABADO = 'Saturday'.freeze
+  DOMINGO = 'Sunday'.freeze
+  FIN_DE_SEMANA = [SABADO, DOMINGO].freeze
 
   def initialize(proveedor_de_fecha, proveedor_de_hora, hora_de_comienzo_de_jornada, hora_de_fin_de_jornada)
     @proveedor_de_fecha = proveedor_de_fecha
@@ -52,10 +55,15 @@ class CalendarioDeTurnos
   private
 
   def esta_disponible?(horario, turnos_ya_asignados, _feriados)
-    !existe_turno_asignado?(horario, turnos_ya_asignados)
+    !existe_turno_asignado?(horario, turnos_ya_asignados) &&
+      !es_fin_de_semana?(horario)
   end
 
   def existe_turno_asignado?(horario_a_verificar, turnos_ya_asignados)
     turnos_ya_asignados.any? { |turno| turno.horario == horario_a_verificar }
+  end
+
+  def es_fin_de_semana?(horario_a_verificar)
+    FIN_DE_SEMANA.include?(horario_a_verificar.fecha.strftime('%A'))
   end
 end
