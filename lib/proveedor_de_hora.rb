@@ -11,7 +11,4 @@ class ProveedorDeHora
     Hora.new(hora_actual.hour, hora_actual.min)
   end
 
-  def actualizar_hora_actual(hora)
-    @hora_fija = Time.parse(hora)
-  end
 end

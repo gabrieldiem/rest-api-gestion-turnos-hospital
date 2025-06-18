@@ -10,7 +10,4 @@ class ProveedorDeFecha
     @fecha_actual ? @fecha_actual : @proveedor.today
   end
 
-  def actualizar_fecha_actual(fecha)
-    @fecha_actual = Date.parse(fecha)
-  end
 end

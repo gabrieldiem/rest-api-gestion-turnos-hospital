@@ -16,20 +16,4 @@ describe ProveedorDeFecha do
     expect(described_class.new(double_proveedor).hoy).to eq(hoy)
   end
 
-
-  it 'Actualiza la fecha actual' do
-    fecha = Date.new(1995, 10, 10)
-    double_proveedor = class_double(Date, today: fecha)
-
-    proveedor_de_fecha = described_class.new(double_proveedor)
-
-    expect(proveedor_de_fecha.hoy).to eq(fecha)
-
-    nueva_fecha = "2023-10-25"
-
-    proveedor_de_fecha.actualizar_fecha_actual(nueva_fecha)
-
-    expect(proveedor_de_fecha.hoy).to eq(Date.parse(nueva_fecha))
-  end
-
 end
