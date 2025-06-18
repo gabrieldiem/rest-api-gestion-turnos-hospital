@@ -33,7 +33,6 @@ build_job:
     paths:
       - VERSION.txt
       - reports/
-      - scripts/acceptance_test.sh
     reports:
       junit: reports/spec/rspec.xml
 
@@ -68,8 +67,6 @@ deploy_test_job:
   stage: deploy_test
   image: nicopaez/kubectl:1.32.5
   environment: test
-  needs:
-    - job: package_job
   script:
     - VERSION=$(cat VERSION.txt)
     - cp ${KUBECONFIG} $HOME/.kube/config
@@ -84,28 +81,12 @@ smoke_test_on_test_job:
   stage: smoke_test_on_test
   image: nicopaez/kubectl:1.32.5
   environment: test
-  needs:
-    - job: deploy_test_job
   script:
     - VERSION=$(cat VERSION.txt)
     - chmod +x ./scripts/smoke_test.sh
     - ./scripts/smoke_test.sh $VERSION $API_TURNERO_URL
   only:
     - tags
-
-acceptance_test_job:
-  stage: acceptance_test
-  image: nicopaez/kubectl:1.32.5
-  environment: test
-  needs:
-    - job: smoke_test_on_test_job
-  script:
-    - VERSION=$(cat VERSION.txt)
-    - chmod +x ./scripts/acceptance_test.sh
-    - ./scripts/acceptance_test.sh $API_TURNERO_URL
-  only:
-    - tags
-
 
 deploy_prod_job:
   stage: deploy_prod
@@ -135,3 +116,20 @@ smoke_test_on_prod_job:
   needs:
     - job: deploy_prod_job
     - job: build_job
+
+
+acceptance_test_job:
+  stage: acceptance_test
+  image: nicopaez/kubectl:1.32.5
+  environment: test
+  needs:
+    - job: smoke_test_on_test_job
+  script:
+    - chmod +x ./scripts/acceptance_test.sh
+    - ./scripts/acceptance_test.sh $API_TURNERO_URL
+  artifacts:
+    when: always
+    paths:
+      - scripts
+  only:
+    - tags
