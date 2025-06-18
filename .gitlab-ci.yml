@@ -125,6 +125,7 @@ acceptance_test_job:
   needs:
     - job: smoke_test_on_test_job
   script:
+    - ls -la ./scripts
     - chmod +x ./scripts/acceptance_test.sh
     - ./scripts/acceptance_test.sh $API_TURNERO_URL
   artifacts:
