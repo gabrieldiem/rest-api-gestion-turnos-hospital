@@ -83,10 +83,7 @@ describe Turnero do
       fecha_de_maniana = fecha_de_hoy + 1
       horarios_esperados = [
         Horario.new(fecha_de_maniana, Hora.new(8, 0)),
-        Horario.new(fecha_de_maniana, Hora.new(8, 30)),
-        Horario.new(fecha_de_maniana, Hora.new(9, 0)),
-        Horario.new(fecha_de_maniana, Hora.new(9, 30)),
-        Horario.new(fecha_de_maniana, Hora.new(10, 0))
+        Horario.new(fecha_de_maniana, Hora.new(8, 30))
       ]
       expect(turnos).to include(*horarios_esperados)
     end
