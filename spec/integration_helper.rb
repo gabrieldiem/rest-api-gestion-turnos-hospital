@@ -6,20 +6,8 @@ require_relative '../persistencia/repositorio_turnos'
 require_relative '../persistencia/repositorio_medicos'
 require_relative '../persistencia/repositorio_pacientes'
 require_relative '../persistencia/repositorio_especialidades'
-require_relative '../dominio/exceptions/accion_prohibida_exception'
-require_relative '../dominio/exceptions/medico_inexistente_exception'
-require_relative '../dominio/exceptions/paciente_inexistente_exception'
-require_relative '../dominio/exceptions/fuera_de_horario_exception'
-require_relative '../dominio/exceptions/turno_no_disponible_exception'
-require_relative '../dominio/exceptions/sin_turnos_exception'
-require_relative '../dominio/exceptions/turno_inexistente_exception'
-require_relative '../dominio/exceptions/paciente_invalido_exception'
-require_relative '../dominio/exceptions/recurrencia_maxima_alcanzada_exception'
-require_relative '../dominio/exceptions/especialidad_duplicada_exception'
-require_relative '../dominio/exceptions/turno_invalido_exception'
-require_relative '../dominio/exceptions/reputacion_invalida_exception'
-require_relative '../dominio/exceptions/turno_feriado_no_es_reservable_exception'
 require_relative '../dominio/repositorios_turnero'
+Dir[File.join(__dir__, '../dominio/exceptions', '*.rb')].each { |file| require file }
 
 RSpec.configure do |config|
   config.before :suite do
