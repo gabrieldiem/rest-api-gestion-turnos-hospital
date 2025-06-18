@@ -100,6 +100,20 @@ describe CalendarioDeTurnos do
     expect(calculador.hora_actual).to eq(hora_original)
   end
 
+  it 'actualiza solo el proveedor de hora si el de fecha es nil' do
+    calculador = described_class.new(Hora.new(8, 0), Hora.new(18, 0),
+                                     proveedor_de_fecha, proveedor_de_hora, proveedor_de_feriados)
+
+    nuevo_proveedor_hora_double = class_double(Time, now: DateTime.new(2050, 1, 1, 15, 45))
+    nuevo_proveedor_de_hora = ProveedorDeHora.new(nuevo_proveedor_hora_double)
+    fecha_original = calculador.fecha_actual
+
+    calculador.actualizar_proveedores_de_fecha_hora(nil, nuevo_proveedor_de_hora)
+
+    expect(calculador.fecha_actual).to eq(fecha_original)
+    expect(calculador.hora_actual).to eq(Hora.new(15, 45))
+  end
+
   it 'obtener turnos disponibles dado que ya se asigno un turno' do
     paciente = Paciente.new('j@perez.com', '999999999', 'juanperez', 1)
     repositorio_pacientes.save paciente
