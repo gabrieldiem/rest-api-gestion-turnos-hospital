@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 TARGET_URL=$1
 
 RESET_URL="$TARGET_URL/reset"
