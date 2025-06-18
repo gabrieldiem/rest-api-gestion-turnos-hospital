@@ -33,7 +33,7 @@ build_job:
     paths:
       - VERSION.txt
       - reports/
-      - scripts/acceptance_test.sh
+      - scripts
     reports:
       junit: reports/spec/rspec.xml
 
@@ -72,6 +72,11 @@ deploy_test_job:
   environment: test
   needs:
     - job: package_job
+  artifacts:
+    when: always
+    paths:
+      - VERSION.txt
+      - scripts
 
   script:
     - VERSION=$(cat VERSION.txt)
@@ -88,6 +93,11 @@ smoke_test_on_test_job:
   image: nicopaez/kubectl:1.32.5
   environment: test
   needs:
+  artifacts:
+    when: always
+    paths:
+      - VERSION.txt
+      - scripts
     - job: deploy_test_job
   script:
     - VERSION=$(cat VERSION.txt)
@@ -100,6 +110,11 @@ acceptance_test_job:
   stage: acceptance_test
   image: nicopaez/kubectl:1.32.5
   environment: test
+  artifacts:
+    when: always
+    paths:
+      - VERSION.txt
+      - scripts
   needs:
     - job: smoke_test_on_test_job
   script:
