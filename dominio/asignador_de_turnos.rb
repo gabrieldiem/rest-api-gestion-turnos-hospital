@@ -1,20 +1,20 @@
-require_relative './calendario_de_turnos'
+require_relative './disponibilidad_turnos'
 
 class AsignadorDeTurnos
   REPUTACION_VALIDA = 0.8
 
-  def initialize(repositorio_turnos, proveedor_de_feriados, calendario_de_turnos)
+  def initialize(repositorio_turnos, proveedor_de_feriados, disponibilidad_turnos)
     @repositorio_turnos = repositorio_turnos
     @proveedor_de_feriados = proveedor_de_feriados
-    @calendario_de_turnos = calendario_de_turnos
+    @disponibilidad_turnos = disponibilidad_turnos
   end
 
   def asignar_turno(medico, paciente, horario)
     duracion_turno = medico.especialidad.duracion
 
     raise TurnoFeriadoNoEsReservableException if coincide_con_feriado(horario.fecha)
-    raise TurnoInvalidoException, 'No se puede reservar en este slot por superposicion con otro turno' unless @calendario_de_turnos.es_hora_un_slot_valido(duracion_turno,
-                                                                                                                                                           horario.hora)
+    raise TurnoInvalidoException, 'No se puede reservar en este slot por superposicion con otro turno' unless @disponibilidad_turnos.es_hora_un_slot_valido(duracion_turno,
+                                                                                                                                                            horario.hora)
     raise TurnoNoDisponibleException if chequear_si_tiene_turno_asignado(medico, horario.fecha, horario.hora)
 
     validar_paciente(paciente, medico)

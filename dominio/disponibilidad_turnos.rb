@@ -1,6 +1,6 @@
 require_relative '../lib/horario'
 
-class CalendarioDeTurnos
+class DisponibilidadTurnos
   CANTIDAD_DE_TURNOS_A_CALCULAR_MAXIMA = 5
   CANTIDAD_MAXIMA_DE_DIAS_A_FUTURO_PARA_TURNO = 40
   HORAS_EN_UN_DIA = 24

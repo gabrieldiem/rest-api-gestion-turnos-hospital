@@ -3,14 +3,14 @@ require 'integration_helper'
 require_relative '../../dominio/turnero'
 require_relative '../../dominio/especialidad'
 require_relative '../../dominio/medico'
-require_relative '../../dominio/calendario_de_turnos'
+require_relative '../../dominio/disponibilidad_turnos'
 
 require_relative '../../persistencia/repositorio_especialidades'
 require_relative '../../persistencia/repositorio_medicos'
 require_relative '../../lib/proveedor_de_fecha'
 require_relative '../stubs'
 
-describe CalendarioDeTurnos do
+describe DisponibilidadTurnos do
   include FeriadosStubs
 
   before(:each) do

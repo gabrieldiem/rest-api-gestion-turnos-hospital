@@ -1,6 +1,6 @@
 require 'date'
 require_relative '../lib/hora'
-require_relative './calendario_de_turnos'
+require_relative './disponibilidad_turnos'
 require_relative './asignador_de_turnos'
 
 class Turnero
@@ -20,15 +20,15 @@ class Turnero
     @proveedor_de_feriados = proveedor_de_feriados
     @proveedor_de_fecha = proveedor_de_fecha
     @proveedor_de_hora = proveedor_de_hora
-    @calendario_de_turnos = CalendarioDeTurnos.new(HORA_DE_COMIENZO_DE_JORNADA,
-                                                   HORA_DE_FIN_DE_JORNADA,
-                                                   @proveedor_de_fecha,
-                                                   @proveedor_de_hora,
-                                                   @proveedor_de_feriados)
+    @disponibilidad_turnos = DisponibilidadTurnos.new(HORA_DE_COMIENZO_DE_JORNADA,
+                                                      HORA_DE_FIN_DE_JORNADA,
+                                                      @proveedor_de_fecha,
+                                                      @proveedor_de_hora,
+                                                      @proveedor_de_feriados)
     @convertidor_de_tiempo = convertidor_de_tiempo
     @asignador_de_turnos = AsignadorDeTurnos.new(@repositorio_turnos,
                                                  @proveedor_de_feriados,
-                                                 @calendario_de_turnos)
+                                                 @disponibilidad_turnos)
   end
 
   def crear_paciente(email, dni, username)
@@ -80,7 +80,7 @@ class Turnero
 
   def obtener_turnos_disponibles(matricula)
     medico = buscar_medico(matricula)
-    @calendario_de_turnos.calcular_turnos_disponibles_por_medico(medico)
+    @disponibilidad_turnos.calcular_turnos_disponibles_por_medico(medico)
   end
 
   def cambiar_asistencia_turno(id_turno, dni, asistio)
@@ -175,7 +175,7 @@ class Turnero
     @proveedor_de_fecha = proveedor_de_fecha unless proveedor_de_fecha.nil?
     @proveedor_de_hora = proveedor_de_hora unless proveedor_de_hora.nil?
 
-    @calendario_de_turnos.actualizar_proveedores_de_fecha_hora(@proveedor_de_fecha, @proveedor_de_hora)
+    @disponibilidad_turnos.actualizar_proveedores_de_fecha_hora(@proveedor_de_fecha, @proveedor_de_hora)
   end
 
   private
