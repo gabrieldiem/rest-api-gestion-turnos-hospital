@@ -35,7 +35,7 @@ module RoutesSystemControl
   end
 
   def self.post_definir_fecha(app)
-    app.post '/definir_fecha' do
+    app.post '/fecha' do
       habilitado = stage == TEST_STAGE
       fecha = Date.parse(params[:fecha])
       hora = DateTime.parse(params[:hora])
@@ -54,7 +54,7 @@ module RoutesSystemControl
   end
 
   def self.delete_definir_fecha(app)
-    app.delete '/definir_fecha' do
+    app.delete '/fecha' do
       habilitado = stage == TEST_STAGE
       turnero.actualizar_fecha_actual(habilitado, ProveedorDeFecha.new, ProveedorDeHora.new)
       status 200

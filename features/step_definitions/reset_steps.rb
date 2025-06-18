@@ -1,4 +1,11 @@
+def reset_db
+  RepositorioMedicos.new(@logger).delete_all
+  RepositorioEspecialidades.new(@logger).delete_all
+end
+
 Dado('que hay {int} médico y un {int} especialidad') do |cantidad_medicos, cantidad_especialidades|
+  reset_db
+
   @cantidad_medicos = cantidad_medicos
   @cantidad_especialidades = cantidad_especialidades
 

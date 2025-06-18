@@ -11,7 +11,7 @@ Característica: Eliminación de todos los datos de la DB para stage de test
     Y no hay más especialidades ni médicos
 
   @emulate_prod
-  Escenario: 21.1.1 - No se pueden reservar turnos superpuestos en el stage de prod
+  Escenario: 21.1.2 - No se pueden reservar turnos superpuestos en el stage de prod
     Dado que hay 1 médico y un 1 especialidad
     Cuando reseteo los datos
     Entonces recibo un error de acción prohibida

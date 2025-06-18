@@ -42,6 +42,6 @@ def app
 end
 
 After do |_scenario|
+  Faraday.delete('/fecha')
   Faraday.post('/reset')
-  Faraday.delete('/definir_fecha')
 end
