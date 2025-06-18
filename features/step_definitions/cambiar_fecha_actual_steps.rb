@@ -30,9 +30,8 @@ Dado('que hay un medico registrado de matricula {string} y una especialidad {str
   @matricula = matricula
 end
 
-Cuando('pido los turnos disponibles del medico') do
-  expect(@response.status).to eq 200 # Asegurarse de que la fecha se ha cambiado correctamente
-  cuando_pido_los_feriados(2025, [])
+Cuando('pido los turnos disponibles del medico asumiendo qu el año actual es {string}') do |anio_actual|
+  cuando_pido_los_feriados(anio_actual.to_i, [])
   @response = Faraday.get("/medicos/#{@matricula}/turnos-disponibles")
   expect(@response.status).to eq 200
   @turnos_disponibles = JSON.parse(@response.body, symbolize_names: true)[:turnos]
