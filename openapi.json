@@ -10,8 +10,8 @@
             "description": ""
         },
         {
-          "url": "https://api.9521.com.ar/verde-prod",
-          "description": ""
+            "url": "https://api.9521.com.ar/verde-prod",
+            "description": ""
         }
     ],
     "info": {
@@ -35,6 +35,10 @@
         {
             "name": "pacientes",
             "description": "Operaciones sobre los pacientes"
+        },
+        {
+            "name": "turnos",
+            "description": "Operaciones sobre los turnos"
         }
     ],
     "paths": {
@@ -252,6 +256,157 @@
                     "pacientes"
                 ]
             }
+        },
+        "/pacientes/{dni}/turnos-reservados": {
+            "get": {
+                "summary": "Obtener los turnos reservados de un paciente por DNI",
+                "description": "Obtener los turnos reservados de un paciente por DNI",
+                "parameters": [
+                    {
+                        "name": "dni",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "123456"
+                        }
+                    }
+                ],
+                "operationId": "Obtener los turnos reservados de un paciente por DNI",
+                "responses": {
+                    "200": {
+                        "description": "Obtención exitosa de turnos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response200TodasTurnosPorPaciente"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontraron turnos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Generic"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "pacientes"
+                ]
+            }
+        },
+        "/medicos/{matricula}/turnos-reservados": {
+            "get": {
+                "summary": "Obtener los turnos reservados de un médico",
+                "description": "Obtener los turnos reservados de un médico",
+                "parameters": [
+                    {
+                        "name": "matricula",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "123456"
+                        }
+                    }
+                ],
+                "operationId": "Obtener los turnos reservados de un médico",
+                "responses": {
+                    "200": {
+                        "description": "Obtención exitosa de turnos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response200TodasTurnosPorMatricula"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontraron turnos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Generic"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "medicos"
+                ]
+            }
+        },
+        "/turnos/{id}": {
+            "put": {
+                "summary": "Registrar asistencia del turno",
+                "description": "Registrar asistencia del turno",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 100
+                        },
+                        "description": "id del turno"
+                    }
+                ],
+                "operationId": "Registrar asistencia del turno",
+                "responses": {
+                    "200": {
+                        "description": "Cambio exitoso de asistencia",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/Response200RegistroDeAsistenciaExitoso"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No se puede marcar la asistencia por mala reputación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Generic"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se pudo encontrar un turno con los parámetros proveidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Generic"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "turnos"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "required": true,
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestRegistrarAsistencia"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
         }
     },
     "components": {
@@ -350,6 +505,149 @@
                                 }
                             }
                         }
+                    }
+                }
+            },
+            "Response200TodasTurnosPorPaciente": {
+                "type": "object",
+                "properties": {
+                    "cantidad_total": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "turnos": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "estado": {
+                                    "type": "string",
+                                    "example": "reservado"
+                                },
+                                "fecha": {
+                                    "type": "string",
+                                    "example": "2025-06-19"
+                                },
+                                "hora": {
+                                    "type": "string",
+                                    "example": "13:00"
+                                },
+                                "medico": {
+                                    "type": "object",
+                                    "properties": {
+                                        "nombre": {
+                                            "type": "string",
+                                            "example": "Jorge"
+                                        },
+                                        "apellido": {
+                                            "type": "string",
+                                            "example": "Gonzalez"
+                                        },
+                                        "matricula": {
+                                            "type": "string",
+                                            "example": "NAC001"
+                                        },
+                                        "especialidad": {
+                                            "type": "string",
+                                            "example": "pedi"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "Response200TodasTurnosPorMatricula": {
+                "type": "object",
+                "properties": {
+                    "cantidad_total": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "turnos": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "fecha": {
+                                    "type": "string",
+                                    "example": "2025-06-19"
+                                },
+                                "hora": {
+                                    "type": "string",
+                                    "example": "13:00"
+                                },
+                                "paciente": {
+                                    "type": "object",
+                                    "properties": {
+                                        "dni": {
+                                            "type": "string",
+                                            "example": "NAC001"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "Response200RegistroDeAsistenciaExitoso": {
+                "type": "object",
+                "properties": {
+                    "estado": {
+                        "type": "string",
+                        "example": "reservado"
+                    },
+                    "fecha": {
+                        "type": "string",
+                        "example": "2025-06-19"
+                    },
+                    "hora": {
+                        "type": "string",
+                        "example": "13:00"
+                    },
+                    "duracion": {
+                        "type": "integer",
+                        "example": 40
+                    },
+                    "medico": {
+                        "type": "object",
+                        "properties": {
+                            "nombre": {
+                                "type": "string",
+                                "example": "Jorge"
+                            },
+                            "apellido": {
+                                "type": "string",
+                                "example": "Gonzalez"
+                            },
+                            "matricula": {
+                                "type": "string",
+                                "example": "NAC001"
+                            },
+                            "especialidad": {
+                                "type": "string",
+                                "example": "pedi"
+                            }
+                        }
+                    }
+                }
+            },
+            "RequestRegistrarAsistencia": {
+                "type": "object",
+                "properties": {
+                    "dni_paciente": {
+                        "type": "string",
+                        "example": "123"
+                    },
+                    "asistio": {
+                        "type": "bool",
+                        "example": true
                     }
                 }
             },
