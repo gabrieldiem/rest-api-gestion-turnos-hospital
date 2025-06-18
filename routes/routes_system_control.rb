@@ -37,7 +37,7 @@ module RoutesSystemControl
       habilitado = stage == TEST_STAGE
       proveedor_de_fecha = ProveedorDeFecha.new(Date.parse(@params[:fecha]))
       proveedor_de_hora = ProveedorDeHora.new(Hora.parse(@params[:hora]))
-      turnero.actualizar_fecha_actual(habilitado, proveedor_de_fecha, proveedor_de_hora)
+      turnero.actualizar_fecha_actual(habilitado, @params[:fecha], @params[:hora])
       status 200
     rescue AccionProhibidaException => e
       status 403
