@@ -40,3 +40,8 @@ end
 Entonces('me muestra los valores del dia {string}') do |fecha|
   expect(@turnos_disponibles).to all(include(fecha:))
 end
+
+Entonces('cuando reseteo la fecha actual') do
+  @response = Faraday.delete('/definir_fecha')
+  expect(@response.status).to eq 200
+end
