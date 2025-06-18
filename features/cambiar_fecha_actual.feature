@@ -4,7 +4,7 @@ Característica: Cambiar la fecha actual para el entorno test
   Quiero cambiar la fecha actual del stage de test
   Para poder realizar pruebas que esten relacionados con la fecha actual
 
-  @wip
+  @wip @indev
   Escenario: 28.0.1 - Se puede cambiar la fecha actual en el amiente test
     Dado que hay 1 médico y un 1 especialidad
     Cuando cambio la fecha actual a "2025-06-06" y la hora "8:00"

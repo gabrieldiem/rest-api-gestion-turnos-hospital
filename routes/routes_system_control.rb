@@ -52,6 +52,20 @@ module RoutesSystemControl
     end
   end
 
+  def self.post_definir_fecha(app)
+    app.delete '/definir_fecha' do
+      habilitado = stage == TEST_STAGE
+      turnero.actualizar_fecha_actual(habilitado, ProveedorDeFecha.new, ProveedorDeHora.new)
+      status 200
+    rescue Date::Error => e
+      status 400
+      MensajeErrorResponse.new("Fecha o hora es inválida").to_json
+    rescue AccionProhibidaException => e
+      status 403
+      MensajeErrorResponse.new(e.message).to_json
+    end
+  end
+
   def self.get_health_check(app)
     app.get '/health-check' do
       logger.debug('GET health-check')
