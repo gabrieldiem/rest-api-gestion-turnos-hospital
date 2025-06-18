@@ -36,10 +36,26 @@ class CalendarioDeTurnos
     Horario.new(fecha, Hora.new(@hora_de_comienzo_de_jornada.hora, minutos_explorados))
   end
 
-  def calcular_siguiente_horario_disponible(fecha_actual, _indice_horario_candidato, duracion_turno, _turnos_asignados)
-    horario = calcular_siguiente_horario(fecha_actual, 0, duracion_turno)
-    return nil if horario.hora.hora >= @hora_de_fin_de_jornada.hora
+  def calcular_siguiente_horario_disponible(fecha_actual, indice_horario, duracion_turno, turnos_ya_asignados)
+    horario = calcular_siguiente_horario(fecha_actual, indice_horario, duracion_turno)
 
-    horario
+    while horario.hora.hora < @hora_de_fin_de_jornada.hora
+      return horario if esta_disponible?(horario, turnos_ya_asignados, nil)
+
+      indice_horario += 1
+      horario = calcular_siguiente_horario(fecha_actual, indice_horario, duracion_turno)
+    end
+
+    nil
+  end
+
+  private
+
+  def esta_disponible?(horario, turnos_ya_asignados, _feriados)
+    !existe_turno_asignado?(horario, turnos_ya_asignados)
+  end
+
+  def existe_turno_asignado?(horario_a_verificar, turnos_ya_asignados)
+    turnos_ya_asignados.any? { |turno| turno.horario == horario_a_verificar }
   end
 end

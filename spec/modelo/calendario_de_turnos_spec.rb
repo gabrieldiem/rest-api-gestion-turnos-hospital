@@ -73,14 +73,14 @@ describe CalendarioDeTurnos do
     expect(resultado).to be_nil
   end
 
-  xit 'salta los horarios ya ocupados' do
+  it 'salta los horarios ya ocupados' do
     allow(calendario).to receive(:calcular_siguiente_horario).and_return(
       Horario.new(fecha_de_hoy, Hora.new(9, 0)), Horario.new(fecha_de_hoy, Hora.new(9, 30))
     )
 
     resultado = calendario.calcular_siguiente_horario_disponible(fecha_de_hoy, 0, 30, [
-      Turno.new(nil, nil, Horario.new(fecha_de_hoy, Hora.new(9, 0)))
-    ])
-    expect(resultado).to eq(horario_disponible)
+                                                                   Turno.new(nil, nil, Horario.new(fecha_de_hoy, Hora.new(9, 0)))
+                                                                 ])
+    expect(resultado).to eq(Horario.new(fecha_de_hoy, Hora.new(9, 30)))
   end
 end
