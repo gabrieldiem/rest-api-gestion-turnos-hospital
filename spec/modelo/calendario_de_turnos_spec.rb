@@ -7,6 +7,7 @@ describe CalendarioDeTurnos do
   let(:fecha_de_hoy) { Date.new(2025, 1, 1) }
   let(:hora_actual) { DateTime.new(2025, 1, 1, 8, 0) }
   let(:hora_de_comienzo_de_jornada) { Hora.new(8, 0) }
+  let(:hora_de_fin_de_jornada) { Hora.new(17, 0) }
   let(:turnos_asignados) { [] }
 
   let(:proveedor_de_fecha) do
@@ -19,7 +20,7 @@ describe CalendarioDeTurnos do
   end
 
   let(:calendario) do
-    described_class.new(proveedor_de_fecha, proveedor_de_hora, hora_de_comienzo_de_jornada)
+    described_class.new(proveedor_de_fecha, proveedor_de_hora, hora_de_comienzo_de_jornada, hora_de_fin_de_jornada)
   end
 
   it 'obtengo la fecha y la hora actual el proveedor de fecha' do
@@ -63,12 +64,12 @@ describe CalendarioDeTurnos do
     expect(resultado).to eq(horario_esperado)
   end
 
-  xit 'retorna nil cuando no hay horarios disponibles hasta el fin de la jornada' do
+  it 'retorna nil cuando no hay horarios disponibles hasta el fin de la jornada' do
     allow(calendario).to receive(:calcular_siguiente_horario).and_return(
-      Horario.new(fecha_actual, Hora.new(17, 30))
+      Horario.new(fecha_de_hoy, Hora.new(17, 30))
     )
 
-    resultado = calendario.calcular_siguiente_horario_disponible(fecha_actual, 0, 30, turnos_asignados)
+    resultado = calendario.calcular_siguiente_horario_disponible(fecha_de_hoy, 0, 30, turnos_asignados)
     expect(resultado).to be_nil
   end
 end

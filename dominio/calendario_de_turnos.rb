@@ -3,10 +3,11 @@ require_relative '../lib/horario'
 class CalendarioDeTurnos
   MINUTOS_EN_UN_DIA = 60
 
-  def initialize(proveedor_de_fecha, proveedor_de_hora, hora_de_comienzo_de_jornada)
+  def initialize(proveedor_de_fecha, proveedor_de_hora, hora_de_comienzo_de_jornada, hora_de_fin_de_jornada)
     @proveedor_de_fecha = proveedor_de_fecha
     @proveedor_de_hora = proveedor_de_hora
     @hora_de_comienzo_de_jornada = hora_de_comienzo_de_jornada
+    @hora_de_fin_de_jornada = hora_de_fin_de_jornada
   end
 
   def fecha_actual
@@ -36,6 +37,9 @@ class CalendarioDeTurnos
   end
 
   def calcular_siguiente_horario_disponible(fecha_actual, _indice_horario_candidato, duracion_turno, _turnos_asignados)
-    calcular_siguiente_horario(fecha_actual, 0, duracion_turno)
+    horario = calcular_siguiente_horario(fecha_actual, 0, duracion_turno)
+    return nil if horario.hora.hora >= @hora_de_fin_de_jornada.hora
+
+    horario
   end
 end
