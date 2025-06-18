@@ -33,7 +33,7 @@ describe CalendarioDeTurnos do
     expect(horario.hora.minutos).to eq(0)
   end
 
-  xit 'calcula el horario para índices mayores a cero' do
+  it 'calcula el horario para índices mayores a cero' do
     horario = calendario.calcular_siguiente_horario(fecha_de_hoy, 2, 30)
     expect(horario.fecha).to eq(fecha_de_hoy)
     expect(horario.hora.hora).to eq(9)
