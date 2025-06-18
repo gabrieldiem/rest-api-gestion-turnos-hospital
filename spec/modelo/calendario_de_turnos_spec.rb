@@ -62,4 +62,13 @@ describe CalendarioDeTurnos do
     resultado = calendario.calcular_siguiente_horario_disponible(fecha_de_hoy, 0, 30, turnos_asignados)
     expect(resultado).to eq(horario_esperado)
   end
+
+  xit 'retorna nil cuando no hay horarios disponibles hasta el fin de la jornada' do
+    allow(calendario).to receive(:calcular_siguiente_horario).and_return(
+      Horario.new(fecha_actual, Hora.new(17, 30))
+    )
+
+    resultado = calendario.calcular_siguiente_horario_disponible(fecha_actual, 0, 30, turnos_asignados)
+    expect(resultado).to be_nil
+  end
 end
