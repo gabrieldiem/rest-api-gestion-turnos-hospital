@@ -33,6 +33,7 @@ build_job:
     paths:
       - VERSION.txt
       - reports/
+      - scripts/acceptance_test.sh
     reports:
       junit: reports/spec/rspec.xml
 
@@ -50,6 +51,8 @@ security_scan_job:
 
 package_job:
   stage: package
+  needs:
+    - job: build_job
   image: docker:stable
   before_script:
     - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
@@ -67,6 +70,8 @@ deploy_test_job:
   stage: deploy_test
   image: nicopaez/kubectl:1.32.5
   environment: test
+  needs:
+    - job: package
   script:
     - VERSION=$(cat VERSION.txt)
     - cp ${KUBECONFIG} $HOME/.kube/config
@@ -81,6 +86,8 @@ smoke_test_on_test_job:
   stage: smoke_test_on_test
   image: nicopaez/kubectl:1.32.5
   environment: test
+  needs:
+    - job: deploy_test_job
   script:
     - VERSION=$(cat VERSION.txt)
     - chmod +x ./scripts/smoke_test.sh
@@ -93,7 +100,7 @@ acceptance_test_job:
   image: nicopaez/kubectl:1.32.5
   environment: test
   needs:
-    - job: build_job
+    - job: smoke_test_on_test_job
   script:
     - VERSION=$(cat VERSION.txt)
     - chmod +x ./scripts/acceptance_test.sh
