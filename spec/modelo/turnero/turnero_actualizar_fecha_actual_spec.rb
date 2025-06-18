@@ -8,8 +8,6 @@ describe Turnero do
 
   before(:each) do
     ENV['API_FERIADOS_URL'] = 'http://www.feriados-url.com'
-    cuando_pido_los_feriados(2025, [])
-    cuando_pido_los_feriados(2030, [])
   end
 
   let(:logger) do
@@ -45,6 +43,8 @@ describe Turnero do
 
   describe '- Cambiar la fecha actual del turnero - ' do
     it 'actualiza la fecha actual y obtiene los turnos disponibles del médico' do
+
+      cuando_pido_los_feriados(2030, [])
       # Actualizar la fecha actual a 2030-01-01 y hora a 12:00
       nuevo_proveedor_fecha = ProveedorDeFecha.new(class_double(Date, today: Date.new(2030, 1, 1)))
       nuevo_proveedor_hora = ProveedorDeHora.new(class_double(Time, now: DateTime.new(2030, 1, 1, 12, 0)))
@@ -65,5 +65,36 @@ describe Turnero do
       ]
       expect(turnos).to include(*horarios_esperados)
     end
+
+
+    it 'cuando la accion es prohibida, entonces las fechas actuales se mantiene igual' do
+      cuando_pido_los_feriados(2025, [])
+
+      # Actualizar la fecha actual a 2030-01-01 y hora a 12:00
+      nuevo_proveedor_fecha = ProveedorDeFecha.new(class_double(Date, today: Date.new(2030, 1, 1)))
+      nuevo_proveedor_hora = ProveedorDeHora.new(class_double(Time, now: DateTime.new(2030, 1, 1, 12, 0)))
+
+      turnero.crear_medico('Pablo', 'Pérez', 'NAC456', especialidad.codigo)
+
+
+      expect {
+        turnero.actualizar_fecha_actual(false, nuevo_proveedor_fecha, nuevo_proveedor_hora)
+      }.to raise_error(AccionProhibidaException)
+
+
+      turnos = turnero.obtener_turnos_disponibles('NAC456')
+      # Las fechas actuales se mantienen igual
+      fecha_de_maniana = fecha_de_hoy + 1
+      horarios_esperados = [
+        Horario.new(fecha_de_maniana, Hora.new(8, 0)),
+        Horario.new(fecha_de_maniana, Hora.new(8, 30)),
+        Horario.new(fecha_de_maniana, Hora.new(9, 0)),
+        Horario.new(fecha_de_maniana, Hora.new(9, 30)),
+        Horario.new(fecha_de_maniana, Hora.new(10, 0))
+      ]
+      expect(turnos).to include(*horarios_esperados)
+    end
+
+
   end
 end
