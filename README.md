@@ -24,7 +24,6 @@ Este proyecto implementa un servicio de gestión de turnos para hospitales, util
 bundle install
 ```
 
-
 2. Ejecutar pruebas y chequeo de estilo. Este comando ejecuta tanto las pruebas (RSpec y Cucumber) como el linter (Rubocop).
 
 ```shell
