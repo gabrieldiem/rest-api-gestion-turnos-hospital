@@ -1,30 +1,38 @@
-# REST API: Equipo verde
+# API REST para Gestión de Turnos en Hospitales
 
-[![pipeline status](https://gitlab.com/fiuba-memo2/ejemplos/restapi/badges/main/pipeline.svg)](https://gitlab.com/fiuba-memo2/ejemplos/restapi/commits/main)
+Este proyecto implementa un servicio de gestión de turnos para hospitales, utilizando una arquitectura sencilla y eficiente basada en tecnologías Ruby.
 
-Este proyecto está basado en:
+## Tecnologías principales
 
-- Sinatra (micro framework web) y Sequel (componente de acceso datos)
-- PostgreSQL (base de datos relacional)
+- Sinatra: Microframework web para Ruby.
+- Sequel: ORM para acceso y manejo de base de datos.
+- PostgreSQL: Base de datos relacional.
 
-Por otro lado a nivel desarrollo tiene:
+## Herramientas de desarrollo
 
-- Pruebas con Gherkin/Cucumber
-- Pruebas con Rspec
-- Medición de cobertura con SimpleCov
-- Verificación de estilos con Rubocop
-- Automatización de tareas de Rake
+- Cucumber + Gherkin: Pruebas de aceptación.
+- RSpec: Pruebas unitarias y de integración.
+- SimpleCov: Medición de cobertura de código.
+- Rubocop: Análisis estático de código y estilo.
+- Rake: Automatización de tareas comunes.
 
-## Tareas habituales
+## Cómo correr
 
-Inicialmente hay que instalar las dependencias:
+1. Instalar dependencias
 
-    bundle install
+```shell
+bundle install
+```
 
-Luego para ejecutar test (cucumber + rspec) y linter (rubocop):
 
-    bundle exec rake
+2. Ejecutar pruebas y chequeo de estilo. Este comando ejecuta tanto las pruebas (RSpec y Cucumber) como el linter (Rubocop).
 
-Finalmente para ejecutar la aplicación (ejecución de migrations y web):
+```shell
+bundle exec rake
+```
 
-    ./start_app.sh
+3. Iniciar la aplicación. Este script aplica las migraciones necesarias y levanta el servidor web.
+
+```shell
+./start_app.sh
+```
